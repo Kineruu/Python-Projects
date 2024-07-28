@@ -38,7 +38,7 @@ Entry3.pack(pady=10, padx=10)
 Entry4 = ct.CTkEntry(master=Frame, placeholder_text="Content")
 Entry4.pack(pady=10, padx=10)
 
-def check_time(entry_date, entry_hour, entry_title, entry_content, duration):
+def check_time(entry_date, entry_hour, entry_title, entry_content):
     while True:
         current_date, current_hour = GetCurrentTime()
         if current_date == entry_date and current_hour == entry_hour:
@@ -46,7 +46,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content, duration):
                 app_id="Notification program",
                 title=entry_title,
                 msg=entry_content,
-                duration=duration.lower()
+                duration="short"
             )
             Noti.show()
             break
@@ -58,12 +58,14 @@ def get_entry(WhateverIsThis=None):
     entry_hour = Entry2.get()
     entry_title = Entry3.get()
     entry_content = Entry4.get()
-    duration = Combobox.get()
+    #duration = Combobox.get()
 
-    threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content, duration), daemon=True).start()
+    #threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content, duration), daemon=True).start()
+    threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content), daemon=True).start()
 
-Combobox = ct.CTkComboBox(Frame, values=["Short (recommended)", "Long"], command=get_entry)
-Combobox.pack(pady=10, padx=10)
+
+#Combobox = ct.CTkComboBox(Frame, values=["Short", "Long"], command=get_entry)
+#Combobox.pack(pady=10, padx=10)
 
 Button = ct.CTkButton(master=Frame, text="Confirm", command=get_entry)
 Button.pack(pady=10, padx=10)
