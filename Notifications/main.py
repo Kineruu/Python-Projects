@@ -1,4 +1,5 @@
 from winotify import Notification
+from clipboard import copy, paste
 
 import customtkinter as ct
 import datetime
@@ -16,27 +17,58 @@ ct.set_appearance_mode("dark")
 ct.set_default_color_theme("dark-blue")
 
 Window = ct.CTk()
-Window.geometry("450x350")
+Window.geometry("350x250")
 
-Window.title("                                               Notification Program")
+Window.title("              Notification Program")
 
 Frame = ct.CTkFrame(master=Window)
 Frame.pack(fill="both", expand=True)
 
 Label = ct.CTkLabel(master=Frame, text=GetCurrentTime())
-Label.pack(pady=10, padx=10)
+Label.pack(pady=4)
 
 Entry1 = ct.CTkEntry(master=Frame, placeholder_text="Date")
-Entry1.pack(pady=10, padx=10)
+Entry1.pack(pady=4)
 
 Entry2 = ct.CTkEntry(master=Frame, placeholder_text="Hour")
-Entry2.pack(pady=10, padx=10)
+Entry2.pack(pady=4)
 
 Entry3 = ct.CTkEntry(master=Frame, placeholder_text="Title")
-Entry3.pack(pady=10, padx=10)
+Entry3.pack(pady=4)
 
 Entry4 = ct.CTkEntry(master=Frame, placeholder_text="Content")
-Entry4.pack(pady=10, padx=10)
+Entry4.pack(pady=4)
+
+def CurrentDate():
+    now = datetime.datetime.now()
+    NowDate = now.strftime("%d.%m.%y")
+    Entry1.insert(0, NowDate)
+
+Entry5 = ct.CTkButton(master=Frame, text="Current Date", command=CurrentDate, width=40)
+Entry5.place(x=250, y=40)
+
+def CurrentHour():
+    now = datetime.datetime.now()
+    NowHour = now.strftime("%H:%M")
+    Entry2.insert(0, NowHour)
+
+Entry5 = ct.CTkButton(master=Frame, text="Current Hour", command=CurrentHour, width=40)
+Entry5.place(x=250, y=77)
+
+def Paste6():
+    UserPaste = paste()
+    Entry3.insert(0, UserPaste)
+
+Entry6 = ct.CTkButton(master=Frame, text="Paste", command=Paste6, width=85)
+Entry6.place(x=250, y=112)
+
+def Paste7():
+    UserPaste = paste()
+    Entry4.insert(0, UserPaste) 
+
+Entry7 = ct.CTkButton(master=Frame, text="Paste", command=Paste7, width=85)
+Entry7.place(x=250, y=148)
+
 
 def check_time(entry_date, entry_hour, entry_title, entry_content):
     while True:
@@ -58,14 +90,9 @@ def get_entry(WhateverIsThis=None):
     entry_hour = Entry2.get()
     entry_title = Entry3.get()
     entry_content = Entry4.get()
-    #duration = Combobox.get()
-
-    #threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content, duration), daemon=True).start()
+    
     threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content), daemon=True).start()
 
-
-#Combobox = ct.CTkComboBox(Frame, values=["Short", "Long"], command=get_entry)
-#Combobox.pack(pady=10, padx=10)
 
 Button = ct.CTkButton(master=Frame, text="Confirm", command=get_entry)
 Button.pack(pady=10, padx=10)
