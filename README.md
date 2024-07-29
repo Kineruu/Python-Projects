@@ -6,8 +6,7 @@ Stuff I want to make:
 
 - A game
 - A shopping list that I can access on my phone
-- A program that will remind me of stuff every few minutes, using notifications (Currently working on it and maybe even push it further and make it work on my phone.)
-- A macro for a game (Idle Slayer)
+- A program that will remind me of stuff every few minutes, using notifications (Currently working on it)
 
 I think that's it for now
 
