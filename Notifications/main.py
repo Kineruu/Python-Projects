@@ -10,8 +10,20 @@ def GetCurrentTime():
     now = datetime.datetime.now()
     return now.strftime("%d.%m.%y"), now.strftime("%H:%M")
 
-ct.set_appearance_mode("dark")
-ct.set_default_color_theme("dark-blue")
+def GetCurrentHour():
+    now = datetime.datetime.now()
+    CurrentHour = now.hour
+    return CurrentHour
+
+Hour = GetCurrentHour()
+
+if Hour <= 6:
+    ct.set_appearance_mode("dark")
+    ct.set_default_color_theme("dark-blue")
+else:
+    ct.set_appearance_mode("light")
+    ct.set_default_color_theme("green")
+
 
 Window = ct.CTk()
 Window.geometry("370x300")
@@ -43,7 +55,7 @@ def CurrentDate():
     DateEntry.delete(0, ct.END)
     DateEntry.insert(0, NowDate)
 
-CurrentDateButton = ct.CTkButton(master=Frame, text="Current Date", command=CurrentDate, width=40)
+CurrentDateButton = ct.CTkButton(master=Frame, text="Current Date", command=CurrentDate, width=92)
 CurrentDateButton.place(x=260, y=40)
 
 def CurrentHour():
@@ -52,7 +64,7 @@ def CurrentHour():
     HourEntry.delete(0, ct.END)
     HourEntry.insert(0, NowHour)
 
-CurrentHourButton = ct.CTkButton(master=Frame, text="Current Hour", command=CurrentHour, width=40)
+CurrentHourButton = ct.CTkButton(master=Frame, text="Current Hour", command=CurrentHour, width=92)
 CurrentHourButton.place(x=260, y=77)
 
 def Paste1():
@@ -60,7 +72,7 @@ def Paste1():
     TitleEntry.delete(0, ct.END)
     TitleEntry.insert(0, UserPaste)
 
-PasteButton1 = ct.CTkButton(master=Frame, text="Paste", command=Paste1, width=85)
+PasteButton1 = ct.CTkButton(master=Frame, text="Paste title", command=Paste1, width=92)
 PasteButton1.place(x=260, y=112)
 
 def Paste2():
@@ -68,8 +80,11 @@ def Paste2():
     ContentEntry.delete(0, ct.END)
     ContentEntry.insert(0, UserPaste) 
 
-PasteButton2 = ct.CTkButton(master=Frame, text="Paste", command=Paste2, width=85)
+PasteButton2 = ct.CTkButton(master=Frame, text="Paste content", command=Paste2, width=88)
 PasteButton2.place(x=260, y=148)
+
+WarningLabel = ct.CTkLabel(master=Frame, text="If the entries boxes are empty, \nthe notification will NOT show up.")
+WarningLabel.place(x=90, y=221)
 
 def check_time(entry_date, entry_hour, entry_title, entry_content):
     while True:
@@ -88,8 +103,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
             break
 
         else:
-            TextLabel = ct.CTkLabel(master=Frame, text="Something's wrong \nCheck all entries...")
-            TextLabel.place(x=4 , y=80)
+            pass
 
         time.sleep(5)
 
