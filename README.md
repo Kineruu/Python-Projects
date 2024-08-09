@@ -5,8 +5,7 @@ Although I have no idea if that will work (I hope it does) I just want to have a
 Stuff I want to make:
 
 - A game
-- A shopping list that I can access on my phone
-- A program that will remind me of stuff every few minutes, using notifications (Slowly finishing it, last thing that is there to do is to somehow convert .py to .exe and publish my first official version. Text version will be also removed.)
+- A program that will remind me of stuff every few minutes, using notifications (Slowly finishing it)
 - A calculator that will work
 
 I think that's it for now
