@@ -86,18 +86,13 @@ PasteContent.place(x=325, y=148)
 with open("C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\Number.txt") as f:
     NumberFile = int(f.read())
 
-with open(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{NumberFile}.txt", "r") as GetTitle:
-    GetNotificationTitle = GetTitle.readline(1)     
-    GetNotificationTitle = GetNotificationTitle[7:] 
-    GetTitle.close()
-
 def LatestNotification():
     os.system(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{NumberFile}.txt")
 
 def PreviousNotification():
     os.system(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{NumberFile-1}.txt")
 
-LatestNotificationButton = ct.CTkButton(master=Frame, text=f"{GetNotificationTitle}", command=LatestNotification, width=60, height=35)
+LatestNotificationButton = ct.CTkButton(master=Frame, text=f"Notification{NumberFile}", command=LatestNotification, width=60, height=35)
 LatestNotificationButton.place(x=5, y=10)
 
 PreviousNotificationButton = ct.CTkButton(master=Frame, text=f"Notification{NumberFile-1}", command=PreviousNotification, width=40, height=35)
