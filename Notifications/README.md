@@ -1,6 +1,7 @@
-Project made fully by Kineru
-Any ideas/bugs DM me on Discord: kineruu
+Notifications program by Kineru
 ========================================
+If you find any bugs or you have any ideas DM me on Discord: kineruu
+
 
 To make the program run firstly you need to edit PATH.txt file
 AN EXAMPLE:
