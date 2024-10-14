@@ -21,7 +21,6 @@ Hour = GetCurrentHour()
 ct.set_appearance_mode("dark")
 ct.set_default_color_theme("dark-blue")
 
-
 Window = ct.CTk() # Setting up the main window
 Window.geometry("500x300") # Size of it
 Window.resizable(False, False) # Not resizable
@@ -40,10 +39,10 @@ DateEntry.pack(pady=4)
 HourEntry = ct.CTkEntry(master=Frame, placeholder_text="Hour") # Same goes for hours
 HourEntry.pack(pady=4)
 
-TitleEntry = ct.CTkEntry(master=Frame, placeholder_text="Title") # Self explanatory
+TitleEntry = ct.CTkEntry(master=Frame, placeholder_text="Title <=256 char") # Self explanatory
 TitleEntry.pack(pady=4)
 
-ContentEntry = ct.CTkEntry(master=Frame, placeholder_text="Content") # Self explanatory
+ContentEntry = ct.CTkEntry(master=Frame, placeholder_text="Content <=256 char") # Self explanatory
 ContentEntry.pack(pady=4)
 
 def CurrentDate(): # Getting current date, delete and insert are here because if we press the button it'll clear whatever is in the Entry box and will paste the current date
@@ -80,22 +79,25 @@ def PasteContentDef(): # Self explanatory
 PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=PasteContentDef, width=88) # Paste Content button
 PasteContent.place(x=325, y=148)
 
-#WarningLabel = ct.CTkLabel(master=Frame, text="If the entries boxes are empty, \nthe notification will NOT show up.") # Warning for people who think that putting empty entries will do something
-#WarningLabel.place(x=90, y=221)
-
-with open("C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\Number.txt") as f:
-    NumberFile = int(f.read())
+# !
+BasePath = os.path.dirname(os.path.abspath(__file__))
+# !
 
 def LatestNotification():
-    os.system(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{NumberFile}.txt")
+    with open(os.path.join(BasePath, "Number.txt"), "r") as f:
+        NumberFile = int(f.read().strip())
+    os.system(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile}.txt"))
 
 def PreviousNotification():
-    os.system(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{NumberFile-1}.txt")
+    with open(os.path.join(BasePath, "Number.txt"), "r") as f:
+        NumberFile = int(f.read().strip())
+    os.system(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile-1}.txt"))
 
-LatestNotificationButton = ct.CTkButton(master=Frame, text=f"Notification{NumberFile}", command=LatestNotification, width=60, height=35)
+        
+LatestNotificationButton = ct.CTkButton(master=Frame, text=f"Notification1", command=LatestNotification, width=60, height=35)
 LatestNotificationButton.place(x=5, y=10)
 
-PreviousNotificationButton = ct.CTkButton(master=Frame, text=f"Notification{NumberFile-1}", command=PreviousNotification, width=40, height=35)
+PreviousNotificationButton = ct.CTkButton(master=Frame, text=f"Notification2", command=PreviousNotification, width=40, height=35)
 PreviousNotificationButton.place(x=15, y=50)
 
 
@@ -109,18 +111,18 @@ def check_time(entry_date, entry_hour, entry_title, entry_content): # Getting al
                 msg=entry_content,
                 duration="short" # "Short" because it's long enough for everyone to read the notification content
             )
-            with open("Number.txt", "r+") as f:
+            with open(os.path.join(BasePath, "Number.txt"), "r+") as f:
                 Number = int(f.read().strip())
                 Number += 1
                 f.seek(0) 
                 f.write(str(Number))
                 f.truncate()
-                with open(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{Number}.txt", "w") as f:
+                with open(os.path.join(BasePath, f"NotificationsList\\Notification{Number}.txt"), "w") as f:
                     f.write(f"TITLE: {entry_title}\nCONTENT: {entry_content}\nDATE: {entry_date}\nHOUR: {entry_hour}")
                     f.close()
 
-            LatestNotificationButton.configure(text=f"Notification{Number}", command=lambda: os.system(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{Number}.txt"))
-            PreviousNotificationButton.configure(text=f"Notification{Number-1}", command=lambda: os.system(f"C:\\Users\\Me\\Desktop\\Programming-Projects\\Python-Projects\\NotificationsList\\Notification{Number-1}.txt"))
+            LatestNotificationButton.configure(text=f"Notification{Number}", command=LatestNotification)
+            PreviousNotificationButton.configure(text=f"Notification{Number-1}", command=PreviousNotification)
 
             Noti.set_audio(audio.Default, loop=False) # Audio for people who have system sounds enabled
             Noti.show()
