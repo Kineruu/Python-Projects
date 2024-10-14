@@ -1,4 +1,3 @@
-========================================
 Project made fully by Kineru
 Any ideas/bugs DM me on Discord: kineruu
 ========================================
