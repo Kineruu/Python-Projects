@@ -1,0 +1,25 @@
+Requirements
+complexity of the problem
+Use 4 - 6 structures
+Use nested structures
+Use functions as members of structures and functions that have arguments of data type defined using structures.
+Comment the code (
+Present the solution (source code) to the students
+
+
+3-4.
+Create a structure named Course that represents a course, and contains the following members:
+ courseName: a string that represents the name of the course
+ courseGrade: a float that represents the code of the course
+Create a structure named Student that represents a student, and contains the following members:
+ studentName: a string that represents the name of the student
+ studentID: an integer that represents the ID of the student
+ numC ( an integer for the number of courses)
+ courses, an array of type Course
+ function named readStudent that prints the name, ID, and grade of the student.
+ function named printStudent that prints the name, ID, and grade of the student.
+ function float calculateAverage, that calculates the average grade from all courses.
+
+Finally, create a main function that creates a Student object, and calls the readStudent to populate it
+with students and grades, and printStudent function to display the student and courses information
+and also prints the average grade.
