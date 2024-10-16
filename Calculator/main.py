@@ -3,6 +3,7 @@ import customtkinter as ct
 import math
 import re
 
+#* Creating the window
 Window = ct.CTk()
 Window.geometry("500x400")
 Window.resizable(False, False)
@@ -11,12 +12,15 @@ Window.title("Calculator")
 Frame = ct.CTkFrame(master=Window)
 Frame.pack(fill="both", expand=True)
 
+#* Width and height of the buttons
 ButtonsWidth = 100
 ButtonsHeight = 40
+
 
 CalcEntry = ct.CTkEntry(master=Frame, placeholder_text="2 + 2", width=250, height=40)
 CalcEntry.place(x=10, y=10)
 
+#* Calculating function
 def calc(Equations):
     try:
         Equations.replace("^", "**")
@@ -32,7 +36,7 @@ def calc(Equations):
     
     except Exception as e:
         return e
-    
+
 def CalcButtonFunction():
     result = calc(CalcEntry.get())
     CalcEntry.delete(0, ct.END)
@@ -42,19 +46,12 @@ def CalcButtonFunction():
 CalcButton = ct.CTkButton(master=Frame, text="=", command=CalcButtonFunction, width=ButtonsWidth, height=ButtonsHeight)
 CalcButton.place(x=265, y=10)
 
-
-def logFunction(value, base=math.e):
-    if base == 10:
-        return math.log10(value)
-    return math.log(value)
-
 #* x^3
 def root3():
     CalcEntry.insert(ct.END, "**3")
 
 Root3Button = ct.CTkButton(master=Frame, text="x^3", command=root3, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 Root3Button.place(x=10, y=60)
-
 
 #* x^Y
 def rootY():
@@ -65,9 +62,9 @@ RootYButton.place(x=115, y=60)
 
 #* sqrt(x)
 def sqrt():
-    CalcEntry.insert(ct.END, "sqrt()")  # Insert 'sqrt()'
-    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)  # Place cursor before closing parenthesis
-    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))  # Select the closing parenthesis
+    CalcEntry.insert(ct.END, "sqrt()")
+    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)
+    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))
 
 SqrtButton = ct.CTkButton(master=Frame, text="√", command=sqrt, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 SqrtButton.place(x=220, y=60)
@@ -79,54 +76,63 @@ def root2():
 Root2Button = ct.CTkButton(master=Frame, text="x^2", command=root2, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 Root2Button.place(x=325, y=60)
 
+#* LogFunction
+def logFunction(value, base=math.e):
+    if base == 10:
+        return math.log10(value)
+    return math.log(value)
+
 #* log
 def log():
-    CalcEntry.insert(ct.END, "log()")  # Insert 'log()'
-    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)  # Place cursor before closing parenthesis
-    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))  # Select the closing parenthesis
+    CalcEntry.insert(ct.END, "log()")
+    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)  
+    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END)) 
 
 LogButton = ct.CTkButton(master=Frame, text="log", command=log, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 LogButton.place(x=10, y=105)
 
 #* sin
 def sin():
-    CalcEntry.insert(ct.END, "sin()")  # Insert 'sin()'
-    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)  # Place cursor before closing parenthesis
-    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))  # Select the closing parenthesis
+    CalcEntry.insert(ct.END, "sin()")
+    CalcEntry.icursor(CalcEntry.index(ct.END) - 1) 
+    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))
 
 SinButton = ct.CTkButton(master=Frame, text="sin", command=sin, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 SinButton.place(x=115, y=105)
 
 #* cos
 def cos():
-    CalcEntry.insert(ct.END, "cos()")  # Insert 'cos()'
-    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)  # Place cursor before closing parenthesis
-    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))  # Select the closing parenthesis
+    CalcEntry.insert(ct.END, "cos()") 
+    CalcEntry.icursor(CalcEntry.index(ct.END) - 1) 
+    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))
 
 CosButton = ct.CTkButton(master=Frame, text="cos", command=cos, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 CosButton.place(x=220, y=105)
 
 #* tan
 def tan():
-    CalcEntry.insert(ct.END, "tan()")  # Insert 'tan()'
-    CalcEntry.icursor(CalcEntry.index(ct.END) - 1)  # Place cursor before closing parenthesis
-    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END))  # Select the closing parenthesis
+    CalcEntry.insert(ct.END, "tan()")  
+    CalcEntry.icursor(CalcEntry.index(ct.END) - 1) 
+    CalcEntry.select_range(CalcEntry.index(ct.END) - 1, CalcEntry.index(ct.END)) 
 
 TanButton = ct.CTkButton(master=Frame, text="tan", command=tan, width=ButtonsWidth, height=ButtonsHeight, fg_color="green")
 TanButton.place(x=325, y=105)
 
+#* (
 def leftBracket():
     CalcEntry.insert(ct.END, "(")
 
 leftBracketButton = ct.CTkButton(master=Frame, text="(", command=leftBracket, width=ButtonsWidth, height=ButtonsHeight)
 leftBracketButton.place(x=10, y=150)
 
+#* )
 def rightBracket():
     CalcEntry.insert(ct.END, ")")
 
 rightBracketButton = ct.CTkButton(master=Frame, text=")", command=rightBracket, width=ButtonsWidth, height=ButtonsHeight)
 rightBracketButton.place(x=115, y=150)
 
+#* <-
 def backspace(): 
     currentText = CalcEntry.get()
     if currentText: CalcEntry.delete(len(currentText) - 1)
@@ -134,15 +140,13 @@ def backspace():
 backspaceButton = ct.CTkButton(master=Frame, text="<-", command=backspace, width=ButtonsWidth, height=ButtonsHeight, fg_color="red")
 backspaceButton.place(x=220, y=150)
 
+#* Erase everything
 def clear(): CalcEntry.delete(0, ct.END)
 
 clearButton = ct.CTkButton(master=Frame, text="Delete", command=clear, width=ButtonsWidth, height=ButtonsHeight, fg_color="red")
 clearButton.place(x=325, y=150)
 
-
-#* NUMBERS FROM TOP TO BOTTOM
 #* FIRST ROW
-
 def seven(): CalcEntry.insert(CalcEntry.index(ct.INSERT), "7")
 sevenButton = ct.CTkButton(master=Frame, text="7", command=seven, width=ButtonsWidth, height=ButtonsHeight)
 sevenButton.place(x=10, y=195)
