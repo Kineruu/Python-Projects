@@ -161,8 +161,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content): # Getting al
             with open(os.path.join(BasePath, f"NotificationsList\\Notification{Number}.json"), "w") as f:
                 json.dump(NotificationJSON, f, indent=4)
 
-            LatestNotificationButton.configure(text=f"Notification{Number}", command=LatestNotification)
-            PreviousNotificationButton.configure(text=f"Notification{Number-1}", command=PreviousNotification)
+            GetTitleFromFiles()
 
             Noti.set_audio(audio.Default, loop=False) # Audio for people who have system sounds enabled
             Noti.show()
