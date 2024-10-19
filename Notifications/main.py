@@ -1,11 +1,15 @@
+from Notification import createWindow
 from winotify import Notification, audio
 from clipboard import paste
 
 import customtkinter as ct
 import datetime
 import time
+import json
 import threading
 import os
+
+BasePath = os.path.dirname(os.path.abspath(__file__))
 
 def GetCurrentTime(): # Getting current date and hour, output should be like this: dd.mm.yyy HH:MM
     now = datetime.datetime.now()
@@ -79,19 +83,32 @@ def PasteContentDef(): # Self explanatory
 PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=PasteContentDef, width=88) # Paste Content button
 PasteContent.place(x=325, y=148)
 
-# !
-BasePath = os.path.dirname(os.path.abspath(__file__))
-# !
 
 def LatestNotification():
     with open(os.path.join(BasePath, "Number.txt"), "r") as f:
         NumberFile = int(f.read().strip())
-    os.system(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile}.txt"))
+
+    with open(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile}.json"), "r") as f:
+        FileContent = json.load(f)
+        Title = FileContent["Title"]
+        Content = FileContent["Content"]
+        Date = FileContent["Date"]
+        Hour = FileContent["Hour"]
+
+    createWindow(Number=int(NumberFile), Title=Title, Content=Content, Date=Date, Hour=Hour)
 
 def PreviousNotification():
     with open(os.path.join(BasePath, "Number.txt"), "r") as f:
         NumberFile = int(f.read().strip())
-    os.system(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile-1}.txt"))
+
+    with open(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile-1}.json"), "r") as f:
+        FileContent = json.load(f)
+        Title = FileContent["Title"]
+        Content = FileContent["Content"]
+        Date = FileContent["Date"]
+        Hour = FileContent["Hour"]
+
+    createWindow(Number=int(NumberFile-1), Title=Title, Content=Content, Date=Date, Hour=Hour)
 
         
 LatestNotificationButton = ct.CTkButton(master=Frame, text=f"Notification1", command=LatestNotification, width=60, height=35)
@@ -117,9 +134,16 @@ def check_time(entry_date, entry_hour, entry_title, entry_content): # Getting al
                 f.seek(0) 
                 f.write(str(Number))
                 f.truncate()
-                with open(os.path.join(BasePath, f"NotificationsList\\Notification{Number}.txt"), "w") as f:
-                    f.write(f"TITLE: {entry_title}\nCONTENT: {entry_content}\nDATE: {entry_date}\nHOUR: {entry_hour}")
-                    f.close()
+
+            NotificationJSON = {
+                "Title": entry_title,
+                "Content": entry_content,
+                "Date": entry_date,
+                "Hour": entry_hour
+            }
+
+            with open(os.path.join(BasePath, f"NotificationsList\\Notification{Number}.json"), "w") as f:
+                json.dump(NotificationJSON, f, indent=4)
 
             LatestNotificationButton.configure(text=f"Notification{Number}", command=LatestNotification)
             PreviousNotificationButton.configure(text=f"Notification{Number-1}", command=PreviousNotification)
