@@ -110,13 +110,29 @@ def PreviousNotification():
 
     createWindow(Number=int(NumberFile-1), Title=Title, Content=Content, Date=Date, Hour=Hour)
 
-        
-LatestNotificationButton = ct.CTkButton(master=Frame, text=f"Notification1", command=LatestNotification, width=60, height=35)
+def GetTitleFromFiles():
+    with open(os.path.join(BasePath, "Number.txt"), "r") as f:
+        NumberFile = int(f.read().strip())
+
+    with open(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile}.json"), "r") as f:
+        FileContent = json.load(f)
+        Title = FileContent["Title"]
+    
+    LatestNotificationButton.configure(text=Title)
+
+    with open(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile-1}.json"), "r") as f:
+        FileContent = json.load(f)
+        Title = FileContent["Title"]
+
+    PreviousNotificationButton.configure(text=Title)
+
+LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=LatestNotification, width=60, height=35)
 LatestNotificationButton.place(x=5, y=10)
 
-PreviousNotificationButton = ct.CTkButton(master=Frame, text=f"Notification2", command=PreviousNotification, width=40, height=35)
+PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=PreviousNotification, width=40, height=35)
 PreviousNotificationButton.place(x=15, y=50)
 
+GetTitleFromFiles()
 
 def check_time(entry_date, entry_hour, entry_title, entry_content): # Getting all requirements that winotify (The module/library that shows notification) needs
     while True: # Yes, it'll always run in the background as long as you have it opened and it'll check if it's correct date/hour to send the notification every 5 seconds
@@ -155,7 +171,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content): # Getting al
             pass
         time.sleep(5)
 
-def get_entry(WhateverIsThis=None):
+def get_entry():
     entry_date = DateEntry.get() # Getting everything that is in the Entries and putting them into the notification.
     entry_hour = HourEntry.get()
     entry_title = TitleEntry.get()
