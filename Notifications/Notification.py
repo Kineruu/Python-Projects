@@ -1,7 +1,8 @@
 import customtkinter as ct
-import datetime
-import time
+import json
+import os
 
+BasePath = os.path.dirname(os.path.abspath(__file__))
 
 def createWindow(Number=None, Date=None, Hour=None, Title=None, Content=None):
     ct.set_appearance_mode("dark")
@@ -10,14 +11,10 @@ def createWindow(Number=None, Date=None, Hour=None, Title=None, Content=None):
     Window = ct.CTk() 
     Window.geometry("500x300") 
     Window.resizable(False, False)
-
-    Window.title("  ")
+    Window.title(f"Notification {Number}")
 
     Frame = ct.CTkFrame(master=Window) 
     Frame.pack(fill="both", expand=True)
-
-    MainLabel = ct.CTkLabel(master=Frame, text=f"Notification {Number}")
-    MainLabel.pack()
 
     TitleLabel = ct.CTkLabel(master=Frame, text=f"Title: {Title}")
     TitleLabel.pack()
@@ -30,5 +27,61 @@ def createWindow(Number=None, Date=None, Hour=None, Title=None, Content=None):
 
     HourLabel = ct.CTkLabel(master=Frame, text=f"Hour: {Hour}")
     HourLabel.pack()
+
+    editWindowButton = ct.CTkButton(master=Frame, text="Edit", command=lambda: editWindow(Number))
+    editWindowButton.pack()
+
+    Window.mainloop()
+
+
+def editWindow(Number):
+    Number = int(Number)
+    with open(f"{BasePath}\\NotificationsList\\Notification{Number}.json", "r") as f:
+        Notification = json.load(f)
+        
+    ct.set_appearance_mode("dark")
+    ct.set_default_color_theme("dark-blue")
+
+    Window = ct.CTk() 
+    Window.geometry("500x300") 
+    Window.resizable(False, False)
+    Window.title(f"Editing notification {Number}")
+
+    Frame = ct.CTkFrame(master=Window) 
+    Frame.pack(fill="both", expand=True)
+
+    Frame.grid_columnconfigure(0, weight=1) 
+    Frame.grid_columnconfigure(1, weight=0)  
+    Frame.grid_columnconfigure(2, weight=1)
+
+    TitleLabel = ct.CTkEntry(master=Frame, placeholder_text=Notification["Title"])
+    TitleLabel.grid(row=0, column=0, padx=10, pady=5, sticky="E")
+
+    ContentLabel = ct.CTkEntry(master=Frame, placeholder_text=Notification["Content"])
+    ContentLabel.grid(row=1, column=0, padx=10, pady=5, sticky="E")
+
+    DateLabel = ct.CTkEntry(master=Frame, placeholder_text=Notification["Date"])
+    DateLabel.grid(row=2, column=0, padx=10, pady=5, sticky="E")
+
+    HourLabel = ct.CTkEntry(master=Frame, placeholder_text=Notification["Hour"])
+    HourLabel.grid(row=3, column=0, padx=10, pady=5, sticky="E")
+
+    def editFile():
+        newTitle = TitleLabel.get() if TitleLabel.get() else Notification["Title"]
+        newContent = ContentLabel.get() if ContentLabel.get() else Notification["Content"]
+        newDate = DateLabel.get() if DateLabel.get() else Notification["Date"]
+        newHour = HourLabel.get() if HourLabel.get() else Notification["Hour"]
+
+        Notification["Title"] = newTitle
+        Notification["Content"] = newContent
+        Notification["Date"] = newDate
+        Notification["Hour"] = newHour
+
+        with open(f"{BasePath}\\NotificationsList\\Notification{Number}.json", "w") as f:
+            json.dump(Notification, f, indent=4)
+
+    editFileButton = ct.CTkButton(master=Frame, text="Save", command=editFile, width=80, height=30)
+    editFileButton.grid(row=4, column=0, pady=5, columnspan=3)
+
 
     Window.mainloop()
