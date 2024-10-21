@@ -1,4 +1,4 @@
-from Notification import createWindow, editWindow
+from Notification import createWindow
 from winotify import Notification, audio
 from clipboard import paste
 
@@ -117,13 +117,13 @@ def GetTitleFromFiles():
         FileContent = json.load(f)
         Title = FileContent["Title"]
     
-    LatestNotificationButton.configure(text=Title[:25] + "...")
+    LatestNotificationButton.configure(text=(Title[:15] + "..." if len(Title) > 25 else Title))
 
     with open(os.path.join(BasePath, f"NotificationsList\\Notification{NumberFile-1}.json"), "r") as f:
         FileContent = json.load(f)
         Title = FileContent["Title"]
 
-    PreviousNotificationButton.configure(text=Title[:15] + "...")
+    PreviousNotificationButton.configure(text=Title[:10] + "..." if len(Title) > 15 else Title)
 
 LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=LatestNotification, width=60, height=35)
 LatestNotificationButton.place(x=5, y=10)
@@ -136,6 +136,7 @@ GetTitleFromFiles()
 def check_time(entry_date, entry_hour, entry_title, entry_content):
     while True:
         current_date, current_hour = GetCurrentTime()
+
         if current_date == entry_date and current_hour == entry_hour and entry_title != "" and entry_content != "":
             Noti = Notification( # Self explanatory
                 app_id="Notification program",
