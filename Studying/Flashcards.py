@@ -1,25 +1,29 @@
 import customtkinter as ct
 from random import choice
-import json
 import os
 
 BasePath = os.path.dirname(os.path.abspath(__file__))
 
-# I have no idea how I'll do it
-
 class Flashcard:
-    def __init__(self, name="", answer="", time=None):
+    def __init__(self, name="", answer="", hint="", time=None):
         self.name = name
         self.answer = answer
         self.time = time
-        self.cards = []
+        self.hint = hint        
+        
         self.number = None
+        self.cards = []
 
-    def add(self, name, answer):
+
+    def add(self, name, answer, time):
         ...
 
     def show(self, flashcardNumber):
         ...
 
+    def edit(self, flashcardNumber):
+        ...
+
     def remove(self, flashcardNumber):
         ...  
+
