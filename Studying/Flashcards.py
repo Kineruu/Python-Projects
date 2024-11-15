@@ -5,25 +5,26 @@ import os
 BasePath = os.path.dirname(os.path.abspath(__file__))
 
 class Flashcard:
-    def __init__(self, name="", answer="", hint="", time=None):
+    def __init__(self, flashcardName="", name="", answer="", hints="", time=None):
+        self.flashcardName = flashcardName
         self.name = name
         self.answer = answer
         self.time = time
-        self.hint = hint        
+        self.hints = hints        
         
         self.number = None
-        self.cards = []
+        #self.cards = []
 
 
-    def add(self, name, answer, time):
+    def add(self, flashcardName, name, answer, hints, time):
         ...
 
-    def show(self, flashcardNumber):
+    def show(self, flashcardName):
         ...
 
-    def edit(self, flashcardNumber):
+    def edit(self, flashcardName):
         ...
 
-    def remove(self, flashcardNumber):
+    def remove(self, flashcardName):
         ...  
 

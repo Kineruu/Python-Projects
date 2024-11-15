@@ -1,7 +1,5 @@
 # Python-Projects
 
-Projects to make:
-- Add something here
-- I have no idea what though, I'm having issues with thinking what to code
+Basically it's my own repository for me to save all my projects
 
 Enjoy life

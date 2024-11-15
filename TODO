@@ -1,7 +1,13 @@
-Requirements
-complexity of the problem
-Use 4 - 6 structures
-Use nested structures
-Use functions as members of structures and functions that have arguments of data type defined using structures.
-Comment the code (
-Present the solution (source code) to the students
+Studying:
+
+Flashcards.py
+- Finish coding all functions from Flashcard.png (will add more later)
+- Don't make a mess (please)
+- Make "flashcards" a json? a list? Somewhere where I can later find the flashcard by searching it's name (so json I guess)
+- Edit the Flashcard.png to add this ↑
+- Show all of the created flashcards and add this to the Flashcard.png as well ↑
+
+Main.py
+- Create a button "Create a flashcard" whenever opening the program for the first time
+-> If there are existing flashcards, ↓
+- Create a main.png making it's layout etc.
