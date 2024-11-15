@@ -1,8 +1,21 @@
+import customtkinter as ct
 import json
 import os
 
 BasePath = os.path.dirname(os.path.abspath(__file__))
 JSONPath = os.path.join(BasePath, "flashcards.json")
+
+ct.set_appearance_mode("dark")
+ct.set_default_color_theme("dark-blue")
+
+Window = ct.CTk()
+Window.geometry("500x300")
+Window.resizable(False, False)
+Window.title("  Notification Program") 
+
+Frame = ct.CTkFrame(master=Window)
+Frame.pack(fill="both", expand=True)
+
 
 class Flashcard:
     def __init__(self, flashcardName="", name="", answer="", hints="", time=None):
@@ -13,7 +26,7 @@ class Flashcard:
         self.hints = hints
 
 
-    def add(self, flashcardName, name, answer, hints, time):
+    def add(self, flashcardName="", name="", answer="", hints="", time=None):
         flashcardJSON = {
             "name":name,
             "answer":answer,
@@ -35,6 +48,7 @@ class Flashcard:
         with open(JSONPath, "w") as f:
             json.dump(data, f, indent=4)
 
+        Window.mainloop()
 
     def show(self, flashcardName):
         if os.path.exists(JSONPath):
@@ -48,12 +62,13 @@ class Flashcard:
             print("Flashcards file does not exist.")
             return
         
+        """
         print(f"What will be the name of the flashcard: {flashcardName}")
         print(f"Name: {data[flashcardName]['name']}")
         print(f"Answer: {data[flashcardName]['answer']}")
         print(f"Hints: {data[flashcardName]['hints']}")
         print(f"How much time (s): {data[flashcardName]['time']}")
-
+        """
 
     def edit(self, flashcardName):
         ...
