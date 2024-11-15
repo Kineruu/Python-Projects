@@ -54,6 +54,7 @@ class Flashcard:
         print(f"Hints: {data[flashcardName]['hints']}")
         print(f"How much time (s): {data[flashcardName]['time']}")
 
+
     def edit(self, flashcardName):
         ...
 
@@ -78,4 +79,3 @@ class Flashcard:
                 json.dump(data, f, indent=4)
         else:
             print(f"No: '{flashcardName}' found duh.")
-            
