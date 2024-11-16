@@ -1,26 +1,57 @@
 from Flashcards import Flashcard
-import customtkinter as ct
+from random import choice
+import json
+import os
 
 flashcard = Flashcard()
 
-ct.set_appearance_mode("dark")
-ct.set_default_color_theme("dark-blue")
+BasePath = os.path.dirname(os.path.abspath(__file__))
+JSONPath = os.path.join(BasePath, "flashcards.json")
 
-Window = ct.CTk()
-Window.geometry("500x300")
-Window.resizable(True, True)
-Window.title(" ")
 
-Frame = ct.CTkFrame(master=Window)
-Frame.pack(fill="both", expand=True)
+print("""
+    Hello, welcome to flashcards program.
+    What would you like to do today?
+"""
+)
 
-MainLabel = ct.CTkLabel(master=Frame, text="Welcome to flashcards program!")
-MainLabel.pack()
+print("Use flashcards (1), Add (2), edit (3), remove (4), list all flashcards (5)\n")
 
-ButtonLabel = ct.CTkLabel(master=Frame, text="To start, please create a flashcard ↓")
-ButtonLabel.pack()
+usersChoice = int(input("Pick one: "))
 
-CreateFlashcard = ct.CTkButton(master=Frame, text="Create a flashcard here!", command=None)
-CreateFlashcard.pack()
+match usersChoice:
+    case 1:
+        with open(JSONPath, "r+") as f:
+            data = json.load(f)
+        randomFlashcard = choice(list(data))
+        
+        
+        print(data[randomFlashcard]["name"])
 
-Window.mainloop()
+        usersGuess = input("Answer?: ")
+        if usersGuess == data[randomFlashcard]["answer"]:
+            print("You got it right!")
+        else:
+            print("You got it wrong :/")
+
+    case 2:
+        flashcardName = input("What will be the name of the flashcard: ")
+        name = input("Name: ")
+        answer = input("Answer: ")
+        hints = input("Hints: ")
+        flashcard.add(flashcardName=flashcardName, name=name, answer=answer, hints=hints)
+    
+    case 3:
+        with open(JSONPath, "r+") as f:
+            data = json.load(f)
+        whichOne = input("Which one?: ")
+        list(data)
+    
+    case 4:
+        whichOne = input("Which one?: ")
+        flashcard.remove(whichOne)
+    
+    case 5:
+        with open(JSONPath, "r+") as f:
+            data = json.load(f)
+        print(list(data))

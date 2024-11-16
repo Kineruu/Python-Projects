@@ -1,37 +1,21 @@
-import customtkinter as ct
 import json
 import os
 
 BasePath = os.path.dirname(os.path.abspath(__file__))
 JSONPath = os.path.join(BasePath, "flashcards.json")
 
-ct.set_appearance_mode("dark")
-ct.set_default_color_theme("dark-blue")
-
-Window = ct.CTk()
-Window.geometry("500x300")
-Window.resizable(False, False)
-Window.title("  Notification Program") 
-
-Frame = ct.CTkFrame(master=Window)
-Frame.pack(fill="both", expand=True)
-
-
 class Flashcard:
-    def __init__(self, flashcardName="", name="", answer="", hints="", time=None):
+    def __init__(self, flashcardName="", name="", answer="", hints=""):
         self.flashcardName = flashcardName
         self.name = name
         self.answer = answer
-        self.time = time
         self.hints = hints
 
-
-    def add(self, flashcardName="", name="", answer="", hints="", time=None):
+    def add(self, flashcardName="", name="", answer="", hints=""):
         flashcardJSON = {
             "name":name,
             "answer":answer,
             "hints":hints,
-            "time":time
         }
 
         if os.path.exists(JSONPath):
@@ -47,8 +31,6 @@ class Flashcard:
 
         with open(JSONPath, "w") as f:
             json.dump(data, f, indent=4)
-
-        Window.mainloop()
 
     def show(self, flashcardName):
         if os.path.exists(JSONPath):
