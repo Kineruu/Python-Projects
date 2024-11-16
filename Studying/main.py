@@ -15,7 +15,7 @@ print("""
 """
 )
 
-print("Use flashcards (1), Add (2), edit (3), remove (4), list all flashcards (5)\n")
+print("Use flashcards (1), Add (2), remove (3), list all flashcards (4)\n")
 
 usersChoice = int(input("Pick one: "))
 
@@ -42,16 +42,11 @@ match usersChoice:
         flashcard.add(flashcardName=flashcardName, name=name, answer=answer, hints=hints)
     
     case 3:
-        with open(JSONPath, "r+") as f:
-            data = json.load(f)
-        whichOne = input("Which one?: ")
-        list(data)
-    
-    case 4:
         whichOne = input("Which one?: ")
         flashcard.remove(whichOne)
     
-    case 5:
+    case 4:
         with open(JSONPath, "r+") as f:
             data = json.load(f)
         print(list(data))
+        

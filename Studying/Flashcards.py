@@ -36,26 +36,14 @@ class Flashcard:
         if os.path.exists(JSONPath):
             with open(JSONPath, "r") as f:
                 try:
-                    data = json.load(f)
+                    data = json.load(f) 
                 except json.JSONDecodeError:
                     print("Error reading the JSON file - no changes made")
                     return
         else:
             print("Flashcards file does not exist.")
             return
-        
-        """
-        print(f"What will be the name of the flashcard: {flashcardName}")
-        print(f"Name: {data[flashcardName]['name']}")
-        print(f"Answer: {data[flashcardName]['answer']}")
-        print(f"Hints: {data[flashcardName]['hints']}")
-        print(f"How much time (s): {data[flashcardName]['time']}")
-        """
-
-    def edit(self, flashcardName):
-        ...
-
-
+                
     def remove(self, flashcardName):
         if os.path.exists(JSONPath):
             with open(JSONPath, "r") as f:
