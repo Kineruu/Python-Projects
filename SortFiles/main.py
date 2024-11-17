@@ -2,12 +2,11 @@ import time
 import os
 
 BasePath = os.path.dirname(os.path.abspath(__file__))
-FilesFolder = os.path.join(BasePath, "test")
+FilesFolder = os.path.join(BasePath, "images")
 
 def renameByDate(folder):
     try:
         files = os.listdir(folder)
-
         for item in files:
             itemPath = os.path.join(folder, item)
 
@@ -27,7 +26,7 @@ def renameByDate(folder):
 
                 os.rename(itemPath, newPath)
                 print(f"Renamed: {item} -> {newItemName}")
-
+                
     except FileNotFoundError:
         print(f"The file {item} does not exists!")
     except Exception as e:
