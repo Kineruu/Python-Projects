@@ -1,4 +1,7 @@
+#Notifications folder
 __pycache__/
 NotificationsList/
-Number
-testmain
+Notifications/Number.txt
+
+#Outside
+testmain.py
