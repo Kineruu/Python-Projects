@@ -1,13 +1,16 @@
-from Notification import createWindow
-from TimeAndPaste import Time, Paste
+from utils.Notification import utilsNotification
+from utils.Time import Time
+from utils.Paste import Paste
+
 from winotify import Notification, audio
 from clipboard import paste
-
 import customtkinter as ct
 import threading
 import time
 import json
 import os
+
+notification = utilsNotification()
 
 #Base path for the current file
 BasePath = os.path.dirname(os.path.abspath(__file__))
@@ -36,7 +39,6 @@ Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
 Window.grid_rowconfigure(5, weight=1) 
 Window.grid_columnconfigure(0, weight=1)  
 Window.grid_columnconfigure(1, weight=0)
-
 
 Frame = ct.CTkFrame(master=Window)
 Frame.pack(fill="both", expand=True)
@@ -93,7 +95,7 @@ def LatestNotification():
         Hour = FileContent["Hour"]
 
     #CreateWindow function is from Notification.py file
-    createWindow(Number=int(NumberFile), Title=Title, Content=Content, Date=Date, Hour=Hour)
+    notification.createWindow(Number=int(NumberFile), Title=Title, Content=Content, Date=Date, Hour=Hour)
 
 #Same as LatestNotification but -1
 def PreviousNotification():
@@ -107,7 +109,7 @@ def PreviousNotification():
         Date = FileContent["Date"]
         Hour = FileContent["Hour"]
 
-    createWindow(Number=int(NumberFile-1), Title=Title, Content=Content, Date=Date, Hour=Hour)
+    notification.createWindow(Number=int(NumberFile-1), Title=Title, Content=Content, Date=Date, Hour=Hour)
 
 #Those two buttons have their titles (You gave them the name)
 def GetTitleFromFiles():
