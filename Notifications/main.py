@@ -18,7 +18,7 @@ if not os.path.exists(NotificationsDir):
     os.makedirs(NotificationsDir)
 
 #Creating a file named Number.txt that stores Notification numbers if user doesn't change the file name (added soon)
-NumberPath = os.path.join(BasePath, "Number.txt")
+NumberPath = os.path.join(BasePath, "NotificationsList", "Number.txt")
 if not os.path.isfile(NumberPath):
     with open(NumberPath, "w") as f:
         f.write("2")
@@ -82,7 +82,7 @@ PasteContent.grid(row=4, column=1, padx=10, pady=5, sticky="w")
 
 #Displays (not fully YET) your latest notification
 def LatestNotification():
-    with open(os.path.join(BasePath, "Number.txt"), "r") as f:
+    with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:
         NumberFile = int(f.read().strip())
 
     with open(os.path.join(NotificationsDir, f"Notification{NumberFile}.json"), "r") as f:
@@ -97,7 +97,7 @@ def LatestNotification():
 
 #Same as LatestNotification but -1
 def PreviousNotification():
-    with open(os.path.join(BasePath, "Number.txt"), "r") as f:
+    with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:
         NumberFile = int(f.read().strip())
 
     with open(os.path.join(NotificationsDir, f"Notification{NumberFile-1}.json"), "r") as f:
@@ -111,7 +111,7 @@ def PreviousNotification():
 
 #Those two buttons have their titles (You gave them the name)
 def GetTitleFromFiles():
-    with open(os.path.join(BasePath, "Number.txt"), "r") as f:
+    with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:
         NumberFile = int(f.read().strip())
 
     with open(os.path.join(NotificationsDir, f"Notification{NumberFile}.json"), "r") as f:
@@ -147,7 +147,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 duration="short"
             )
 
-            with open(os.path.join(BasePath, "Number.txt"), "r+") as f:
+            with open(os.path.join(NotificationsDir, "Number.txt"), "r+") as f:
                 Number = int(f.read().strip())
                 Number += 1
                 f.seek(0) 
