@@ -8,8 +8,8 @@ class utilsNotification:
     def __init__(self):
         pass
 
-    #Gets Notification Directory
     def GetNotificationDir(self):
+        """Get current notification directory"""
         BasePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         NotificationsDir = os.path.join(BasePath, "NotificationsList")
         return NotificationsDir

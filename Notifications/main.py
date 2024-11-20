@@ -11,26 +11,27 @@ import time
 import json
 import os
 
+#Initialize utilities and setup paths
 notification = utilsNotification()
 history = History()
-
-#Base path for the current file
 BasePath = os.path.dirname(os.path.abspath(__file__))
-
-# Create the folder if it doesn't exist
 NotificationsDir = os.path.join(BasePath, "NotificationsList")
-if not os.path.exists(NotificationsDir):
-    os.makedirs(NotificationsDir)
-
-# Create the Number.txt file inside NotificationsList
 NumberPath = os.path.join(NotificationsDir, "Number.txt")
-if not os.path.isfile(NumberPath):
-    with open(NumberPath, "w") as f:
-        f.write("2")
-
 UtilsDir = os.path.join(BasePath, "utils")
-if not os.path.exists(UtilsDir):
-    os.makedirs(UtilsDir)
+
+def ensure_dir_exists(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+def ensure_file_exists(path, default_content="2"):
+    if not os.path.isfile(path):
+        with open(path, "w") as f:
+            f.write(default_content)
+
+# Ensure necessary directories and files are in place
+ensure_dir_exists(NotificationsDir)
+ensure_file_exists(NumberPath)
+ensure_dir_exists(UtilsDir)
 
 #Setting up the main window - Theme!!
 ct.set_appearance_mode("dark")
@@ -38,7 +39,7 @@ ct.set_default_color_theme("dark-blue")
 
 #Main window settings
 Window = ct.CTk()
-Window.geometry("700x500")
+Window.geometry("700x400")
 Window.title("  Notification Program  ") 
 Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
 Window.grid_rowconfigure(5, weight=1) 

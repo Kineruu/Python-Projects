@@ -1,0 +1,6 @@
+# Latest versions - 20.11.2024
+winotify==1.1.0
+clipboard==0.0.4
+customtkinter==5.2.2
+
+#Do pip freeze requirements.txt if something is older than in the requirements or something

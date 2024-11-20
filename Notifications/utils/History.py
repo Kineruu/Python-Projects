@@ -12,13 +12,14 @@ class History:
     def __init__(self):
         pass
 
-    #Gets Notification Directory
     def GetNotificationDir(self):
+        """Get current notification directory"""
         BasePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Adjust to project root
         NotificationsDir = os.path.join(BasePath, "NotificationsList")
         return NotificationsDir
     
     def GetTitleFromFiles(self, LatestNotificationButton, PreviousNotificationButton):
+        """Opens up .json file with the notification and takes ["Title"] thing"""
         NotificationsDir = self.GetNotificationDir()
 
         with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:

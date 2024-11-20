@@ -2,31 +2,33 @@ import customtkinter as ct
 import datetime
 
 class Time:
-    #Gets current day and hour
     @staticmethod
     def GetCurrentTime():
+        """Returns current day and hour"""
         now = datetime.datetime.now()
         return now.strftime("%d.%m.%y"), now.strftime("%H:%M")
 
-    #Gets only current hour
     @staticmethod
     def GetCurrentHour():
+        """Returns only current hour"""
         now = datetime.datetime.now()
         NowHour = now.strftime("%H:%M")
         return NowHour
 
-    #Gets current date
     @staticmethod
     def GetCurrentDate():
+        """Returns only current date"""
         now = datetime.datetime.now()
         return now.strftime("%d.%m.%y")
     
     @staticmethod
     def SetCurrentDate(DateEntry):
+        """Paste current date in the entry box"""
         DateEntry.delete(0, ct.END)
         DateEntry.insert(0, Time.GetCurrentDate())
 
     @staticmethod
     def SetCurrentHour(HourEntry):
+        """Paste current hour in the entry box"""
         HourEntry.delete(0, ct.END)
         HourEntry.insert(0, Time.GetCurrentHour())
