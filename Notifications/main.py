@@ -7,6 +7,7 @@ from winotify import Notification, audio
 from clipboard import paste
 import customtkinter as ct
 import threading
+import config
 import time
 import json
 import os
@@ -15,9 +16,9 @@ import os
 notification = utilsNotification()
 history = History()
 BasePath = os.path.dirname(os.path.abspath(__file__))
-NotificationsDir = os.path.join(BasePath, "NotificationsList")
-NumberPath = os.path.join(NotificationsDir, "Number.txt")
-UtilsDir = os.path.join(BasePath, "utils")
+NotificationsDir = config.NOTIFICATIONS_DIR
+NumberPath = config.NUMBER_PATH
+UtilsDir = config.UTILS_DIR
 
 def ensure_dir_exists(path):
     if not os.path.exists(path):
@@ -34,13 +35,13 @@ ensure_file_exists(NumberPath)
 ensure_dir_exists(UtilsDir)
 
 #Setting up the main window - Theme!!
-ct.set_appearance_mode("dark")
-ct.set_default_color_theme("dark-blue")
+ct.set_appearance_mode(config.THEME)
+ct.set_default_color_theme(config.COLOR_THEME)
 
 #Main window settings
 Window = ct.CTk()
-Window.geometry("700x400")
-Window.title("  Notification Program  ") 
+Window.geometry(f"{config.WIDTH}x{config.HEIGHT}")
+Window.title(config.TITLE) 
 Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
 Window.grid_rowconfigure(5, weight=1) 
 Window.grid_columnconfigure(0, weight=1)  
@@ -54,6 +55,12 @@ Frame.grid_columnconfigure((0, 1), weight=1)
 #Label that says time
 Label = ct.CTkLabel(master=Frame, text=Time.GetCurrentTime())
 Label.grid(row=0, column=0, columnspan=2, pady=(10, 5), sticky="n")
+
+def UpdateTimeEveryMinute(Label):
+    Time.UpdateTime(Label)
+    Label.after(60000, UpdateTimeEveryMinute, Label)
+
+UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
 DateEntry = ct.CTkEntry(master=Frame, placeholder_text="Date") 

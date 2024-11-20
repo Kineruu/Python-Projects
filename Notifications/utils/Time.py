@@ -32,3 +32,9 @@ class Time:
         """Paste current hour in the entry box"""
         HourEntry.delete(0, ct.END)
         HourEntry.insert(0, Time.GetCurrentHour())
+
+    @staticmethod
+    def UpdateTime(TimeLabel):
+        """Updates the time every 1 minute"""
+        CurrentTime = Time.GetCurrentTime()
+        TimeLabel.configure(text=f"{CurrentTime[0]} - {CurrentTime[1]}")
