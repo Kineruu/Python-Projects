@@ -1,4 +1,5 @@
 from utils.Notification import utilsNotification
+from utils.History import History
 from utils.Time import Time
 from utils.Paste import Paste
 
@@ -11,23 +12,27 @@ import json
 import os
 
 notification = utilsNotification()
+history = History()
 
 #Base path for the current file
 BasePath = os.path.dirname(os.path.abspath(__file__))
 
-#Creating a folder "NotificationsList" if it doesn't exists
+# Create the folder if it doesn't exist
 NotificationsDir = os.path.join(BasePath, "NotificationsList")
 if not os.path.exists(NotificationsDir):
     os.makedirs(NotificationsDir)
 
-#Creating a file named Number.txt that stores Notification numbers if user doesn't change the file name (added soon)
-NumberPath = os.path.join(BasePath, "NotificationsList", "Number.txt")
+# Create the Number.txt file inside NotificationsList
+NumberPath = os.path.join(NotificationsDir, "Number.txt")
 if not os.path.isfile(NumberPath):
     with open(NumberPath, "w") as f:
         f.write("2")
 
-#Setting up the main window
-#Theme!!
+UtilsDir = os.path.join(BasePath, "utils")
+if not os.path.exists(UtilsDir):
+    os.makedirs(UtilsDir)
+
+#Setting up the main window - Theme!!
 ct.set_appearance_mode("dark")
 ct.set_default_color_theme("dark-blue")
 
@@ -82,59 +87,13 @@ PasteTitle.grid(row=3, column=1, padx=10, pady=5, sticky="w")
 PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=88) 
 PasteContent.grid(row=4, column=1, padx=10, pady=5, sticky="w")
 
-#Displays (not fully YET) your latest notification
-def LatestNotification():
-    with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:
-        NumberFile = int(f.read().strip())
-
-    with open(os.path.join(NotificationsDir, f"Notification{NumberFile}.json"), "r") as f:
-        FileContent = json.load(f)
-        Title = FileContent["Title"]
-        Content = FileContent["Content"]
-        Date = FileContent["Date"]
-        Hour = FileContent["Hour"]
-
-    #CreateWindow function is from Notification.py file
-    notification.createWindow(Number=int(NumberFile), Title=Title, Content=Content, Date=Date, Hour=Hour)
-
-#Same as LatestNotification but -1
-def PreviousNotification():
-    with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:
-        NumberFile = int(f.read().strip())
-
-    with open(os.path.join(NotificationsDir, f"Notification{NumberFile-1}.json"), "r") as f:
-        FileContent = json.load(f)
-        Title = FileContent["Title"]
-        Content = FileContent["Content"]
-        Date = FileContent["Date"]
-        Hour = FileContent["Hour"]
-
-    notification.createWindow(Number=int(NumberFile-1), Title=Title, Content=Content, Date=Date, Hour=Hour)
-
-#Those two buttons have their titles (You gave them the name)
-def GetTitleFromFiles():
-    with open(os.path.join(NotificationsDir, "Number.txt"), "r") as f:
-        NumberFile = int(f.read().strip())
-
-    with open(os.path.join(NotificationsDir, f"Notification{NumberFile}.json"), "r") as f:
-        FileContent = json.load(f)
-        Title = FileContent["Title"]
-    
-    LatestNotificationButton.configure(text=(Title[:15] + "..." if len(Title) > 25 else Title))
-
-    with open(os.path.join(NotificationsDir, f"Notification{NumberFile-1}.json"), "r") as f:
-        FileContent = json.load(f)
-        Title = FileContent["Title"]
-
-    PreviousNotificationButton.configure(text=Title[:10] + "..." if len(Title) > 15 else Title)
-
-LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=LatestNotification, width=60, height=35)
+LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
 LatestNotificationButton.grid(row=0, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
 
-PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=PreviousNotification, width=40, height=35)
+PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
 PreviousNotificationButton.grid(row=1, column=0, padx=(5, 10), pady=(10, 5), sticky="w")
 
-GetTitleFromFiles()
+history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
@@ -167,7 +126,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
             with open(jsonPath, "w") as f:
                 json.dump(NotificationJSON, f, indent=4)
 
-            GetTitleFromFiles()
+            history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
             Noti.set_audio(audio.Default, loop=False)
             Noti.show()

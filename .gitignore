@@ -3,6 +3,9 @@ __pycache__/
 NotificationsList/
 Notifications/Number.txt
 
+#Utils
+utils/__pycache__/
+
 #Outside
 testmain.py
 tests/

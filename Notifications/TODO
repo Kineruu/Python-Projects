@@ -2,8 +2,8 @@ main.py:
 
 - Redesign the buttons
  - Give them full display and maybe add a scrollwheel to go through all the notifications that are in NotificationsList folder?
- - Make code cleaner
+ -> Make code cleaner
+ -> Fix editing notification title not being updated after clicking save (I guess I'll do it when I'll be    re-doing the buttons)
  - Add error handler
  - (Maybe) ask for feedback
- -> Make buttons and other stuff always in their place no matter what size is the window (sorry for bad English) *Done?
  - Add another EntryBox asking the user what they want the file to be named (by default it'll be Notification{number}.json) (.json won't change.)

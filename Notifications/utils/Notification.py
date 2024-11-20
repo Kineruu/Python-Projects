@@ -8,8 +8,16 @@ class utilsNotification:
     def __init__(self):
         pass
 
+    #Gets Notification Directory
+    def GetNotificationDir(self):
+        BasePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        NotificationsDir = os.path.join(BasePath, "NotificationsList")
+        return NotificationsDir
+
     def createWindow(self, Number=None, Date=None, Hour=None, Title=None, Content=None):
         """Creates a window, arguments are: Number, Date, Hour, Title and Content."""
+        NotificationsDir = self.GetNotificationDir()
+
         ct.set_appearance_mode("dark")
         ct.set_default_color_theme("dark-blue")
 
@@ -41,8 +49,10 @@ class utilsNotification:
 
     def editWindow(self, Number):
         """Edits the notification, the only argument here is Number"""
+        NotificationsDir = self.GetNotificationDir()
+
         Number = int(Number)
-        with open(f"{BasePath}\\NotificationsList\\Notification{Number}.json", "r") as f:
+        with open(os.path.join(NotificationsDir, f"Notification{Number}.json"), "r") as f:
             Notification = json.load(f)
             
         ct.set_appearance_mode("dark")
@@ -83,12 +93,40 @@ class utilsNotification:
             Notification["Date"] = newDate
             Notification["Hour"] = newHour
 
-            with open(f"{BasePath}\\NotificationsList\\Notification{Number}.json", "w") as f:
+            #Save the updated data to the file
+            with open(os.path.join(NotificationsDir, f"Notification{Number}.json"), "w") as f:
                 json.dump(Notification, f, indent=4)
+
+
+            #After saving, update the main window or refresh the UI
+            self.updateNotificationWindow(Number, newTitle, newContent, newDate, newHour)
 
         editFileButton = ct.CTkButton(master=Frame, text="Save", command=editFile, width=80, height=30)
         editFileButton.grid(row=4, column=0, pady=5, columnspan=3)
 
-
         Window.mainloop()
+
+    def updateNotificationWindow(self, Number, Title, Content, Date, Hour):
+        """Update the notification window with new data."""
+        NotificationWindow = ct.CTk() 
+        NotificationWindow.geometry("500x300") 
+        NotificationWindow.resizable(False, False)
+        NotificationWindow.title(f"Notification {Number}")
+
+        Frame = ct.CTkFrame(master=NotificationWindow) 
+        Frame.pack(fill="both", expand=True)
+
+        TitleLabel = ct.CTkLabel(master=Frame, text=f"Title: {Title}")
+        TitleLabel.pack()
+
+        ContentLabel = ct.CTkLabel(master=Frame, text=f"Content: {Content}")
+        ContentLabel.pack()
+
+        DateLabel = ct.CTkLabel(master=Frame, text=f"Date: {Date}")
+        DateLabel.pack()
+
+        HourLabel = ct.CTkLabel(master=Frame, text=f"Hour: {Hour}")
+        HourLabel.pack()
+
+        NotificationWindow.mainloop()
 
