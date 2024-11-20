@@ -5,6 +5,8 @@ main.py:
  -> Make code cleaner
  -> Fix editing notification title not being updated after clicking save (I guess I'll do it when I'll be re-doing the buttons)
  -> Remove the random space between Date and Hour entry boxes
+ - Add a settings button in the top right corner
+ - Change buttons windows to not stack on each other but replace the current one with the new one and add a back button 
  - Add error handler
  - (Maybe) ask for feedback
  - Add another EntryBox asking the user what they want the file to be named (by default it'll be Notification{number}.json) (.json won't change.)
