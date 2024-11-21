@@ -1,7 +1,8 @@
 from utils.Notification import utilsNotification
-from utils.History import History
 from utils.Time import Time
 from utils.Paste import Paste
+
+from GUI.Buttons import Buttons
 
 from winotify import Notification, audio
 import customtkinter as ct
@@ -13,7 +14,7 @@ import os
 
 #Initialize utilities and setup paths
 notification = utilsNotification()
-history = History()
+GUIButtons = Buttons()
 BasePath = os.path.dirname(os.path.abspath(__file__))
 NotificationsDir = config.NOTIFICATIONS_DIR
 NumberPath = config.NUMBER_PATH
@@ -50,23 +51,9 @@ Window.grid_columnconfigure(1, weight=0)
 LeftFrame = ct.CTkScrollableFrame(master=Window, width=175)
 LeftFrame.grid(row=0, column=0, rowspan=6, sticky="nsew", padx=(10, 5), pady=10)
 
-notification_files = [
-    f for f in os.listdir(NotificationsDir) 
-    if f.startswith("Notification") and f.endswith(".json")
-]
+GUIButtons.notificationButtons(LeftFrame)
 
-for idx, file_name in enumerate(sorted(notification_files)):
-    # Extract the notification number from the filename
-    notification_number = int(file_name.replace("Notification", "").replace(".json", ""))
-    
-    button = ct.CTkButton(
-        master=LeftFrame,
-        text=f"Notification {notification_number}",
-        width=130,
-        command=lambda num=notification_number: notification.openNotification(num)
-    )
-    button.grid(row=idx, column=0, padx=5, pady=5)
-
+Window.after(100, lambda: GUIButtons.notificationButtons(LeftFrame))
 
 #* Middle frame - Entry Boxes and Controls
 MiddleFrame = ct.CTkFrame(master=Window, width=300) 
@@ -78,12 +65,6 @@ MiddleFrame.grid_columnconfigure((0, 1), weight=1)
 #Label that says time
 Label = ct.CTkLabel(master=MiddleFrame, text=Time.GetCurrentTime())
 Label.grid(row=0, column=0, columnspan=2, pady=10, sticky="n")
-
-def UpdateTimeEveryMinute(Label):
-    Time.UpdateTime(Label)
-    Label.after(60000, UpdateTimeEveryMinute, Label)
-
-UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
 DateEntry = ct.CTkEntry(master=MiddleFrame, placeholder_text="Date")
@@ -128,8 +109,6 @@ Window.grid_columnconfigure(2, weight=1)  # Right spacer (some resizing)
 Window.grid_rowconfigure(0, weight=1)  # Top
 Window.grid_rowconfigure(6, weight=1)
 
-
-
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
     while True:
@@ -163,6 +142,9 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
 
             Noti.set_audio(audio.Default, loop=False)
             Noti.show()
+
+            GUIButtons.notificationButtons(LeftFrame)
+
             break
         else:
             pass
