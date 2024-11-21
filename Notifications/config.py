@@ -13,6 +13,7 @@ THEME = "dark"
 COLOR_THEME = "dark-blue"
 WIDTH = 700
 HEIGHT = 400
+BUTTONS_WIDTH = 100
 
 #Notification settings
 NOTIFICATION_AUDIO = "default"

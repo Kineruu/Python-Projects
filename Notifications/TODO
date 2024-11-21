@@ -4,8 +4,8 @@ main.py:
  - Give them full display and maybe add a scrollwheel to go through all the notifications that are in NotificationsList folder?
  -> Make code cleaner
  -> Fix editing notification title not being updated after clicking save (I guess I'll do it when I'll be re-doing the buttons)
- -> Remove the random space between Date and Hour entry boxes
- - Add a settings button in the top right corner
+ -> Add random actions to the right side, such as changing the font? - just normal settings I guess?
+ - Change the number at the end of the notification from number.txt to the amount of files in the folder + 1 I guess
  - Change buttons windows to not stack on each other but replace the current one with the new one and add a back button 
  - Add error handler
  - (Maybe) ask for feedback
