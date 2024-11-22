@@ -1,6 +1,5 @@
 import customtkinter as ct
 import datetime
-import time
 
 class Time:
     @staticmethod
@@ -39,4 +38,3 @@ class Time:
         """Updates the time every 1 minute"""
         CurrentTime = Time.GetCurrentTime()
         TimeLabel.configure(text=f"{CurrentTime[0]} - {CurrentTime[1]}")
-        time.sleep(60)

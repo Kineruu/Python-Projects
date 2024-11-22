@@ -46,6 +46,7 @@ class utilsNotification:
 
         Window.mainloop()
 
+
     def editWindow(self, Number):
         """Edits the notification, the only argument here is Number"""
         NotificationsDir = self.GetNotificationDir()
@@ -129,27 +130,3 @@ class utilsNotification:
 
         NotificationWindow.mainloop()
 
-
-    def openNotification(self, Number):
-        """Opens an existing notification and displays its details."""
-        NotificationsDir = self.GetNotificationDir()
-        JsonPATH = os.path.join(NotificationsDir, f"Notification{Number}.json")
-        
-        try:
-            with open(JsonPATH, "r") as f:
-                NotificationData = json.load(f)
-
-            self.createWindow(
-                Number=Number,
-                Date=NotificationData["Date"],
-                Hour=NotificationData["Hour"],
-                Title=NotificationData["Title"],
-                Content=NotificationData["Content"]
-            )
-
-        except FileNotFoundError:
-            print(f"Notification {Number} does not exist.")
-        except json.JSONDecodeError:
-            print(f"Failed to load notification {Number}. Invalid JSON format.")
-
-        

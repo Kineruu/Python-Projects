@@ -1,10 +1,10 @@
 from utils.Notification import utilsNotification
+from utils.History import History
 from utils.Time import Time
 from utils.Paste import Paste
 
-from GUI.Buttons import Buttons
-
 from winotify import Notification, audio
+from clipboard import paste
 import customtkinter as ct
 import threading
 import config
@@ -14,7 +14,7 @@ import os
 
 #Initialize utilities and setup paths
 notification = utilsNotification()
-GUIButtons = Buttons()
+history = History()
 BasePath = os.path.dirname(os.path.abspath(__file__))
 NotificationsDir = config.NOTIFICATIONS_DIR
 NumberPath = config.NUMBER_PATH
@@ -47,67 +47,61 @@ Window.grid_rowconfigure(5, weight=1)
 Window.grid_columnconfigure(0, weight=1)  
 Window.grid_columnconfigure(1, weight=0)
 
-#* Left frame - Notification History
-LeftFrame = ct.CTkScrollableFrame(master=Window, width=175)
-LeftFrame.grid(row=0, column=0, rowspan=6, sticky="nsew", padx=(10, 5), pady=10)
-
-GUIButtons.notificationButtons(LeftFrame)
-
-Window.after(100, lambda: GUIButtons.notificationButtons(LeftFrame))
-
-#* Middle frame - Entry Boxes and Controls
-MiddleFrame = ct.CTkFrame(master=Window, width=300) 
-MiddleFrame.grid(row=0, column=1, rowspan=6, sticky="nsew", padx=(5, 5), pady=10)
-
-MiddleFrame.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=0)
-MiddleFrame.grid_columnconfigure((0, 1), weight=1)
+Frame = ct.CTkFrame(master=Window)
+Frame.pack(fill="both", expand=True)
+Frame.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
+Frame.grid_columnconfigure((0, 1), weight=1)
 
 #Label that says time
-Label = ct.CTkLabel(master=MiddleFrame, text=Time.GetCurrentTime())
-Label.grid(row=0, column=0, columnspan=2, pady=10, sticky="n")
+Label = ct.CTkLabel(master=Frame, text=Time.GetCurrentTime())
+Label.grid(row=0, column=0, columnspan=2, pady=(10, 5), sticky="n")
+
+def UpdateTimeEveryMinute(Label):
+    Time.UpdateTime(Label)
+    Label.after(60000, UpdateTimeEveryMinute, Label)
+
+UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
-DateEntry = ct.CTkEntry(master=MiddleFrame, placeholder_text="Date")
+DateEntry = ct.CTkEntry(master=Frame, placeholder_text="Date") 
 DateEntry.grid(row=1, column=0, padx=10, pady=5, sticky="e")
 
 #You enter your... hour here!
-HourEntry = ct.CTkEntry(master=MiddleFrame, placeholder_text="Hour")
+HourEntry = ct.CTkEntry(master=Frame, placeholder_text="Hour") 
 HourEntry.grid(row=2, column=0, padx=10, pady=5, sticky="e")
 
 #Bold white text in your notification at the top (I think it's max up to 256 characters otherwise it won't spawn the notification)
-TitleEntry = ct.CTkEntry(master=MiddleFrame, placeholder_text="Title <= 256 char")
+TitleEntry = ct.CTkEntry(master=Frame, placeholder_text="Title <=256 char")
 TitleEntry.grid(row=3, column=0, padx=10, pady=5, sticky="e")
 
 #I think the most useful one, giving you more context later what you had in mind while creating a notification
-ContentEntry = ct.CTkEntry(master=MiddleFrame, placeholder_text="Content <= 256 char")
+ContentEntry = ct.CTkEntry(master=Frame, placeholder_text="Content <=256 char")
 ContentEntry.grid(row=4, column=0, padx=10, pady=5, sticky="e")
 
 #If you don't want to write your date every single time you create a notification, 
 #there's a button next to the Entrybox to do that for you
-CurrentDateButton = ct.CTkButton(master=MiddleFrame, text="Current Date", command=lambda: Time.SetCurrentDate(DateEntry), width=config.BUTTONS_WIDTH) 
+CurrentDateButton = ct.CTkButton(master=Frame, text="Current Date", command=lambda: Time.SetCurrentDate(DateEntry), width=92) 
 CurrentDateButton.grid(row=1, column=1, padx=10, pady=5, sticky="w")
 
 #Same thing as CurrentDateButton but it's for hour
-CurrentHourButton = ct.CTkButton(master=MiddleFrame, text="Current Hour", command=lambda: Time.SetCurrentHour(HourEntry), width=config.BUTTONS_WIDTH)
+CurrentHourButton = ct.CTkButton(master=Frame, text="Current Hour", command=lambda: Time.SetCurrentHour(HourEntry), width=92)
 CurrentHourButton.grid(row=2, column=1, padx=10, pady=5, sticky="w")
 
 #Basically pasting what you have in your clipboard
-PasteTitleButton = ct.CTkButton(master=MiddleFrame, text="Paste title", command=lambda: Paste.PasteTitle(TitleEntry), width=config.BUTTONS_WIDTH) 
-PasteTitleButton.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+PasteTitle = ct.CTkButton(master=Frame, text="Paste title", command=lambda: Paste.PasteTitle(TitleEntry), width=92) 
+PasteTitle.grid(row=3, column=1, padx=10, pady=5, sticky="w")
 
 #Same as above
-PasteContentButton = ct.CTkButton(master=MiddleFrame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=config.BUTTONS_WIDTH) 
-PasteContentButton.grid(row=4, column=1, padx=10, pady=5, sticky="w")
+PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=88) 
+PasteContent.grid(row=4, column=1, padx=10, pady=5, sticky="w")
 
-#* Right frame - settings
-RightFrame = ct.CTkFrame(master=Window)
-RightFrame.grid(row=0, column=2, rowspan=6, sticky="nsew", padx=(5, 10), pady=10)
+LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
+LatestNotificationButton.grid(row=0, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
 
-Window.grid_columnconfigure(0, weight=0)  # Left frame (minimal resizing)
-Window.grid_columnconfigure(1, weight=2)  # Middle frame (more space)
-Window.grid_columnconfigure(2, weight=1)  # Right spacer (some resizing)
-Window.grid_rowconfigure(0, weight=1)  # Top
-Window.grid_rowconfigure(6, weight=1)
+PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
+PreviousNotificationButton.grid(row=1, column=0, padx=(5, 10), pady=(10, 5), sticky="w")
+
+history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
@@ -140,11 +134,10 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
             with open(jsonPath, "w") as f:
                 json.dump(NotificationJSON, f, indent=4)
 
+            history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
+
             Noti.set_audio(audio.Default, loop=False)
             Noti.show()
-
-            GUIButtons.notificationButtons(LeftFrame)
-
             break
         else:
             pass
@@ -158,7 +151,7 @@ def get_entry():
     
     threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content), daemon=True).start() 
 
-ConfirmButton = ct.CTkButton(master=MiddleFrame, text="Confirm", command=get_entry)
-ConfirmButton.grid(row=5, column=0, columnspan=2, pady=20)
+Button = ct.CTkButton(master=Frame, text="Confirm", command=get_entry)
+Button.grid(row=5, column=0, columnspan=2, pady=(20, 10), sticky="")
 
 Window.mainloop()

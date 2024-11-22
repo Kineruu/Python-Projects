@@ -10,3 +10,5 @@ main.py:
  - Add error handler
  - (Maybe) ask for feedback
  - Add another EntryBox asking the user what they want the file to be named (by default it'll be Notification{number}.json) (.json won't change.)
+
+(Re-do this project because it's a mess)
