@@ -4,7 +4,6 @@ from utils.Time import Time
 from utils.Paste import Paste
 
 from winotify import Notification, audio
-from clipboard import paste
 import customtkinter as ct
 import threading
 import config
