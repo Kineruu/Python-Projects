@@ -1,7 +1,8 @@
-from utils.Notification import utilsNotification
+from utils.Notification import utilsNotifications
 from utils.History import History
 from utils.Time import Time
 from utils.Paste import Paste
+from utils.settings import Settings
 
 from winotify import Notification, audio
 import customtkinter as ct
@@ -12,7 +13,7 @@ import json
 import os
 
 #Initialize utilities and setup paths
-notification = utilsNotification()
+notification = utilsNotifications()
 history = History()
 BasePath = os.path.dirname(os.path.abspath(__file__))
 NotificationsDir = config.NOTIFICATIONS_DIR

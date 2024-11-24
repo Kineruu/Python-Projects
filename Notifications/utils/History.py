@@ -1,8 +1,8 @@
-from utils.Notification import utilsNotification
+from utils.Notification import utilsNotifications
 import json
 import os
 
-notification = utilsNotification()
+notification = utilsNotifications()
 
 BasePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NotificationsDir = os.path.join(BasePath, "NotificationsList")
