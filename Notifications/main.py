@@ -2,7 +2,6 @@ from utils.Notification import utilsNotifications
 from utils.History import History
 from utils.Time import Time
 from utils.Paste import Paste
-from utils.settings import Settings
 
 from winotify import Notification, audio
 import customtkinter as ct
