@@ -1,5 +1,6 @@
 from utils.Notification import utilsNotifications
 from utils.History import History
+from utils.Settings import Settings
 from utils.Time import Time
 from utils.Paste import Paste
 from utils.Titles import Titles
@@ -103,6 +104,9 @@ LatestNotificationButton.grid(row=6, column=0, padx=(10, 5), pady=5, sticky="w")
 
 PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
 PreviousNotificationButton.grid(row=7, column=0, padx=(5, 10), sticky="w")
+
+SettingsButton = ct.CTkButton(master=Frame, text="Settings", width=92, command=lambda: Settings.loadWindow(Window=Window))
+SettingsButton.grid(row=7, column=3, sticky="w")
 
 history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
