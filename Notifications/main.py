@@ -2,6 +2,7 @@ from utils.Notification import utilsNotifications
 from utils.History import History
 from utils.Time import Time
 from utils.Paste import Paste
+from utils.Titles import Titles
 
 from winotify import Notification, audio
 import customtkinter as ct
@@ -40,7 +41,10 @@ ct.set_default_color_theme(config.COLOR_THEME)
 #Main window settings
 Window = ct.CTk()
 Window.geometry(f"{config.WIDTH}x{config.HEIGHT}")
-Window.title(config.TITLE) 
+
+RandomTitle = Titles(os.path.join(UtilsDir, "Titles.json"))
+Window.title(RandomTitle.randomTitle()) 
+
 Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
 Window.grid_rowconfigure(5, weight=1) 
 Window.grid_columnconfigure(0, weight=1)  
@@ -63,42 +67,42 @@ UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
 DateEntry = ct.CTkEntry(master=Frame, placeholder_text="Date") 
-DateEntry.grid(row=1, column=0, padx=10, pady=5, sticky="e")
+DateEntry.grid(row=1, column=0, padx=5, pady=5, sticky="e")
 
 #You enter your... hour here!
 HourEntry = ct.CTkEntry(master=Frame, placeholder_text="Hour") 
-HourEntry.grid(row=2, column=0, padx=10, pady=5, sticky="e")
+HourEntry.grid(row=2, column=0, padx=5, pady=5, sticky="e")
 
 #Bold white text in your notification at the top (I think it's max up to 256 characters otherwise it won't spawn the notification)
 TitleEntry = ct.CTkEntry(master=Frame, placeholder_text="Title <=256 char")
-TitleEntry.grid(row=3, column=0, padx=10, pady=5, sticky="e")
+TitleEntry.grid(row=3, column=0, padx=5, pady=5, sticky="e")
 
 #I think the most useful one, giving you more context later what you had in mind while creating a notification
 ContentEntry = ct.CTkEntry(master=Frame, placeholder_text="Content <=256 char")
-ContentEntry.grid(row=4, column=0, padx=10, pady=5, sticky="e")
+ContentEntry.grid(row=4, column=0, padx=5, pady=5, sticky="e")
 
 #If you don't want to write your date every single time you create a notification, 
 #there's a button next to the Entrybox to do that for you
 CurrentDateButton = ct.CTkButton(master=Frame, text="Current Date", command=lambda: Time.SetCurrentDate(DateEntry), width=92) 
-CurrentDateButton.grid(row=1, column=1, padx=10, pady=5, sticky="w")
+CurrentDateButton.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
 #Same thing as CurrentDateButton but it's for hour
 CurrentHourButton = ct.CTkButton(master=Frame, text="Current Hour", command=lambda: Time.SetCurrentHour(HourEntry), width=92)
-CurrentHourButton.grid(row=2, column=1, padx=10, pady=5, sticky="w")
+CurrentHourButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
 #Basically pasting what you have in your clipboard
 PasteTitle = ct.CTkButton(master=Frame, text="Paste title", command=lambda: Paste.PasteTitle(TitleEntry), width=92) 
-PasteTitle.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+PasteTitle.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
 #Same as above
 PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=88) 
-PasteContent.grid(row=4, column=1, padx=10, pady=5, sticky="w")
+PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 
 LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
-LatestNotificationButton.grid(row=0, column=0, padx=(10, 5), pady=(10, 5), sticky="w")
+LatestNotificationButton.grid(row=6, column=0, padx=(10, 5), pady=5, sticky="w")
 
 PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
-PreviousNotificationButton.grid(row=1, column=0, padx=(5, 10), pady=(10, 5), sticky="w")
+PreviousNotificationButton.grid(row=7, column=0, padx=(5, 10), sticky="w")
 
 history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
@@ -151,6 +155,6 @@ def get_entry():
     threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content), daemon=True).start() 
 
 Button = ct.CTkButton(master=Frame, text="Confirm", command=get_entry)
-Button.grid(row=5, column=0, columnspan=2, pady=(20, 10), sticky="")
+Button.grid(row=5, column=0, columnspan=2, pady=5, sticky="")
 
 Window.mainloop()
