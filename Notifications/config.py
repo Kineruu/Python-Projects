@@ -14,10 +14,6 @@ COLOR_THEME = "dark-blue"
 WIDTH = 700
 HEIGHT = 400
 
-#Notification settings
-NOTIFICATION_AUDIO = "default"
-TITLE = "Notification program"
-
 #How often should the program check the time (seconds)
 TIME_CHECK = 5
 
