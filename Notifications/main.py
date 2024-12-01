@@ -1,14 +1,13 @@
 from utils.Notification import utilsNotifications
-from utils.History import History
 from utils.Settings import Settings
-from utils.Time import Time
-from utils.Paste import Paste
+from utils.History import History
 from utils.Titles import Titles
+from utils.Paste import Paste
+from utils.Time import Time
 
 from winotify import Notification, audio
 import customtkinter as ct
 import threading
-import config
 import time
 import json
 import os
@@ -16,10 +15,15 @@ import os
 #Initialize utilities and setup paths
 notification = utilsNotifications()
 history = History()
-BasePath = os.path.dirname(os.path.abspath(__file__))
-NotificationsDir = config.NOTIFICATIONS_DIR
-NumberPath = config.NUMBER_PATH
-UtilsDir = config.UTILS_DIR
+
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+
+with open(os.path.join(BASE_PATH, "config.json"), "r") as f:
+    config = json.load(f)
+
+UTILS_DIR = os.path.join(BASE_PATH, config["UTILS_DIR"])
+NOTIFICATIONS_DIR = os.path.join(BASE_PATH, config["NOTIFICATIONS_DIR"])
+NUMBER_PATH = os.path.join(BASE_PATH, config["NUMBER_PATH"])
 
 def ensure_dir_exists(path):
     if not os.path.exists(path):
@@ -31,20 +35,22 @@ def ensure_file_exists(path, default_content="2"):
             f.write(default_content)
 
 # Ensure necessary directories and files are in place
-ensure_dir_exists(NotificationsDir)
-ensure_file_exists(NumberPath)
-ensure_dir_exists(UtilsDir)
+ensure_dir_exists(NOTIFICATIONS_DIR)
+ensure_file_exists(NUMBER_PATH)
+ensure_dir_exists(UTILS_DIR)
 
 #Setting up the main window - Theme!!
-ct.set_appearance_mode(config.THEME)
-ct.set_default_color_theme(config.COLOR_THEME)
+ct.set_appearance_mode(config["THEME"])
+ct.set_default_color_theme(config["COLOR_THEME"])
 
 #Main window settings
 Window = ct.CTk()
-Window.geometry(f"{config.WIDTH}x{config.HEIGHT}")
+Window.geometry(config["WIDTH"]+"x"+config["HEIGHT"])
 
-RandomTitle = Titles(os.path.join(UtilsDir, "Titles.json"))
-Window.title(RandomTitle.randomTitle()) 
+RandomTitle = Titles()
+TitlesFilePath = os.path.join(UTILS_DIR, "Titles.json")
+
+Window.title(RandomTitle.randomTitle(TitlesFilePath)) 
 
 Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
 Window.grid_rowconfigure(5, weight=1) 
@@ -99,16 +105,18 @@ PasteTitle.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=88) 
 PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 
+"""
 LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
 LatestNotificationButton.grid(row=6, column=0, padx=(10, 5), pady=5, sticky="w")
 
 PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
 PreviousNotificationButton.grid(row=7, column=0, padx=(5, 10), sticky="w")
 
+history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
+"""
+
 SettingsButton = ct.CTkButton(master=Frame, text="Settings", width=92, command=lambda: Settings.loadWindow(Window=Window))
 SettingsButton.grid(row=7, column=3, sticky="w")
-
-history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
@@ -123,7 +131,7 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 duration="short"
             )
 
-            with open(os.path.join(NotificationsDir, "Number.txt"), "r+") as f:
+            with open(os.path.join(NOTIFICATIONS_DIR, "Number.txt"), "r+") as f:
                 Number = int(f.read().strip())
                 Number += 1
                 f.seek(0) 
@@ -137,11 +145,11 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 "Hour": entry_hour
             }
 
-            jsonPath = os.path.join(NotificationsDir, f"Notification{Number}.json")
+            jsonPath = os.path.join(NOTIFICATIONS_DIR, f"Notification{Number}.json")
             with open(jsonPath, "w") as f:
                 json.dump(NotificationJSON, f, indent=4)
 
-            history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
+            #history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 
             Noti.set_audio(audio.Default, loop=False)
             Noti.show()

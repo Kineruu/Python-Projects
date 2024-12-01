@@ -1,0 +1,20 @@
+{
+    "BASEPATH":".",
+
+    "NOTIFICATIONS_DIR":"NotificationsList",
+    "NUMBER_PATH":"NotificationsList/Number.txt",
+    "UTILS_DIR":"utils",
+
+    "THEME":"dark",
+    "COLOR_THEME":"dark-blue",
+    "WIDTH":"700",
+    "HEIGHT":"400",
+
+    "TIME_CHECK": 5,
+
+    "TITLE_PLACEHOLDER":"No title",
+    "CONTENT_PLACEHOLDER":"No content",
+
+    "DATE":"%d.%m.%y",
+    "HOUR":"%H:%M"
+}
