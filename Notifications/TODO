@@ -3,3 +3,4 @@ main.py:
 - Add history (A list with all notifications that were created)
 - Add more functional buttons
 - .exe file? Don't know how I'll do that though
+- Maybe allow user to change EntryBoxes placement through settings?

@@ -37,23 +37,6 @@ class Settings:
 
         HeightEntry = ct.CTkEntry(master=Window, placeholder_text=data["HEIGHT"])
         HeightEntry.pack()
-
-        #Replace "if"s with cleaner code in the future!!
-        def newData():
-            if TimeFormatDateEntry.get().strip() and TimeFormatDateEntry.get() != data["DATE"]:
-                data["DATE"] = TimeFormatDateEntry.get()
-
-            if TimeFormatHourEntry.get().strip() and TimeFormatHourEntry.get() != data["HOUR"]:
-                data["HOUR"] = TimeFormatHourEntry.get()
-
-            if WidthEntry.get().strip() and WidthEntry.get() != data["WIDTH"]:
-                data["WIDTH"] = WidthEntry.get()
-
-            if HeightEntry.get().strip() and HeightEntry.get() != data["HEIGHT"]:
-                data["HEIGHT"] = HeightEntry.get()
-
-            with open(ConfigPath, "w") as f:
-                json.dump(data, f, indent=4)
         
         def CustomTitlesBox():
             if checkVar.get() == "on":
@@ -70,6 +53,33 @@ class Settings:
         checkVar = ct.StringVar(value="on")
         CustomTitlesCheckBox = ct.CTkCheckBox(master=Window, text="CustomTitles", command=CustomTitlesBox, variable=checkVar, onvalue="on", offvalue="off")
         CustomTitlesCheckBox.pack()
+
+        ButtonsWidth = ct.CTkLabel(master=Window, text="Buttons width")
+        ButtonsWidth.pack()
+
+        ButtonsWidthEntry = ct.CTkEntry(master=Window, placeholder_text=data["BUTTONSWIDTH"])
+        ButtonsWidthEntry.pack()
+
+        #Replace "if"s with cleaner code in the future!!
+        def newData():
+            if TimeFormatDateEntry.get().strip() and TimeFormatDateEntry.get() != data["DATE"]:
+                data["DATE"] = TimeFormatDateEntry.get()
+
+            if TimeFormatHourEntry.get().strip() and TimeFormatHourEntry.get() != data["HOUR"]:
+                data["HOUR"] = TimeFormatHourEntry.get()
+
+            if WidthEntry.get().strip() and WidthEntry.get() != data["WIDTH"]:
+                data["WIDTH"] = WidthEntry.get()
+
+            if HeightEntry.get().strip() and HeightEntry.get() != data["HEIGHT"]:
+                data["HEIGHT"] = HeightEntry.get()
+
+            if int(ButtonsWidthEntry.get().strip()) and int(ButtonsWidthEntry.get()) != int(data["BUTTONSWIDTH"]):
+                data["BUTTONSWIDTH"] = int(ButtonsWidthEntry.get())
+
+            with open(ConfigPath, "w") as f:
+                json.dump(data, f, indent=4)
+
 
         ConfirmButton = ct.CTkButton(master=Window, text="Save", command=newData)
         ConfirmButton.pack(pady=5)
