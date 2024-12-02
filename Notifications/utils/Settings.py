@@ -5,12 +5,12 @@ import os
 class Settings:
 
     @staticmethod
-    def loadWindow(Window):
+    def loadWindow(Window, MainFrame):
         """ Loading the settings window"""
+        MainFrame.pack_forget()
 
-        Window = ct.CTk()
-        Window.geometry("500x350")
-        Window.title("Settings!")
+        SettingsFrame = ct.CTkFrame(master=Window)
+        SettingsFrame.pack(fill="both", expand=True)
 
         BasePath = os.path.dirname(os.path.abspath(__file__))
         ConfigPath = os.path.join(BasePath, "..", "config.json")
@@ -19,23 +19,23 @@ class Settings:
             data = json.load(f)
 
         #Time format
-        TimeFormatLabel = ct.CTkLabel(master=Window, text="Time format:")
+        TimeFormatLabel = ct.CTkLabel(master=SettingsFrame, text="Time format:")
         TimeFormatLabel.pack()
 
-        TimeFormatDateEntry = ct.CTkEntry(master=Window, placeholder_text=data["DATE"])
+        TimeFormatDateEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["DATE"])
         TimeFormatDateEntry.pack(pady=5)
 
-        TimeFormatHourEntry = ct.CTkEntry(master=Window, placeholder_text=data["HOUR"])
+        TimeFormatHourEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["HOUR"])
         TimeFormatHourEntry.pack()
 
         #Size of the window
-        SizeLabel = ct.CTkLabel(master=Window, text="Size of the window:")
+        SizeLabel = ct.CTkLabel(master=SettingsFrame, text="Size of the window:")
         SizeLabel.pack()
 
-        WidthEntry = ct.CTkEntry(master=Window, placeholder_text=data["WIDTH"])
+        WidthEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["WIDTH"])
         WidthEntry.pack()
 
-        HeightEntry = ct.CTkEntry(master=Window, placeholder_text=data["HEIGHT"])
+        HeightEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["HEIGHT"])
         HeightEntry.pack()
         
         def CustomTitlesBox():
@@ -47,17 +47,17 @@ class Settings:
             with open(ConfigPath, "w") as f:
                 json.dump(data, f, indent=4)
 
-        CustomTitlesLabel = ct.CTkLabel(master=Window, text="Custom titles?")
+        CustomTitlesLabel = ct.CTkLabel(master=SettingsFrame, text="Custom titles?")
         CustomTitlesLabel.pack()
 
         checkVar = ct.StringVar(value="on")
-        CustomTitlesCheckBox = ct.CTkCheckBox(master=Window, text="CustomTitles", command=CustomTitlesBox, variable=checkVar, onvalue="on", offvalue="off")
+        CustomTitlesCheckBox = ct.CTkCheckBox(master=SettingsFrame, text="CustomTitles", command=CustomTitlesBox, variable=checkVar, onvalue="on", offvalue="off")
         CustomTitlesCheckBox.pack()
 
-        ButtonsWidth = ct.CTkLabel(master=Window, text="Buttons width")
+        ButtonsWidth = ct.CTkLabel(master=SettingsFrame, text="Buttons width")
         ButtonsWidth.pack()
 
-        ButtonsWidthEntry = ct.CTkEntry(master=Window, placeholder_text=data["BUTTONSWIDTH"])
+        ButtonsWidthEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["BUTTONSWIDTH"])
         ButtonsWidthEntry.pack()
 
         #Replace "if"s with cleaner code in the future!!
@@ -82,8 +82,16 @@ class Settings:
             with open(ConfigPath, "w") as f:
                 json.dump(data, f, indent=4)
 
-
-        ConfirmButton = ct.CTkButton(master=Window, text="Save", command=newData)
+        ConfirmButton = ct.CTkButton(master=SettingsFrame, text="Save", command=newData)
         ConfirmButton.pack(pady=5)
 
+        BackButton = ct.CTkButton(master=SettingsFrame, text="Back", command=lambda: Settings.backToMain(SettingsFrame, MainFrame))
+        BackButton.pack(pady=2)
+
         Window.mainloop()
+
+    @staticmethod
+    def backToMain(SettingsFrame, MainFrame):
+        """Go back to the main Frame"""
+        SettingsFrame.pack_forget()
+        MainFrame.pack(fill="both", expand=True)

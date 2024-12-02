@@ -3,11 +3,13 @@ import datetime
 import json
 import os
 
+
 BasePath = os.path.dirname(os.path.abspath(__file__))
 ConfigPath = os.path.join(BasePath, "..", "config.json")
 ConfigPath = os.path.abspath(ConfigPath) 
 with open(ConfigPath, "r") as f:
     data = json.load(f)
+
 
 class Time:
     @staticmethod

@@ -60,13 +60,21 @@ Window.grid_rowconfigure(5, weight=1)
 Window.grid_columnconfigure(0, weight=1)  
 Window.grid_columnconfigure(1, weight=0)
 
-Frame = ct.CTkFrame(master=Window)
-Frame.pack(fill="both", expand=True)
-Frame.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
-Frame.grid_columnconfigure((0, 1), weight=1)
+
+#Quite important code
+def showMainFrame():
+    for widget in Window.winfo_children():
+        widget.pack_forget()
+    MainFrame.pack(fill="both", expand=True)
+
+
+MainFrame = ct.CTkFrame(master=Window)
+MainFrame.pack(fill="both", expand=True)
+MainFrame.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
+MainFrame.grid_columnconfigure((0, 1), weight=1)
 
 #Label that says time
-Label = ct.CTkLabel(master=Frame, text=Time.GetCurrentTime())
+Label = ct.CTkLabel(master=MainFrame, text=Time.GetCurrentTime())
 Label.grid(row=0, column=0, columnspan=2, pady=(10, 5), sticky="n")
 
 def UpdateTimeEveryMinute(Label):
@@ -76,49 +84,54 @@ def UpdateTimeEveryMinute(Label):
 UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
-DateEntry = ct.CTkEntry(master=Frame, placeholder_text="Date") 
+DateEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Date") 
 DateEntry.grid(row=1, column=0, padx=5, pady=5, sticky="e")
 
 #You enter your... hour here!
-HourEntry = ct.CTkEntry(master=Frame, placeholder_text="Hour") 
+HourEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Hour") 
 HourEntry.grid(row=2, column=0, padx=5, pady=5, sticky="e")
 
 #Bold white text in your notification at the top (I think it's max up to 256 characters otherwise it won't spawn the notification)
-TitleEntry = ct.CTkEntry(master=Frame, placeholder_text="Title <=256 char")
+TitleEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Title <=256 char")
 TitleEntry.grid(row=3, column=0, padx=5, pady=5, sticky="e")
 
 #I think the most useful one, giving you more context later what you had in mind while creating a notification
-ContentEntry = ct.CTkEntry(master=Frame, placeholder_text="Content <=256 char")
+ContentEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Content <=256 char")
 ContentEntry.grid(row=4, column=0, padx=5, pady=5, sticky="e")
 
 #If you don't want to write your date every single time you create a notification, 
 #there's a button next to the Entrybox to do that for you
-CurrentDateButton = ct.CTkButton(master=Frame, text="Current Date", command=lambda: Time.SetCurrentDate(DateEntry), width=config["BUTTONSWIDTH"]) 
+CurrentDateButton = ct.CTkButton(master=MainFrame, text="Current Date", command=lambda: Time.SetCurrentDate(DateEntry), width=config["BUTTONSWIDTH"]) 
 CurrentDateButton.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
 #Same thing as CurrentDateButton but it's for hour
-CurrentHourButton = ct.CTkButton(master=Frame, text="Current Hour", command=lambda: Time.SetCurrentHour(HourEntry), width=config["BUTTONSWIDTH"])
+CurrentHourButton = ct.CTkButton(master=MainFrame, text="Current Hour", command=lambda: Time.SetCurrentHour(HourEntry), width=config["BUTTONSWIDTH"])
 CurrentHourButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
 #Basically pasting what you have in your clipboard
-PasteTitle = ct.CTkButton(master=Frame, text="Paste title", command=lambda: Paste.PasteTitle(TitleEntry), width=config["BUTTONSWIDTH"]) 
+PasteTitle = ct.CTkButton(master=MainFrame, text="Paste title", command=lambda: Paste.PasteTitle(TitleEntry), width=config["BUTTONSWIDTH"]) 
 PasteTitle.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
 #Same as above
-PasteContent = ct.CTkButton(master=Frame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=config["BUTTONSWIDTH"]) 
+PasteContent = ct.CTkButton(master=MainFrame, text="Paste content", command=lambda: Paste.PasteContent(ContentEntry), width=config["BUTTONSWIDTH"]) 
 PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 
 """
-LatestNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
+LatestNotificationButton = ct.CTkButton(master=MainFrame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
 LatestNotificationButton.grid(row=6, column=0, padx=(10, 5), pady=5, sticky="w")
 
-PreviousNotificationButton = ct.CTkButton(master=Frame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
+PreviousNotificationButton = ct.CTkButton(master=MainFrame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
 PreviousNotificationButton.grid(row=7, column=0, padx=(5, 10), sticky="w")
 
 history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 """
 
-SettingsButton = ct.CTkButton(master=Frame, text="Settings", width=config["BUTTONSWIDTH"], command=lambda: Settings.loadWindow(Window=Window))
+SettingsButton = ct.CTkButton(
+    master=MainFrame,
+    text="Settings",
+    command=lambda: Settings.loadWindow(Window, MainFrame),
+    width=config["BUTTONSWIDTH"]
+)
 SettingsButton.grid(row=7, column=0, columnspan=2, pady=5, sticky="")
 
 #Main notification function I guess?
@@ -166,10 +179,10 @@ def get_entry():
     entry_hour = HourEntry.get()
     entry_title = TitleEntry.get()
     entry_content = ContentEntry.get()
-    
+
     threading.Thread(target=check_time, args=(entry_date, entry_hour, entry_title, entry_content), daemon=True).start() 
 
-Button = ct.CTkButton(master=Frame, text="Confirm", command=get_entry, width=config["BUTTONSWIDTH"])
+Button = ct.CTkButton(master=MainFrame, text="Confirm", command=get_entry, width=config["BUTTONSWIDTH"])
 Button.grid(row=5, column=0, columnspan=2, pady=5, sticky="")
 
 Window.mainloop()

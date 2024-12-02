@@ -13,5 +13,5 @@
     "DATE": "%d.%m.%y",
     "HOUR": "%H:%M",
     "CUSTOMTITLES": "YES",
-    "BUTTONSWIDTH": 85
+    "BUTTONSWIDTH": 100
 }

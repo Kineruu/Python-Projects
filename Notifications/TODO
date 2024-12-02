@@ -3,4 +3,5 @@ main.py:
 - Add history (A list with all notifications that were created)
 - Add more functional buttons
 - .exe file? Don't know how I'll do that though
-- Maybe allow user to change EntryBoxes placement through settings?
+- Update buttons size after clicking save (No clue if that's even possible but who knows)
+- Add a switch button in the settings that allows to swtich between 24h and 12h format
