@@ -1,25 +1,33 @@
 import customtkinter as ct
 import datetime
+import json
+import os
+
+BasePath = os.path.dirname(os.path.abspath(__file__))
+ConfigPath = os.path.join(BasePath, "..", "config.json")
+ConfigPath = os.path.abspath(ConfigPath) 
+with open(ConfigPath, "r") as f:
+    data = json.load(f)
 
 class Time:
     @staticmethod
     def GetCurrentTime():
         """Returns current day and hour"""
         now = datetime.datetime.now()
-        return now.strftime("%d.%m.%y"), now.strftime("%H:%M")
+        return now.strftime(data["DATE"]), now.strftime(data["HOUR"])
 
     @staticmethod
     def GetCurrentHour():
         """Returns only current hour"""
         now = datetime.datetime.now()
-        NowHour = now.strftime("%H:%M")
+        NowHour = now.strftime(data["HOUR"])
         return NowHour
 
     @staticmethod
     def GetCurrentDate():
         """Returns only current date"""
         now = datetime.datetime.now()
-        return now.strftime("%d.%m.%y")
+        return now.strftime(data["DATE"])
     
     @staticmethod
     def SetCurrentDate(DateEntry):

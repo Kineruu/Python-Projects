@@ -74,8 +74,10 @@ class Settings:
             if HeightEntry.get().strip() and HeightEntry.get() != data["HEIGHT"]:
                 data["HEIGHT"] = HeightEntry.get()
 
-            if int(ButtonsWidthEntry.get().strip()) and int(ButtonsWidthEntry.get()) != int(data["BUTTONSWIDTH"]):
-                data["BUTTONSWIDTH"] = int(ButtonsWidthEntry.get())
+
+            buttonsWidth = ButtonsWidthEntry.get().strip()
+            if buttonsWidth and buttonsWidth.isdigit() and int(buttonsWidth) != int(data["BUTTONSWIDTH"]):
+                data["BUTTONSWIDTH"] = int(buttonsWidth)
 
             with open(ConfigPath, "w") as f:
                 json.dump(data, f, indent=4)
