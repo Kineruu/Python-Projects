@@ -50,7 +50,10 @@ Window.geometry(config["WIDTH"]+"x"+config["HEIGHT"])
 RandomTitle = Titles()
 TitlesFilePath = os.path.join(UTILS_DIR, "Titles.json")
 
-Window.title(RandomTitle.randomTitle(TitlesFilePath)) 
+if config["CUSTOMTITLES"] == "YES":
+    Window.title(RandomTitle.randomTitle(TitlesFilePath)) 
+else:
+    Window.title("")
 
 Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
 Window.grid_rowconfigure(5, weight=1) 

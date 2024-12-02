@@ -11,5 +11,6 @@
     "TITLE_PLACEHOLDER": "No title",
     "CONTENT_PLACEHOLDER": "No content",
     "DATE": "%d.%m.%y",
-    "HOUR": "%H:%M"
+    "HOUR": "%H:%M",
+    "CUSTOMTITLES": "YES"
 }

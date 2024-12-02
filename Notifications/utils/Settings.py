@@ -55,6 +55,22 @@ class Settings:
             with open(ConfigPath, "w") as f:
                 json.dump(data, f, indent=4)
         
+        def CustomTitlesBox():
+            if checkVar.get() == "on":
+                data["CUSTOMTITLES"] = "YES"
+            else:
+                data["CUSTOMTITLES"] = "NO"
+
+            with open(ConfigPath, "w") as f:
+                json.dump(data, f, indent=4)
+
+        CustomTitlesLabel = ct.CTkLabel(master=Window, text="Custom titles?")
+        CustomTitlesLabel.pack()
+
+        checkVar = ct.StringVar(value="on")
+        CustomTitlesCheckBox = ct.CTkCheckBox(master=Window, text="CustomTitles", command=CustomTitlesBox, variable=checkVar, onvalue="on", offvalue="off")
+        CustomTitlesCheckBox.pack()
+
         ConfirmButton = ct.CTkButton(master=Window, text="Save", command=newData)
         ConfirmButton.pack(pady=5)
 
