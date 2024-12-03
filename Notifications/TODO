@@ -5,3 +5,4 @@ main.py:
 - .exe file? Don't know how I'll do that though
 - Update buttons size after clicking save (No clue if that's even possible but who knows)
 - Add a switch button in the settings that allows to swtich between 24h and 12h format
+- Add more themes (That customtkinter allows)
