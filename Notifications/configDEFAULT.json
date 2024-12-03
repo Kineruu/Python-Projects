@@ -15,6 +15,7 @@
     "TITLE_PLACEHOLDER":"No title",
     "CONTENT_PLACEHOLDER":"No content",
 
+    "TIMEFORMAT": 24,
     "DATE":"%d.%m.%y",
     "HOUR":"%H:%M",
 

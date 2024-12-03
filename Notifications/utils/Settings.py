@@ -1,4 +1,5 @@
 import customtkinter as ct
+import datetime
 import json
 import os
 
@@ -19,14 +20,29 @@ class Settings:
             data = json.load(f)
 
         #Time format
-        TimeFormatLabel = ct.CTkLabel(master=SettingsFrame, text="Time format:")
-        TimeFormatLabel.pack()
+        TimeFormatDateLabel = ct.CTkLabel(master=SettingsFrame, text="Time format:")
+        TimeFormatDateLabel.pack()
 
         TimeFormatDateEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["DATE"])
         TimeFormatDateEntry.pack(pady=5)
 
-        TimeFormatHourEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=data["HOUR"])
-        TimeFormatHourEntry.pack()
+        TimeFormatHourLabel = ct.CTkLabel(master=SettingsFrame, text="Time format (24/12 hours)")
+        TimeFormatHourLabel.pack()
+
+        def ChooseTimeFormat(choice):
+            now = datetime.datetime.now()
+
+            data["TIMEFORMAT"] = int(choice)
+
+            if data["TIMEFORMAT"] == 24:
+                data["HOUR"] = now.strftime("%H:%M")
+        
+            elif data["TIMEFORMAT"] == 12:
+                data["HOUR"] = now.strftime("%I:%M %p")
+
+        OptionMenuVar = ct.StringVar(value=24) 
+        TimeFormatHourOptionMenu = ct.CTkOptionMenu(master=SettingsFrame, values=["24", "12"], command=ChooseTimeFormat, variable=OptionMenuVar)
+        TimeFormatHourOptionMenu.pack()
 
         #Size of the window
         SizeLabel = ct.CTkLabel(master=SettingsFrame, text="Size of the window:")
@@ -65,8 +81,9 @@ class Settings:
             if TimeFormatDateEntry.get().strip() and TimeFormatDateEntry.get() != data["DATE"]:
                 data["DATE"] = TimeFormatDateEntry.get()
 
-            if TimeFormatHourEntry.get().strip() and TimeFormatHourEntry.get() != data["HOUR"]:
-                data["HOUR"] = TimeFormatHourEntry.get()
+            TimeFormat = TimeFormatHourOptionMenu.get().strip()
+            if TimeFormat and TimeFormat.isdigit() and int(TimeFormat) != int(data["TIMEFORMAT"]):
+                data["HOUR"] = int(TimeFormat)
 
             if WidthEntry.get().strip() and WidthEntry.get() != data["WIDTH"]:
                 data["WIDTH"] = WidthEntry.get()
