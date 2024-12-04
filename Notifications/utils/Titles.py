@@ -8,5 +8,4 @@ class Titles:
             TitleData = json.load(f)
 
         TitleDict = TitleData[0]
-        
         return random.choice(list(TitleDict.values()))

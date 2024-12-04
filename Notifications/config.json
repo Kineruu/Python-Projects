@@ -10,9 +10,9 @@
     "TIME_CHECK": 5,
     "TITLE_PLACEHOLDER": "No title",
     "CONTENT_PLACEHOLDER": "No content",
-    "TIMEFORMAT": 24,
+    "TIMEFORMAT": 12,
     "DATE": "%d.%m.%y",
-    "HOUR": "06:30",
+    "HOUR": "10:02 PM",
     "CUSTOMTITLES": "YES",
     "BUTTONSWIDTH": 100
 }

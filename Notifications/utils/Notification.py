@@ -43,7 +43,10 @@ class utilsNotifications:
         HourLabel.pack()
 
         # Pass the current window to the editWindow method
-        editWindowButton = ct.CTkButton(master=Frame, text="Edit", command=lambda: self.editWindow(Number, Window))
+        editWindowButton = ct.CTkButton(
+            master=Frame, text="Edit", 
+            command=lambda: self.editWindow(Number, Window)
+        )
         editWindowButton.pack()
 
         Window.mainloop()
@@ -104,7 +107,11 @@ class utilsNotifications:
             # Replace the edit window with an updated view
             self.updateNotificationWindow(Number, newTitle, newContent, newDate, newHour, Window)
 
-        saveButton = ct.CTkButton(master=Frame, text="Save", command=saveChanges)
+        saveButton = ct.CTkButton(
+            master=Frame, 
+            text="Save", 
+            command=saveChanges
+        )
         saveButton.grid(row=4, column=0, pady=10)
 
         Window.mainloop()
