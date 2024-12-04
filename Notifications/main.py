@@ -7,10 +7,15 @@ from utils.Time import Time
 
 from winotify import Notification, audio
 import customtkinter as ct
+import importlib
 import threading
+import utils
 import time
 import json
 import os
+
+def reloadSettings():
+    importlib.reload(utils.Settings)
 
 #Initialize utilities and setup paths
 notification = utilsNotifications()
@@ -126,7 +131,7 @@ PreviousNotificationButton.grid(row=7, column=0, padx=(5, 10), sticky="w")
 history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
 """
 
-SettingsButton = ct.CTkButton(master=MainFrame, text="Settings", command=lambda: Settings.loadWindow(Window, MainFrame),width=config["BUTTONSWIDTH"])
+SettingsButton = ct.CTkButton(master=MainFrame, text="Settings", command=lambda: Settings.loadWindow(Window, MainFrame, reloadSettings),width=config["BUTTONSWIDTH"])
 SettingsButton.grid(row=7, column=0, columnspan=2, pady=5, sticky="")
 
 #Main notification function I guess?

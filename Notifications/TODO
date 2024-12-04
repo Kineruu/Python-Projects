@@ -4,6 +4,8 @@ main.py:
 - Add more functional buttons
 - .exe file? Don't know how I'll do that though
 - Update buttons size after clicking save (No clue if that's even possible but who knows)
+    - I can change time and other stuff but not buttons width haha I'll try to fix that later
+
 - Add more themes (That customtkinter allows)
 
 - Maybe make the code cleaner by instead of having long lines of code split them into pieces?

@@ -4,13 +4,12 @@ import json
 import os
 
 class Settings:
-
     @staticmethod
-    def loadWindow(Window, MainFrame):
+    def loadWindow(Window, MainFrame, reloadSettings):
         """ Loading the settings window"""
         MainFrame.pack_forget()
 
-        SettingsFrame = ct.CTkFrame(master=Window)
+        SettingsFrame = ct.CTkScrollableFrame(master=Window)
         SettingsFrame.pack(fill="both", expand=True)
 
         BasePath = os.path.dirname(os.path.abspath(__file__))
@@ -83,7 +82,7 @@ class Settings:
 
             TimeFormat = TimeFormatHourOptionMenu.get().strip()
             if TimeFormat and TimeFormat.isdigit() and int(TimeFormat) != int(data["TIMEFORMAT"]):
-                data["HOUR"] = int(TimeFormat)
+                data["TIMEFORMAT"] = int(TimeFormat)
 
             if WidthEntry.get().strip() and WidthEntry.get() != data["WIDTH"]:
                 data["WIDTH"] = WidthEntry.get()
@@ -98,6 +97,8 @@ class Settings:
 
             with open(ConfigPath, "w") as f:
                 json.dump(data, f, indent=4)
+
+            reloadSettings()
 
         ConfirmButton = ct.CTkButton(master=SettingsFrame, text="Save", command=newData)
         ConfirmButton.pack(pady=5)
