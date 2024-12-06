@@ -2,7 +2,7 @@ from utils.Notification import utilsNotifications
 from utils.Settings import Settings
 from utils.Titles import Titles
 from utils.Paste import Paste
-from utils.Time import Time
+from utils.Time import Time 
 
 # https://www.youtube.com/watch?v=dQw4w9WgXcQ
 # Really cool music to listen in the background
@@ -31,6 +31,7 @@ UTILS_DIR = os.path.join(BASE_PATH, config["UTILS_DIR"])
 NOTIFICATIONS_DIR = os.path.join(BASE_PATH, config["NOTIFICATIONS_DIR"])
 NUMBER_PATH = os.path.join(BASE_PATH, config["NUMBER_PATH"])
 
+#This is quite useless, no?
 def ensure_dir_exists(path):
     if not os.path.exists(path):
         os.makedirs(path)
@@ -110,7 +111,8 @@ CurrentDateButton = ct.CTkButton(
     master=MainFrame, 
     text="Current Date", 
     command=lambda: Time.SetCurrentDate(DateEntry), 
-    width=config["BUTTONSWIDTH"]
+    width=config["BUTTONSWIDTH"],
+    fg_color=config["BUTTONSCOLOR"]
 )
 CurrentDateButton.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
@@ -119,7 +121,8 @@ CurrentHourButton = ct.CTkButton(
     master=MainFrame, 
     text="Current Hour", 
     command=lambda: Time.SetCurrentHour(HourEntry), 
-    width=config["BUTTONSWIDTH"]
+    width=config["BUTTONSWIDTH"],
+    fg_color=config["BUTTONSCOLOR"]
 )
 CurrentHourButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
@@ -128,7 +131,8 @@ PasteTitle = ct.CTkButton(
     master=MainFrame, 
     text="Paste title", 
     command=lambda: Paste.PasteTitle(TitleEntry),
-    width=config["BUTTONSWIDTH"]
+    width=config["BUTTONSWIDTH"],
+    fg_color=config["BUTTONSCOLOR"]
 ) 
 PasteTitle.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
@@ -137,7 +141,8 @@ PasteContent = ct.CTkButton(
     master=MainFrame, 
     text="Paste content", 
     command=lambda: Paste.PasteContent(ContentEntry), 
-    width=config["BUTTONSWIDTH"]
+    width=config["BUTTONSWIDTH"],
+    fg_color=config["BUTTONSCOLOR"]
 ) 
 PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 
@@ -146,7 +151,8 @@ SettingsButton = ct.CTkButton(
     text="Settings", 
     command=lambda: 
     Settings.loadWindow(Window, MainFrame, reloadSettings),
-    width=config["BUTTONSWIDTH"]
+    width=config["BUTTONSWIDTH"],
+    fg_color=config["BUTTONSCOLOR"]
 )
 SettingsButton.grid(row=7, column=0, columnspan=2, pady=5, sticky="")
 
@@ -181,8 +187,6 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
             with open(jsonPath, "w") as f:
                 json.dump(NotificationJSON, f, indent=4)
 
-            #history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
-
             Noti.set_audio(audio.Default, loop=False)
             Noti.show()
             break
@@ -206,7 +210,8 @@ Button = ct.CTkButton(
     master=MainFrame, 
     text="Confirm", 
     command=get_entry, 
-    width=config["BUTTONSWIDTH"]
+    width=config["BUTTONSWIDTH"],
+    fg_color=config["BUTTONSCOLOR"]
 )
 Button.grid(row=5, column=0, columnspan=2, pady=5, sticky="")
 

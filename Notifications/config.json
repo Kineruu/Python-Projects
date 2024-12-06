@@ -14,5 +14,6 @@
     "DATE": "%d.%m.%y",
     "HOUR": "%H:%M",
     "CUSTOMTITLES": "YES",
-    "BUTTONSWIDTH": 100
+    "BUTTONSWIDTH": 100,
+    "BUTTONSCOLOR": "green"
 }

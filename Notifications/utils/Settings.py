@@ -91,6 +91,19 @@ class Settings:
         ButtonsWidthEntry = ct.CTkEntry(master=SettingsFrame, placeholder_text=config["BUTTONSWIDTH"])
         ButtonsWidthEntry.pack()
 
+        #Buttons color
+        ButtonsColorLabel = ct.CTkLabel(
+            master=SettingsFrame,
+            text="The color of the buttons"
+        )
+        ButtonsColorLabel.pack()
+
+        ButtonsColorEntry = ct.CTkEntry(
+            master=SettingsFrame,
+            placeholder_text="blue / #FF0000 / #Whatever",
+        )
+        ButtonsColorEntry.pack()
+
         #Replace "if"s with cleaner code in the future!!
         def newData():
             if TimeFormatDateEntry.get().strip() and TimeFormatDateEntry.get() != config["DATE"]:
@@ -110,6 +123,10 @@ class Settings:
             buttonsWidth = ButtonsWidthEntry.get().strip()
             if buttonsWidth and buttonsWidth.isdigit() and int(buttonsWidth) != int(config["BUTTONSWIDTH"]):
                 config["BUTTONSWIDTH"] = int(buttonsWidth)
+
+            ButtonsColor = ButtonsColorEntry.get().strip()
+            if ButtonsColor != "" or None:
+                config["BUTTONSCOLOR"] = ButtonsColor
 
             with open(ConfigPath, "w") as f:
                 json.dump(config, f, indent=4)
