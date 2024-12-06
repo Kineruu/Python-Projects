@@ -29,17 +29,16 @@ class Settings:
         TimeFormatHourLabel.pack()
 
         def ChooseTimeFormat(choice):
-            now = datetime.datetime.now()
+            if choice == "24":
+                config["HOUR"] = "%H:%M"
+            elif choice == "12":
+                config["HOUR"] = "%I:%M %p"
+            with open(ConfigPath, "w") as f:
+                json.dump(config, f, indent=4)
 
-            config["TIMEFORMAT"] = int(choice)
+        currentFormat = "24" if config["HOUR"] == "%H:%M" else "12"
+        SegmentedButtonVar = ct.StringVar(value=currentFormat)
 
-            if config["TIMEFORMAT"] == 24:
-                config["HOUR"] = now.strftime("%H:%M")
-
-            elif config["TIMEFORMAT"] == 12:
-                config["HOUR"] = now.strftime("%I:%M %p")
-
-        SegmentedButtonVar = ct.StringVar(value=24) 
         TimeFormatHourSegmentedButton = ct.CTkSegmentedButton(
             master=SettingsFrame, 
             values=["24", "12"], 

@@ -16,13 +16,13 @@ class Time:
     def GetCurrentTime():
         """Returns current day and hour"""
         now = datetime.datetime.now()
-        return now.strftime(data["DATE"]), now.strftime(str(data["HOUR"]))
+        return now.strftime(data["DATE"]), now.strftime((data["HOUR"]))
 
     @staticmethod
     def GetCurrentHour():
         """Returns only current hour"""
         now = datetime.datetime.now()
-        NowHour = now.strftime(str(data["HOUR"]))
+        NowHour = now.strftime(data["HOUR"])
         return NowHour
 
     @staticmethod

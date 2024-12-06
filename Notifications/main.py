@@ -1,9 +1,11 @@
 from utils.Notification import utilsNotifications
 from utils.Settings import Settings
-from utils.History import History
 from utils.Titles import Titles
 from utils.Paste import Paste
 from utils.Time import Time
+
+# https://www.youtube.com/watch?v=dQw4w9WgXcQ
+# Really cool music to listen in the background
 
 from winotify import Notification, audio
 import customtkinter as ct
@@ -19,7 +21,6 @@ def reloadSettings():
 
 #Initialize utilities and setup paths
 notification = utilsNotifications()
-history = History()
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -139,16 +140,6 @@ PasteContent = ct.CTkButton(
     width=config["BUTTONSWIDTH"]
 ) 
 PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
-
-"""
-LatestNotificationButton = ct.CTkButton(master=MainFrame, text=None, command=lambda: history.LatestNotification(), width=60, height=35)
-LatestNotificationButton.grid(row=6, column=0, padx=(10, 5), pady=5, sticky="w")
-
-PreviousNotificationButton = ct.CTkButton(master=MainFrame, text=None, command=lambda: history.PreviousNotification(), width=40, height=35)
-PreviousNotificationButton.grid(row=7, column=0, padx=(5, 10), sticky="w")
-
-history.GetTitleFromFiles(LatestNotificationButton, PreviousNotificationButton)
-"""
 
 SettingsButton = ct.CTkButton(
     master=MainFrame, 
