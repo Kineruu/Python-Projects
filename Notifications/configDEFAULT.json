@@ -20,5 +20,6 @@
     "HOUR":"%H:%M",
 
     "CUSTOMTITLES":"YES",
-    "BUTTONSWIDTH":82
+    "BUTTONSWIDTH":82,
+    "BUTTONSCOLOR": "blue"
 }

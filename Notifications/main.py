@@ -2,7 +2,7 @@ from utils.Notification import utilsNotifications
 from utils.Settings import Settings
 from utils.Titles import Titles
 from utils.Paste import Paste
-from utils.Time import Time 
+from utils.Time import Time
 
 # https://www.youtube.com/watch?v=dQw4w9WgXcQ
 # Really cool music to listen in the background
@@ -90,7 +90,7 @@ def UpdateTimeEveryMinute(Label):
 UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
-DateEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Date", corner_radius=8.5) 
+DateEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Date") 
 DateEntry.grid(row=1, column=0, padx=5, pady=5, sticky="e")
 
 #You enter your... hour here!
@@ -148,13 +148,13 @@ PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 
 SettingsButton = ct.CTkButton(
     master=MainFrame, 
-    text="Settings", 
+    text="⚙️", 
     command=lambda: 
     Settings.loadWindow(Window, MainFrame, reloadSettings),
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 )
-SettingsButton.grid(row=7, column=0, columnspan=2, pady=5, sticky="")
+SettingsButton.grid(row=0, column=3, columnspan=2, pady=5, padx=5, sticky="")
 
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
