@@ -31,21 +31,6 @@ UTILS_DIR = os.path.join(BASE_PATH, config["UTILS_DIR"])
 NOTIFICATIONS_DIR = os.path.join(BASE_PATH, config["NOTIFICATIONS_DIR"])
 NUMBER_PATH = os.path.join(BASE_PATH, config["NUMBER_PATH"])
 
-#This is quite useless, no?
-def ensure_dir_exists(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-def ensure_file_exists(path, default_content="2"):
-    if not os.path.isfile(path):
-        with open(path, "w") as f:
-            f.write(default_content)
-
-# Ensure necessary directories and files are in place
-ensure_dir_exists(NOTIFICATIONS_DIR)
-ensure_file_exists(NUMBER_PATH)
-ensure_dir_exists(UTILS_DIR)
-
 #Setting up the main window - Theme!!
 ct.set_appearance_mode(config["THEME"])
 ct.set_default_color_theme(config["COLOR_THEME"])
@@ -64,9 +49,9 @@ else:
     Window.title("Notifications")
 
 Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
-Window.grid_rowconfigure(5, weight=1) 
+Window.grid_rowconfigure(0, weight=1)
 Window.grid_columnconfigure(0, weight=1)  
-Window.grid_columnconfigure(1, weight=0)
+Window.grid_columnconfigure(1, weight=7)
 
 #Quite important code
 def showMainFrame():
@@ -75,13 +60,13 @@ def showMainFrame():
     MainFrame.pack(fill="both", expand=True)
 
 MainFrame = ct.CTkFrame(master=Window)
-MainFrame.pack(fill="both", expand=True)
+MainFrame.grid(row=0, column=1, sticky="nsew")
 MainFrame.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
 MainFrame.grid_columnconfigure((0, 1), weight=1)
 
 #Label that says time
 Label = ct.CTkLabel(master=MainFrame, text=Time.GetCurrentTime())
-Label.grid(row=0, column=0, columnspan=2, pady=(10, 5), sticky="n")
+Label.grid(row=0, column=1, columnspan=2, pady=(10, 5), sticky="n")
 
 def UpdateTimeEveryMinute(Label):
     Time.UpdateTime(Label)
@@ -91,19 +76,19 @@ UpdateTimeEveryMinute(Label=Label)
 
 #You enter your date here
 DateEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Date") 
-DateEntry.grid(row=1, column=0, padx=5, pady=5, sticky="e")
+DateEntry.grid(row=1, column=1, padx=5, pady=5, sticky="e")
 
 #You enter your... hour here!
 HourEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Hour") 
-HourEntry.grid(row=2, column=0, padx=5, pady=5, sticky="e")
+HourEntry.grid(row=2, column=1, padx=5, pady=5, sticky="e")
 
 #Bold white text in your notification at the top (I think it's max up to 256 characters otherwise it won't spawn the notification)
 TitleEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Title <=256 char")
-TitleEntry.grid(row=3, column=0, padx=5, pady=5, sticky="e")
+TitleEntry.grid(row=3, column=1, padx=5, pady=5, sticky="e")
 
 #I think the most useful one, giving you more context later what you had in mind while creating a notification
 ContentEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Content <=256 char")
-ContentEntry.grid(row=4, column=0, padx=5, pady=5, sticky="e")
+ContentEntry.grid(row=4, column=1, padx=5, pady=5, sticky="e")
 
 #If you don't want to write your date every single time you create a notification, 
 #there's a button next to the Entrybox to do that for you
@@ -114,7 +99,7 @@ CurrentDateButton = ct.CTkButton(
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 )
-CurrentDateButton.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+CurrentDateButton.grid(row=1, column=2, padx=5, pady=5, sticky="w")
 
 #Same thing as CurrentDateButton but it's for hour
 CurrentHourButton = ct.CTkButton(
@@ -124,7 +109,7 @@ CurrentHourButton = ct.CTkButton(
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 )
-CurrentHourButton.grid(row=2, column=1, padx=5, pady=5, sticky="w")
+CurrentHourButton.grid(row=2, column=2, padx=5, pady=5, sticky="w")
 
 #Basically pasting what you have in your clipboard
 PasteTitle = ct.CTkButton(
@@ -134,7 +119,7 @@ PasteTitle = ct.CTkButton(
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 ) 
-PasteTitle.grid(row=3, column=1, padx=5, pady=5, sticky="w")
+PasteTitle.grid(row=3, column=2, padx=5, pady=5, sticky="w")
 
 #Same as above
 PasteContent = ct.CTkButton(
@@ -144,7 +129,7 @@ PasteContent = ct.CTkButton(
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 ) 
-PasteContent.grid(row=4, column=1, padx=5, pady=5, sticky="w")
+PasteContent.grid(row=4, column=2, padx=5, pady=5, sticky="w")
 
 SettingsButton = ct.CTkButton(
     master=MainFrame, 
@@ -155,6 +140,34 @@ SettingsButton = ct.CTkButton(
     fg_color=config["BUTTONSCOLOR"]
 )
 SettingsButton.grid(row=0, column=3, columnspan=2, pady=5, padx=5, sticky="")
+
+#!LEFT FRAME
+
+SidebarFrame = ct.CTkFrame(master=Window, width=10)
+SidebarFrame.grid(row=0, column=0, rowspan=6, sticky="nsw")
+
+SidebarFrame.grid_rowconfigure(0, weight=0)  
+SidebarFrame.grid_rowconfigure(1, weight=1)
+SidebarFrame.grid_columnconfigure(0, weight=1)
+
+Label = ct.CTkLabel(
+    master=SidebarFrame,
+    text=""
+)
+
+def getNotifications():
+    with open(os.path.join(NOTIFICATIONS_DIR, "Notifications.json"), "r") as f:
+        data = json.load(f)
+
+NotificationsList = ct.CTkButton(
+    master=SidebarFrame,
+    text="L\ni\ns\nt",
+    width=config["NOTIWIDTH"],
+    height=150,
+    fg_color=config["BUTTONSCOLOR"],
+    command=getNotifications
+)
+NotificationsList.grid(row=1, column=0, pady=5, padx=5, sticky="ew")
 
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
@@ -213,6 +226,6 @@ Button = ct.CTkButton(
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 )
-Button.grid(row=5, column=0, columnspan=2, pady=5, sticky="")
+Button.grid(row=5, column=1, columnspan=2, pady=5, sticky="")
 
 Window.mainloop()

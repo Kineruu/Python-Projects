@@ -15,5 +15,6 @@
     "HOUR": "%H:%M",
     "CUSTOMTITLES": "YES",
     "BUTTONSWIDTH": 90,
+    "NOTIWIDTH":60,
     "BUTTONSCOLOR": "#0e6675"
 }
