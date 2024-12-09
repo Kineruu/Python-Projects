@@ -7,5 +7,6 @@ main.py:
     - I can change time and other stuff but not buttons width haha I'll try to fix that later
 - Make settings more readable
 - Maybe add a little settings icon next to the buttons and let user change whatever with each button
+- Fix the notifications not being added to Notifications.json etc...
 
 - Add more themes (That customtkinter allows)

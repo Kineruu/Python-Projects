@@ -143,11 +143,14 @@ SettingsButton.grid(row=0, column=3, columnspan=2, pady=5, padx=5, sticky="")
 
 #!LEFT FRAME
 
+with open(os.path.join(NOTIFICATIONS_DIR, "Notifications.json"), "r") as f:
+    data = json.load(f)
+
 SidebarFrame = ct.CTkFrame(master=Window, width=10)
 SidebarFrame.grid(row=0, column=0, rowspan=6, sticky="nsw")
 
-SidebarFrame.grid_rowconfigure(0, weight=0)  
-SidebarFrame.grid_rowconfigure(1, weight=1)
+SidebarFrame.grid_rowconfigure(0, weight=0)
+SidebarFrame.grid_rowconfigure(1, weight=0)
 SidebarFrame.grid_columnconfigure(0, weight=1)
 
 Label = ct.CTkLabel(
@@ -155,19 +158,27 @@ Label = ct.CTkLabel(
     text=""
 )
 
-def getNotifications():
-    with open(os.path.join(NOTIFICATIONS_DIR, "Notifications.json"), "r") as f:
-        data = json.load(f)
+for idx, Noti in enumerate(data["ACTIVE"]):
+    btn = ct.CTkButton(
+        master=SidebarFrame,
+        text=data["ACTIVE"][Noti]["TITLE"],
+        command=lambda noti=Noti: print(noti)
+    )
+    btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
 
-NotificationsList = ct.CTkButton(
+ActiveList = ct.CTkLabel(
     master=SidebarFrame,
-    text="L\ni\ns\nt",
-    width=config["NOTIWIDTH"],
-    height=150,
-    fg_color=config["BUTTONSCOLOR"],
-    command=getNotifications
+    text="List",
+    width=config["NOTIWIDTH"]
 )
-NotificationsList.grid(row=1, column=0, pady=5, padx=5, sticky="ew")
+ActiveList.grid(row=0, column=0, pady=5, padx=5, sticky="ew")
+
+InactiveList = ct.CTkLabel(
+    master=SidebarFrame,
+    text="INACTIVE",
+    width=config["NOTIWIDTH"]
+)
+InactiveList.grid(row=3, column=0, pady=5, padx=5, sticky="ew")
 
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
@@ -196,7 +207,8 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 "Hour": entry_hour
             }
 
-            jsonPath = os.path.join(NOTIFICATIONS_DIR, f"Notification{Number}.json")
+            #jsonPath = os.path.join(NOTIFICATIONS_DIR, f"Notification{Number}.json")
+            jsonPath = os.path.join(NOTIFICATIONS_DIR, "Notifications.json")
             with open(jsonPath, "w") as f:
                 json.dump(NotificationJSON, f, indent=4)
 
@@ -227,5 +239,6 @@ Button = ct.CTkButton(
     fg_color=config["BUTTONSCOLOR"]
 )
 Button.grid(row=5, column=1, columnspan=2, pady=5, sticky="")
+
 
 Window.mainloop()
