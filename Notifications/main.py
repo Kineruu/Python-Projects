@@ -178,8 +178,9 @@ InactiveList = ct.CTkLabel(
     text="INACTIVE",
     width=config["NOTIWIDTH"]
 )
-InactiveList.grid(row=3, column=0, pady=5, padx=5, sticky="ew")
+InactiveList.grid(row=idx + 2, column=0, pady=5, padx=5, sticky="ew")
 
+#I don't like this part for some reason
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):
     while True:
@@ -201,16 +202,22 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 f.truncate()
 
             NotificationJSON = {
-                "Title": entry_title,
-                "Content": entry_content,
-                "Date": entry_date,
-                "Hour": entry_hour
+                "DATE": entry_date,
+                "HOUR": entry_hour,
+                "TITLE": entry_title,
+                "CONTENT": entry_content
             }
 
             #jsonPath = os.path.join(NOTIFICATIONS_DIR, f"Notification{Number}.json")
             jsonPath = os.path.join(NOTIFICATIONS_DIR, "Notifications.json")
+            with open(jsonPath, "r") as f:
+                data = json.load(f)
+
+            NewNotificationName = f"Notification{Number}" #Is this even a good way to write my json? Who knows
+            data["ACTIVE"][NewNotificationName] = NotificationJSON
+
             with open(jsonPath, "w") as f:
-                json.dump(NotificationJSON, f, indent=4)
+                json.dump(data, f, indent=4)
 
             Noti.set_audio(audio.Default, loop=False)
             Noti.show()
