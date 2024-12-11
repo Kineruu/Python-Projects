@@ -208,7 +208,6 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 "CONTENT": entry_content
             }
 
-            #jsonPath = os.path.join(NOTIFICATIONS_DIR, f"Notification{Number}.json")
             jsonPath = os.path.join(NOTIFICATIONS_DIR, "Notifications.json")
             with open(jsonPath, "r") as f:
                 data = json.load(f)
