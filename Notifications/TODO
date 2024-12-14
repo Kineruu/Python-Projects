@@ -7,6 +7,6 @@ main.py:
     - I can change time and other stuff but not buttons width haha I'll try to fix that later
 - Make settings more readable
 - Maybe add a little settings icon next to the buttons and let user change whatever with each button
-- Yeah
+- Planning on rewriting the GUI in PyQt6 but I have no clue how to work with it so it'll take a while
 
 - Add more themes (That customtkinter allows)
