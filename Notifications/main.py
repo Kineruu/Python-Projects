@@ -37,7 +37,6 @@ ct.set_default_color_theme(config["COLOR_THEME"])
 
 #Main window settings
 Window = ct.CTk()
-Window.geometry(config["WIDTH"]+"x"+config["HEIGHT"])
 Window.iconbitmap(os.path.join(BASE_PATH, "utils//Icon.ico"))
 
 RandomTitle = Titles()
