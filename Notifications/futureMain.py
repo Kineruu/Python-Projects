@@ -4,9 +4,10 @@ from utils.Titles import Titles
 from utils.Paste import Paste
 from utils.Time import Time
 
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 import PySide6.QtCore, PySide6.QtGui, PySide6.QtWidgets
 
+import importlib
 import threading
 import random
 import utils
@@ -14,9 +15,6 @@ import time
 import json
 import sys
 import os
-
-# https://www.youtube.com/watch?v=dQw4w9WgXcQ
-# Really cool music to listen in the background
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -30,76 +28,61 @@ NUMBER_PATH = os.path.join(BASE_PATH, config["NUMBER_PATH"])
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        
-        #                          x, y, width, height
-        #self.DateEntry.setGeometry(10, 10, 125, 35)
 
-        self.Label = QtWidgets.QLabel(self)
-        self.Label.setText(str(Time.GetCurrentTime()))
-        self.Label.setFixedSize(125, 35)
-        self.Label.setAlignment(QtCore.Qt.AlignCenter)
+        self.init_ui()
 
-        self.DateEntry = QtWidgets.QLineEdit(self)
-        self.DateEntry.setPlaceholderText("Enter the date")
-        self.DateEntry.setFixedSize(125, 35)
+    def init_ui(self):
+        self.label = QtWidgets.QLabel(self)
+        self.label.setText(str(Time.GetCurrentTime()))
+        self.label.setFixedSize(125, 35)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.DateButton = QtWidgets.QPushButton(self)
-        self.DateButton.setText("Enter")
-        self.DateButton.setFixedSize(125, 35)
+        self.date_entry = QtWidgets.QLineEdit(self)
+        self.date_entry.setPlaceholderText("Enter the date")
+        self.date_entry.setFixedSize(125, 35)
 
+        self.date_button = QtWidgets.QPushButton(self)
+        self.date_button.setText("Enter")
+        self.date_button.setFixedSize(125, 35)
 
-        self.HourEntry = QtWidgets.QLineEdit(self)
-        self.HourEntry.setPlaceholderText("Enter the hour")
-        self.HourEntry.setFixedSize(125, 35)
+        self.hour_entry = QtWidgets.QLineEdit(self)
+        self.hour_entry.setPlaceholderText("Enter the hour")
+        self.hour_entry.setFixedSize(125, 35)
 
-        self.HourButton = QtWidgets.QPushButton(self)
-        self.HourButton.setText("Enter")
-        self.HourButton.setFixedSize(125, 35)
-        
+        self.hour_button = QtWidgets.QPushButton(self)
+        self.hour_button.setText("Enter")
+        self.hour_button.setFixedSize(125, 35)
 
-        self.TitleEntry = QtWidgets.QLineEdit(self)
-        self.TitleEntry.setPlaceholderText("Enter the title")
-        self.TitleEntry.setFixedSize(125, 35)
+        self.title_entry = QtWidgets.QLineEdit(self)
+        self.title_entry.setPlaceholderText("Enter the title")
+        self.title_entry.setFixedSize(125, 35)
 
-        self.TitleButton = QtWidgets.QPushButton(self)
-        self.TitleButton.setText("Enter")
-        self.TitleButton.setFixedSize(125, 35)
+        self.title_button = QtWidgets.QPushButton(self)
+        self.title_button.setText("Enter")
+        self.title_button.setFixedSize(125, 35)
 
+        self.content_entry = QtWidgets.QLineEdit(self)
+        self.content_entry.setPlaceholderText("Enter the content")
+        self.content_entry.setFixedSize(125, 35)
 
-        self.ContentEntry = QtWidgets.QLineEdit(self)
-        self.ContentEntry.setPlaceholderText("Enter the content")
-        self.ContentEntry.setFixedSize(125, 35)
+        self.content_button = QtWidgets.QPushButton(self)
+        self.content_button.setText("Enter")
+        self.content_button.setFixedSize(125, 35)
 
-        self.ContentButton = QtWidgets.QPushButton(self)
-        self.ContentButton.setText("Enter")
-        self.ContentButton.setFixedSize(125, 35)
-
+        # Create layouts and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
-        self.dateLayout = QtWidgets.QHBoxLayout()
-        self.dateLayout.addWidget(self.DateEntry)
-        self.dateLayout.addWidget(self.DateButton)
 
-        self.hourLayout = QtWidgets.QHBoxLayout()
-        self.hourLayout.addWidget(self.HourEntry)
-        self.hourLayout.addWidget(self.HourButton)
+        self.layout.addWidget(self.label)
+        self.layout.addLayout(self.create_hbox_layout(self.date_entry, self.date_button))
+        self.layout.addLayout(self.create_hbox_layout(self.hour_entry, self.hour_button))
+        self.layout.addLayout(self.create_hbox_layout(self.title_entry, self.title_button))
+        self.layout.addLayout(self.create_hbox_layout(self.content_entry, self.content_button))
 
-        self.titleLayout = QtWidgets.QHBoxLayout()
-        self.titleLayout.addWidget(self.TitleEntry)
-        self.titleLayout.addWidget(self.TitleButton)
-
-        self.contentLayout = QtWidgets.QHBoxLayout()
-        self.contentLayout.addWidget(self.ContentEntry)
-        self.contentLayout.addWidget(self.ContentButton)
-
-        self.layout.addWidget(self.Label)
-        self.layout.addLayout(self.dateLayout)
-        self.layout.addLayout(self.hourLayout)
-        self.layout.addLayout(self.titleLayout)
-        self.layout.addLayout(self.contentLayout)
-        #self.layout.addWidget(self.text)
-        #self.layout.addWidget(self.button)
-
-        #self.button.clicked.connect(self.magic)
+    def create_hbox_layout(self, widget1, widget2):
+        layout = QtWidgets.QHBoxLayout()
+        layout.addWidget(widget1)
+        layout.addWidget(widget2)
+        return layout
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
@@ -109,11 +92,9 @@ if __name__ == "__main__":
 
     widget = MyWidget()
     widget.resize(config["WIDTH"], config["HEIGHT"])
-    iconPath = os.path.join(BASE_PATH, "utils//Icon.ico")
-    widget.setWindowIcon(PySide6.QtGui.QIcon(iconPath))
+    icon_path = os.path.join(BASE_PATH, "utils/Icon.ico")
+    widget.setWindowIcon(QtGui.QIcon(icon_path))
     widget.setWindowTitle("Notifications")
-
     widget.show()
 
     sys.exit(app.exec())
-    
