@@ -61,49 +61,92 @@ import os
 # Sooner than I think I think   # I'm not even sure what I'm doing anymore
 # Life
 
+# Should I add more features do this program?
+# Like creating own sudoku boards instead of only solving them
 
-def getBoard(board):
-    img = Image.open(board)
-    img.show()
-    return img
+class GUI:
+    def __init__(self, width, height):
+        self.title = "Sudoku"
 
-    boardList = [
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #1
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #2
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #3
+        self.width = 1000
+        self.height = 1000
+        self.board_path = "board.png"
+        self.checkExtension()
+        self.board = Image.new("RGB", (self.width, self.height), (255, 255, 255))
+        self.line = Image.new("RGB", (self.width, self.height), (255, 255, 255))
+        self.lineDraw = ImageDraw.Draw(self.line)
+        
+    def drawBoard(self):
+        w = round(self.board.width / 3)
+        h = round(self.board.height / 3)
 
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #4
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #5
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #6
+        sw = round(self.board.width / 9)
+        sh = round(self.board.height / 9)
 
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #7
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #8
-        0, 0, 0,   0, 0, 0,   0, 0, 0, #9
-    ]
+        for x in range(0, self.board.width, w):
+            self.lineDraw.line((x, 0, x, self.board.height), fill=(0, 0, 0), width=10)
+        for y in range(0, self.board.height, h):
+            self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=10)
 
-    # To be honest I think just making a simple GUI in tkinter/other things would be easier
-    # For me to maintain and for the user to use
-    # I ain't using some weird libraries to do this
-    # Like I don't want to do AI stuff too so no.
-    # Tkinter it is I guess
+        for x in range(0, self.board.width, sw):
+            self.lineDraw.line((x, 0, x, self.board.height), fill=(0, 0, 0), width=5)
+        for y in range(0, self.board.height, sh):
+            self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=5)
 
-    # Easyocr is taking way too long to load
-    # Not worth it
+        self.line.show()
+
+    def getBoard(self):
+        self.board.show()
+        return self.board
+
+        """
+        boardList = [
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #1
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #2
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #3
+
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #4
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #5
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #6
+
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #7
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #8
+            0, 0, 0,   0, 0, 0,   0, 0, 0, #9
+        ]
+        """
+        
+        # To be honest I think just making a simple GUI in tkinter/other things would be easier
+        # For me to maintain and for the user to use
+        # I ain't using some weird libraries to do this
+        # Like I don't want to do AI stuff too so no.
+        # Tkinter it is I guess
+
+        # Easyocr is taking way too long to load
+        # Not worth it
+
+    def checkExtension(self):
+        if self.board.endswith(".png"):
+            pass
+        else:
+            print("Invalid file extension. Please use a PNG file.")
+            exit()
 
 
-def checkExtension(board):
-    if board.endswith(".png"):
-        pass
-    else:
-        print("Invalid file extension. Please use a PNG file.")
-        exit()
+    def resizeBoard(self):
+        if self.board.size != (1000, 1000):
+            self.board = self.board.resize((1000, 1000))
+        else:
+            pass
+        # :)
 
-def resizeBoard(board):
-    if board.size != (1000, 1000):
-        board = board.resize((1000, 1000))
-    else:
-        pass
-    # :)
+    def clearBoard(self):
+        self.board = Image.new("RGB", (self.width, self.height), (255, 255, 255))
+        self.line = Image.new("RGB", (self.width, self.height), (255, 255, 255))
+        self.lineDraw = ImageDraw.Draw(self.line)
+        self.drawBoard()
+
+# WAIT I FORGOT I NEED TO SPLIT IT INTO MORE PIECES om
+# 3 big lines and small ones too
 
 def displayBoard(board):
     pass
@@ -114,31 +157,9 @@ def solveBoard(board):
 # Get user's png - DONE
 # Check if the file is a png - DONE
 # Resize the png to 1000x1000 - DONE
-# Get numbers and (hopefully) write them on the board
+# Get numbers and (hopefully) write them on the board - X
+# Yeah I'll be using GUI for that
 # Solve the board
 # Display the board
 # Profit
 
-def imageDraw(board):
-    #img = ImageDraw.Draw(board)
-    w = round(board.width / 3)
-    h = round(board.height / 3)
-    line = Image.new("RGB", (board.width, board.height), (255, 255, 255))
-    lineDraw = ImageDraw.Draw(line)
-    for x in range(0, board.width, w):
-        lineDraw.line((x, 0, x, board.height), fill=(0, 0, 0), width=10)
-    for y in range(0, board.height, h):
-        lineDraw.line((0, y, board.width, y), fill=(0, 0, 0), width=10)
-    line.show()
-    #print(w, h)
-
-# I have no idea what I am doing
-# Help
-
-if __name__ == "__main__":
-    sudokuBoard = str(input("Enter the path to the board: "))
-    checkExtension(sudokuBoard)
-    board = getBoard(sudokuBoard)
-    imageDraw(board)
-    solveBoard(board)
-    
