@@ -1,4 +1,5 @@
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageEnhance, ImageFilter, ImageChops #AINTNOWAY
+import pytesseract
 
 # No clue if I'll use png or write a gui for it
 # Imagine having 9x9 board with 3x3 subgrids using Entry boxes hahahahhahah
@@ -48,9 +49,11 @@ from PIL import Image
 # Yes I'll fix the path later
 
 def getBoard(board):
-    img = Image.open(board)
-    img.show()
-    return img
+    usersBoard = Image.open(board)
+    numbers = []
+    #print(pytesseract.image_to_string(usersBoard))
+    # WHY PYTESSERACT ISN'T WORKING
+    # ADJNAWIJUDNAWIJUNFGIAWUJNGIUAWBNIUABNJFNAJKDNAWIJUDNAWUIDNABWDJUIAWNDUJIAWNDUJIWNH
 
 def checkExtension(board):
     if board.endswith(".png"):
@@ -72,6 +75,27 @@ def displayBoard(board):
 def solveBoard(board):
     pass
 
+# Get user's png - DONE
+# Check if the file is a png - DONE
+# Resize the png to 1000x1000 - DONE
+# Get numbers and (hopefully) write them on the board
+# Solve the board
+# Display the board
+# Profit
+
+def imageDraw(board):
+    #img = ImageDraw.Draw(board)
+    w = round(board.width / 3)
+    h = round(board.height / 3)
+    line = Image.new("RGB", (board.width, board.height), (255, 255, 255))
+    lineDraw = ImageDraw.Draw(line)
+    for x in range(0, board.width, w):
+        lineDraw.line((x, 0, x, board.height), fill=(0, 0, 0), width=10)
+    for y in range(0, board.height, h):
+        lineDraw.line((0, y, board.width, y), fill=(0, 0, 0), width=10)
+    line.show()
+    #print(w, h)
+
 # I have no idea what I am doing
 # Help
 
@@ -79,5 +103,6 @@ if __name__ == "__main__":
     sudokuBoard = str(input("Enter the path to the board: "))
     checkExtension(sudokuBoard)
     board = getBoard(sudokuBoard)
+    imageDraw(board)
     solveBoard(board)
     
