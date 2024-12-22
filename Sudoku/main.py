@@ -1,4 +1,4 @@
-
+from PIL import Image
 
 # No clue if I'll use png or write a gui for it
 # Imagine having 9x9 board with 3x3 subgrids using Entry boxes hahahahhahah
@@ -33,10 +33,51 @@
 # I'm not even sure what I'm doing anymore
 # Life MAN
 # If you know you know those emotes
-def getBoard():
-    ...
+# om
+
+# Do NOT ask why board.png is literally a blank white image
+# It's just for testing alright?
+# I'll probably use a library to generate a sudoku board
+# I'll probably use a library to solve a sudoku board
+# I'll probably use a library to display a sudoku board
+# I'll probably use a library to do everything
+# I'll probably use a library to do nothing
+# Uhhh yeah
+
+# 1000x1000 image size
+# Yes I'll fix the path later
+
+def getBoard(board):
+    img = Image.open(board)
+    img.show()
+    return img
+
+def checkExtension(board):
+    if board.endswith(".png"):
+        pass
+    else:
+        print("Invalid file extension. Please use a PNG file.")
+        exit()
+
+def resizeBoard(board):
+    if board.size != (1000, 1000):
+        board = board.resize((1000, 1000))
+    else:
+        pass
+    # :)
+
+def displayBoard(board):
+    pass
 
 def solveBoard(board):
-    board = getBoard()
+    pass
 
+# I have no idea what I am doing
+# Help
+
+if __name__ == "__main__":
+    sudokuBoard = str(input("Enter the path to the board: "))
+    checkExtension(sudokuBoard)
+    board = getBoard(sudokuBoard)
+    solveBoard(board)
     
