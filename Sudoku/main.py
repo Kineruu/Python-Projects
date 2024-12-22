@@ -63,11 +63,11 @@ import os
 
 
 def getBoard(board):
-    usersBoard = Image.open(board)
-    numbers = [] # Oh yeah I will also have to remember about empty spaces, no?
-    # No clue how I'll do that
+    img = Image.open(board)
+    img.show()
+    return img
 
-    board = [
+    boardList = [
         0, 0, 0,   0, 0, 0,   0, 0, 0, #1
         0, 0, 0,   0, 0, 0,   0, 0, 0, #2
         0, 0, 0,   0, 0, 0,   0, 0, 0, #3
