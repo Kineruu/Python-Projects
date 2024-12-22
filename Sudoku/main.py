@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageEnhance, ImageFilter, ImageChops #AINTNOWAY
+import customtkinter as ct # Customtkinter my favorite GUI library right now
 import numpy as np
 import cv2
 import os
@@ -52,6 +53,9 @@ import os
 # 1000x1000 image size
 # Yes I'll fix the path later
 
+# I'm sorry for the mess
+# If you read all of this I'm extremely sorry
+
 # Do I really want to use images or make the user write the numbers?
 # Or allow both? Who knows?
 # I'll see that in the future
@@ -64,7 +68,7 @@ import os
 # Should I add more features do this program?
 # Like creating own sudoku boards instead of only solving them
 
-class GUI:
+class SudokuGUI:
     board = str(input("Enter the path to the board: "))
 
     def __init__(self, width, height):
@@ -84,6 +88,8 @@ class GUI:
 
         sw = round(self.board.width / 9)
         sh = round(self.board.height / 9)
+        print(sw, sh)
+
 
         for x in range(0, self.board.width, w):
             self.lineDraw.line((x, 0, x, self.board.height), fill=(0, 0, 0), width=10)
@@ -158,14 +164,19 @@ class GUI:
 
     def main(self):
         self.drawBoard()
-        self.getBoard()
-        self.resizeBoard()
-        self.clearBoard()
+        #self.getBoard()
+        #self.resizeBoard()
+        #self.clearBoard()
 
 
 if __name__ == "__main__":
-    gui = GUI(1000, 1000)
-    gui.main()
+    ct.set_appearance_mode("dark")
+    ct.set_default_color_theme("blue")
+
+    root = ct.CTk()
+    app = SudokuGUI(1000, 1000)
+    SudokuGUI.main(app)
+    root.mainloop()
 
 # Get user's png - DONE
 # Check if the file is a png - DONE
