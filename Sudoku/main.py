@@ -1,5 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageEnhance, ImageFilter, ImageChops #AINTNOWAY
-import pytesseract
+import numpy as np
+import cv2
+import os
 
 # No clue if I'll use png or write a gui for it
 # Imagine having 9x9 board with 3x3 subgrids using Entry boxes hahahahhahah
@@ -7,12 +9,14 @@ import pytesseract
 # Who knows
 # I'll probably just use a png and write a solver for it
 # Will be quicker and less annoying to use Entry boxes
+
 # I'll probably use a library for the png
 # I'll probably use PIL for the png
 # I'll probably use numpy for the solver
 # I'll probably use tkinter for the gui
 # I'll probably use pygame for the gui
 # No I'm not going schizophrenic
+
 # I'm just thinking out loud
 # I'm not even thinking out loud
 # I'm just typing out loud
@@ -48,12 +52,44 @@ import pytesseract
 # 1000x1000 image size
 # Yes I'll fix the path later
 
+# Do I really want to use images or make the user write the numbers?
+# Or allow both? Who knows?
+# I'll see that in the future
+# That future is coming soon
+# Sooner that you think
+# Sooner than I think
+# Sooner than I think I think   # I'm not even sure what I'm doing anymore
+# Life
+
+
 def getBoard(board):
     usersBoard = Image.open(board)
-    numbers = []
-    #print(pytesseract.image_to_string(usersBoard))
-    # WHY PYTESSERACT ISN'T WORKING
-    # ADJNAWIJUDNAWIJUNFGIAWUJNGIUAWBNIUABNJFNAJKDNAWIJUDNAWUIDNABWDJUIAWNDUJIAWNDUJIWNH
+    numbers = [] # Oh yeah I will also have to remember about empty spaces, no?
+    # No clue how I'll do that
+
+    board = [
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #1
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #2
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #3
+
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #4
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #5
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #6
+
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #7
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #8
+        0, 0, 0,   0, 0, 0,   0, 0, 0, #9
+    ]
+
+    # To be honest I think just making a simple GUI in tkinter/other things would be easier
+    # For me to maintain and for the user to use
+    # I ain't using some weird libraries to do this
+    # Like I don't want to do AI stuff too so no.
+    # Tkinter it is I guess
+
+    # Easyocr is taking way too long to load
+    # Not worth it
+
 
 def checkExtension(board):
     if board.endswith(".png"):
