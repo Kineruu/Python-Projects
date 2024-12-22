@@ -65,6 +65,8 @@ import os
 # Like creating own sudoku boards instead of only solving them
 
 class GUI:
+    board = str(input("Enter the path to the board: "))
+
     def __init__(self, width, height):
         self.title = "Sudoku"
 
@@ -89,9 +91,9 @@ class GUI:
             self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=10)
 
         for x in range(0, self.board.width, sw):
-            self.lineDraw.line((x, 0, x, self.board.height), fill=(0, 0, 0), width=5)
+            self.lineDraw.line((x, 0, x, self.board.height), fill=(0, 0, 0), width=2)
         for y in range(0, self.board.height, sh):
-            self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=5)
+            self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=2)
 
         self.line.show()
 
@@ -148,11 +150,22 @@ class GUI:
 # WAIT I FORGOT I NEED TO SPLIT IT INTO MORE PIECES om
 # 3 big lines and small ones too
 
-def displayBoard(board):
-    pass
+    def displayBoard(board):
+        pass
 
-def solveBoard(board):
-    pass
+    def solveBoard(board):
+        pass
+
+    def main(self):
+        self.drawBoard()
+        self.getBoard()
+        self.resizeBoard()
+        self.clearBoard()
+
+
+if __name__ == "__main__":
+    gui = GUI(1000, 1000)
+    gui.main()
 
 # Get user's png - DONE
 # Check if the file is a png - DONE
