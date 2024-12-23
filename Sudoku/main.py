@@ -69,6 +69,8 @@ import os
 # Like creating own sudoku boards instead of only solving them
 
 class SudokuGUI:
+    basePath = os.path.dirname(os.path.abspath(__file__))
+
     board = str(input("Enter the path to the board: "))
 
     def __init__(self, width, height):
@@ -100,6 +102,15 @@ class SudokuGUI:
             self.lineDraw.line((x, 0, x, self.board.height), fill=(0, 0, 0), width=2)
         for y in range(0, self.board.height, sh):
             self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=2)
+
+        self.numberPath = os.path.join(self.basePath, "Numbers") # WHY THIS ISN'T WORKING
+        print(self.numberPath)
+        x = 600
+        y = 350
+
+        # Very questionable output I'd say?
+        for numbers in self.numberPath:
+            self.lineDraw.text((x, y), numbers, fill=(0, 0, 0))
 
         self.line.show()
 
@@ -170,13 +181,13 @@ class SudokuGUI:
 
 
 if __name__ == "__main__":
-    ct.set_appearance_mode("dark")
-    ct.set_default_color_theme("blue")
+    #ct.set_appearance_mode("dark")
+    #ct.set_default_color_theme("blue")
 
-    root = ct.CTk()
+    #root = ct.CTk()
     app = SudokuGUI(1000, 1000)
     SudokuGUI.main(app)
-    root.mainloop()
+    #root.mainloop()
 
 # Get user's png - DONE
 # Check if the file is a png - DONE
