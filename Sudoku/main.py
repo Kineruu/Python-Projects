@@ -76,8 +76,8 @@ class SudokuGUI:
     def __init__(self, width, height):
         self.title = "Sudoku"
 
-        self.width = 1000
-        self.height = 1000
+        self.width = width
+        self.height = height
         self.board_path = "board.png"
         self.checkExtension()
         self.board = Image.new("RGB", (self.width, self.height), (255, 255, 255))
