@@ -1,12 +1,3 @@
-main.py: 
-
-- Add history (A list with all notifications that were created)
-- Add more functional buttons
-- .exe file? Don't know how I'll do that though
-- Update buttons size after clicking save (No clue if that's even possible but who knows)
-    - I can change time and other stuff but not buttons width haha I'll try to fix that later
-- Make settings more readable
-- Maybe add a little settings icon next to the buttons and let user change whatever with each button
-- Switching to PySide6 due to license things.
-
-- Add more themes (That customtkinter allows)
+# Revive the code
+- Make a TON of comments
+- Consider switching the GUI library to something more modern and more flexible?

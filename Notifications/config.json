@@ -5,7 +5,7 @@
     "UTILS_DIR": "utils",
     "THEME": "dark",
     "COLOR_THEME": "dark-blue",
-    "WIDTH": 550,
+    "WIDTH": 650,
     "HEIGHT": 400,
     "TIME_CHECK": 5,
     "TITLE_PLACEHOLDER": "No title",
@@ -15,6 +15,7 @@
     "HOUR": "%H:%M",
     "CUSTOMTITLES": "YES",
     "BUTTONSWIDTH": 90,
-    "NOTIWIDTH":60,
-    "BUTTONSCOLOR": "#0e6675"
+    "NOTIWIDTH":100,
+    "BUTTONSCOLOR": "#0e6675",
+    "LEFTFRAMESIZE":125
 }

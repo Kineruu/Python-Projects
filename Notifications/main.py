@@ -145,7 +145,7 @@ SettingsButton.grid(row=0, column=3, columnspan=2, pady=5, padx=5, sticky="")
 with open(os.path.join(NOTIFICATIONS_DIR, "Notifications.json"), "r") as f:
     data = json.load(f)
 
-SidebarFrame = ct.CTkFrame(master=Window, width=10)
+SidebarFrame = ct.CTkScrollableFrame(master=Window, width=config["LEFTFRAMESIZE"])
 SidebarFrame.grid(row=0, column=0, rowspan=6, sticky="nsw")
 
 SidebarFrame.grid_rowconfigure(0, weight=0)
