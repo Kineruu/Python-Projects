@@ -8,7 +8,7 @@ import customtkinter as ct
 Window = ct.CTk()
 Window.geometry("250x200")
 Window.resizable(False, False)
-Window.title("")
+Window.title("Password")
 
 Frame = ct.CTkFrame(master=Window)
 Frame.pack(fill="both", expand=True)
@@ -18,7 +18,7 @@ CharactersToPickFrom = ascii_lowercase + ascii_uppercase + digits + punctuation
 GeneratedPassword = ""
 
 #* The text at the top
-MainLabel = ct.CTkLabel(master=Frame, text="Password generator").pack()
+MainLabel = ct.CTkLabel(master=Frame, text="Your new password:").pack()
 
 #* Creating space where the generated password will be
 NewPassword = ct.CTkLabel(master=Frame, text="")

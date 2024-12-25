@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageTk
-import customtkinter as ct # Customtkinter my favorite GUI library right now
+import customtkinter as ct
 import os
 
 class SudokuGUI:
