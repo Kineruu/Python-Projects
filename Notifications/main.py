@@ -134,7 +134,7 @@ SettingsButton = ct.CTkButton(
     master=MainFrame, 
     text="⚙️", 
     command=lambda: 
-    Settings.loadWindow(Window, MainFrame, reloadSettings),
+    Settings.loadWindow(Window, MainFrame),
     width=config["BUTTONSWIDTH"],
     fg_color=config["BUTTONSCOLOR"]
 )
@@ -161,7 +161,8 @@ for idx, Noti in enumerate(data["ACTIVE"]):
     btn = ct.CTkButton(
         master=SidebarFrame,
         text=data["ACTIVE"][Noti]["TITLE"],
-        command=lambda noti=Noti: print(noti)
+        command=lambda noti=Noti: print(noti),
+        fg_color=config["LEFTFRAMEBUTTONCOLOR"]
     )
     btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
 

@@ -2,10 +2,40 @@ import customtkinter as ct
 import json
 import os
 
+
+class Settings:
+    @staticmethod
+    def loadWindow(Window, Frame):
+        """Load the settings window"""
+
+        BasePath = os.path.dirname(os.path.abspath(__file__))
+        ConfigPath = os.path.join(BasePath, "..", "config.json")
+        ConfigPath = os.path.abspath(ConfigPath) 
+        with open(ConfigPath, "r") as f:
+            config = json.load(f)
+
+
+        SettingsWindow = ct.CTk()
+        SettingsWindow.iconbitmap(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Icon.ico"))
+        SettingsWindow.title("Settings")
+        SettingsWindow.geometry(f"{config['WIDTH']}x{config['HEIGHT']}")
+
+
+        LeftSettingsFrame = ct.CTkScrollableFrame(master=SettingsWindow, width=config["LEFTFRAMESIZE"])
+        LeftSettingsFrame.pack(side="left", fill="both", expand=True)
+
+        MainFrame = ct.CTkFrame(master=SettingsWindow)
+        MainFrame.pack(side="right", fill="both", expand=True)
+        
+        SettingsWindow.mainloop()
+
+
+
+"""
 class Settings:
     @staticmethod
     def loadWindow(Window, MainFrame, reloadSettings):
-        """ Loading the settings window"""
+        Loading the settings window
         MainFrame.pack_forget()
 
         SettingsFrame = ct.CTkScrollableFrame(master=Window)
@@ -150,6 +180,7 @@ class Settings:
 
     @staticmethod
     def backToMain(SettingsFrame, MainFrame):
-        """Go back to the main Frame"""
+        Go back to the main Frame
         SettingsFrame.pack_forget()
         MainFrame.pack(fill="both", expand=True)
+"""

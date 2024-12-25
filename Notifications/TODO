@@ -1,3 +1,7 @@
 # Revive the code
 - Make a TON of comments
 - Consider switching the GUI library to something more modern and more flexible?
+
+- Fix settings size
+- Allow user to edit config.json through the application
+- Move expired notifications to the inactive (Maybe I'll rename it in the upcoming future) category
