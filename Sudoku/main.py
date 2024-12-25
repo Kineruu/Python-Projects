@@ -1,72 +1,6 @@
-from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageEnhance, ImageFilter, ImageChops #AINTNOWAY
+from PIL import Image, ImageDraw, ImageTk
 import customtkinter as ct # Customtkinter my favorite GUI library right now
-import numpy as np
-import cv2
 import os
-
-# No clue if I'll use png or write a gui for it
-# Imagine having 9x9 board with 3x3 subgrids using Entry boxes hahahahhahah
-# That would be cruel, no?
-# Who knows
-# I'll probably just use a png and write a solver for it
-# Will be quicker and less annoying to use Entry boxes
-
-# I'll probably use a library for the png
-# I'll probably use PIL for the png
-# I'll probably use numpy for the solver
-# I'll probably use tkinter for the gui
-# I'll probably use pygame for the gui
-# No I'm not going schizophrenic
-
-# I'm just thinking out loud
-# I'm not even thinking out loud
-# I'm just typing out loud
-# I'm not even typing out loud
-# I'm just typing
-# I'm not even typing
-# I'm just pressing buttons
-# I'm not even pressing buttons
-# I'm just pressing keys
-# I'm not even pressing keys
-# I'm just pressing
-# I'm not even pressing
-# I'm just
-# I'm not even
-# I'm
-# I'm not
-# I
-
-# I'm not even sure what I'm doing anymore
-# Life MAN
-# If you know you know those emotes
-# om
-
-# Do NOT ask why board.png is literally a blank white image
-# It's just for testing alright?
-# I'll probably use a library to generate a sudoku board
-# I'll probably use a library to solve a sudoku board
-# I'll probably use a library to display a sudoku board
-# I'll probably use a library to do everything
-# I'll probably use a library to do nothing
-# Uhhh yeah
-
-# 1000x1000 image size
-# Yes I'll fix the path later
-
-# I'm sorry for the mess
-# If you read all of this I'm extremely sorry
-
-# Do I really want to use images or make the user write the numbers?
-# Or allow both? Who knows?
-# I'll see that in the future
-# That future is coming soon
-# Sooner that you think
-# Sooner than I think
-# Sooner than I think I think   # I'm not even sure what I'm doing anymore
-# Life
-
-# Should I add more features do this program?
-# Like creating own sudoku boards instead of only solving them
 
 class SudokuGUI:
     basePath = os.path.dirname(os.path.abspath(__file__))
@@ -103,16 +37,7 @@ class SudokuGUI:
         for y in range(0, self.board.height, sh):
             self.lineDraw.line((0, y, self.board.width, y), fill=(0, 0, 0), width=2)
 
-        self.numberPath = os.path.join(self.basePath, "Numbers") # WHY THIS ISN'T WORKING
-        print(self.numberPath)
-        x = 600
-        y = 350
 
-        # Very questionable output I'd say?
-        for numbers in self.numberPath:
-            self.lineDraw.text((x, y), numbers, fill=(0, 0, 0))
-
-        self.line.show()
 
     def getBoard(self):
         self.board.show()
@@ -134,15 +59,6 @@ class SudokuGUI:
         ]
         """
         
-        # To be honest I think just making a simple GUI in tkinter/other things would be easier
-        # For me to maintain and for the user to use
-        # I ain't using some weird libraries to do this
-        # Like I don't want to do AI stuff too so no.
-        # Tkinter it is I guess
-
-        # Easyocr is taking way too long to load
-        # Not worth it
-
     def checkExtension(self):
         if self.board.endswith(".png"):
             pass
@@ -156,7 +72,6 @@ class SudokuGUI:
             self.board = self.board.resize((1000, 1000))
         else:
             pass
-        # :)
 
     def clearBoard(self):
         self.board = Image.new("RGB", (self.width, self.height), (255, 255, 255))
@@ -164,37 +79,22 @@ class SudokuGUI:
         self.lineDraw = ImageDraw.Draw(self.line)
         self.drawBoard()
 
-# WAIT I FORGOT I NEED TO SPLIT IT INTO MORE PIECES om
-# 3 big lines and small ones too
+    def displayBoard(self, board):
+        self.board_image = ImageTk.PhotoImage(self.board)
+        self.canvas.create_image(0, 0, anchor='nw', image=self.board_image)
 
-    def displayBoard(board):
-        pass
 
     def solveBoard(board):
         pass
 
     def main(self):
-        self.drawBoard()
-        #self.getBoard()
-        #self.resizeBoard()
-        #self.clearBoard()
+        self.root.mainloop()
 
 
 if __name__ == "__main__":
-    #ct.set_appearance_mode("dark")
-    #ct.set_default_color_theme("blue")
+    ct.set_appearance_mode("dark")
+    ct.set_default_color_theme("blue")
 
-    #root = ct.CTk()
     app = SudokuGUI(1000, 1000)
-    SudokuGUI.main(app)
-    #root.mainloop()
-
-# Get user's png - DONE
-# Check if the file is a png - DONE
-# Resize the png to 1000x1000 - DONE
-# Get numbers and (hopefully) write them on the board - X
-# Yeah I'll be using GUI for that
-# Solve the board
-# Display the board
-# Profit
+    app.main()
 
