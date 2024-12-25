@@ -19,6 +19,13 @@
     "DATE":"%d.%m.%y",
     "HOUR":"%H:%M",
 
+    "YEAR": "%Y",
+    "MONTH": "%m",
+    "DAY": "%d",
+    "HOURONLY": "%H",
+    "MINUTE": "%M",
+    "SECOND": "%S",
+
     "CUSTOMTITLES":"YES",
     "BUTTONSWIDTH":82,
     "BUTTONSCOLOR": "blue",

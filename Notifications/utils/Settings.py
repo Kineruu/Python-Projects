@@ -21,7 +21,7 @@ class Settings:
         SettingsWindow.geometry(f"{config['WIDTH']}x{config['HEIGHT']}")
 
 
-        LeftSettingsFrame = ct.CTkScrollableFrame(master=SettingsWindow, width=config["LEFTFRAMESIZE"])
+        LeftSettingsFrame = ct.CTkScrollableFrame(master=SettingsWindow, width=config["SETTINGSLEFTFRAME"])
         LeftSettingsFrame.pack(side="left", fill="both", expand=True)
 
         MainFrame = ct.CTkFrame(master=SettingsWindow)

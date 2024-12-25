@@ -180,6 +180,8 @@ InactiveList = ct.CTkLabel(
 )
 InactiveList.grid(row=idx + 2, column=0, pady=5, padx=5, sticky="ew")
 
+
+
 #I don't like this part for some reason
 #Main notification function I guess?
 def check_time(entry_date, entry_hour, entry_title, entry_content):

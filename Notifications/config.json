@@ -11,6 +11,14 @@
     "TITLE_PLACEHOLDER": "No title",
     "CONTENT_PLACEHOLDER": "No content",
     "TIMEFORMAT": 24,
+
+    "YEAR": "%Y",
+    "MONTH": "%m",
+    "DAY": "%d",
+    "HOURONLY": "%H",
+    "MINUTE": "%M",
+    "SECOND": "%S",
+
     "DATE": "%d.%m.%y",
     "HOUR": "%H:%M",
     "CUSTOMTITLES": "YES",
@@ -18,5 +26,7 @@
     "NOTIWIDTH":100,
     "BUTTONSCOLOR": "#0e6675",
     "LEFTFRAMESIZE":125,
-    "LEFTFRAMEBUTTONCOLOR":"#0e6675"
+    "LEFTFRAMEBUTTONCOLOR":"#0e6675",
+    "SETTINGSLEFTFRAME":50,
+    "SETTINGSBUTTONCOLOR":"#0e6675"
 }

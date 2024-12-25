@@ -18,6 +18,19 @@ class Time:
         now = datetime.datetime.now()
         return now.strftime(data["DATE"]), now.strftime((data["HOUR"]))
 
+
+    @staticmethod
+    def GetCurrentYear():
+        """Returns only current year"""
+        now = datetime.datetime.now()
+        return now.strftime(data["YEAR"])
+    
+    @staticmethod
+    def GetCurrentMonth():
+        """Returns only current month"""
+        now = datetime.datetime.now()
+        return now.strftime(data["MONTH"])
+    
     @staticmethod
     def GetCurrentHour():
         """Returns only current hour"""
@@ -26,11 +39,24 @@ class Time:
         return NowHour
 
     @staticmethod
+    def GetCurrentMinute():
+        """Returns only current minute"""
+        now = datetime.datetime.now()
+        return now.strftime(data["MINUTE"])
+
+    @staticmethod
+    def GetCurrentSecond():
+        """Returns only current second"""
+        now = datetime.datetime.now()
+        return now.strftime(data["SECOND"])
+
+    @staticmethod
     def GetCurrentDate():
         """Returns only current date"""
         now = datetime.datetime.now()
         return now.strftime(data["DATE"])
-    
+
+
     @staticmethod
     def SetCurrentDate(DateEntry):
         """Paste current date in the entry box"""
