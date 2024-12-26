@@ -5,4 +5,4 @@
 - Fix settings size
 - Fix my goofy code
 - Allow user to edit config.json through the application
-- Move expired notifications to the inactive (Maybe I'll rename it in the upcoming future) category
+- Fix upcoming notifications not showing in the notifications list
