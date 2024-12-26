@@ -4,9 +4,6 @@ from utils.Titles import Titles
 from utils.Paste import Paste
 from utils.Time import Time
 
-# https://www.youtube.com/watch?v=dQw4w9WgXcQ
-# Really cool music to listen in the background
-
 from winotify import Notification, audio
 import customtkinter as ct
 import importlib
@@ -17,263 +14,249 @@ import time
 import json
 import os
 
-def reloadSettings():
-    importlib.reload(utils.Settings)
+class NotificationApp:
+    def __init__(self):
+        # Initialize utilities and setup paths
+        self.notification = utilsNotifications()
+        self.BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
-#Initialize utilities and setup paths
-notification = utilsNotifications()
+        with open(os.path.join(self.BASE_PATH, "config.json"), "r") as f:
+            self.config = json.load(f)
 
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+        self.UTILS_DIR = os.path.join(self.BASE_PATH, self.config["UTILS_DIR"])
+        self.NOTIFICATIONS_DIR = os.path.join(self.BASE_PATH, self.config["NOTIFICATIONS_DIR"])
+        self.NUMBER_PATH = os.path.join(self.BASE_PATH, self.config["NUMBER_PATH"])
 
-with open(os.path.join(BASE_PATH, "config.json"), "r") as f:
-    config = json.load(f)
+        # Setting up the main window theme
+        ct.set_appearance_mode(self.config["THEME"])
+        ct.set_default_color_theme(self.config["COLOR_THEME"])
 
-UTILS_DIR = os.path.join(BASE_PATH, config["UTILS_DIR"])
-NOTIFICATIONS_DIR = os.path.join(BASE_PATH, config["NOTIFICATIONS_DIR"])
-NUMBER_PATH = os.path.join(BASE_PATH, config["NUMBER_PATH"])
+        # Main window settings
+        self.Window = ct.CTk()
+        self.Window.iconbitmap(os.path.join(self.BASE_PATH, "utils//Icon.ico"))
 
-#Setting up the main window - Theme!!
-ct.set_appearance_mode(config["THEME"])
-ct.set_default_color_theme(config["COLOR_THEME"])
+        self.RandomTitle = Titles()
+        self.TitlesFilePath = os.path.join(self.UTILS_DIR, "Titles.json")
 
-#Main window settings
-Window = ct.CTk()
-Window.iconbitmap(os.path.join(BASE_PATH, "utils//Icon.ico"))
-
-RandomTitle = Titles()
-TitlesFilePath = os.path.join(UTILS_DIR, "Titles.json")
-
-if config["CUSTOMTITLES"] == "YES":
-    Window.title(RandomTitle.randomTitle(TitlesFilePath)) 
-else:
-    Window.title("Notifications")
-
-Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0) 
-Window.grid_rowconfigure(0, weight=1)
-Window.grid_columnconfigure(0, weight=1)  
-Window.grid_columnconfigure(1, weight=7)
-
-#Quite important code
-def showMainFrame():
-    for widget in Window.winfo_children():
-        widget.pack_forget()
-    MainFrame.pack(fill="both", expand=True)
-
-MainFrame = ct.CTkFrame(master=Window)
-MainFrame.grid(row=0, column=1, sticky="nsew")
-MainFrame.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
-MainFrame.grid_columnconfigure((0, 1), weight=1)
-
-#Label that says time
-Label = ct.CTkLabel(master=MainFrame, text=Time.GetCurrentTime())
-Label.grid(row=0, column=1, columnspan=2, pady=(10, 5), sticky="n")
-
-def UpdateTimeEveryMinute(Label):
-    Time.UpdateTime(Label)
-    Label.after(60000, UpdateTimeEveryMinute, Label)
-
-UpdateTimeEveryMinute(Label=Label)
-
-#You enter your date here
-DateEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Date") 
-DateEntry.grid(row=1, column=1, padx=5, pady=5, sticky="e")
-
-#You enter your... hour here!
-HourEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Hour") 
-HourEntry.grid(row=2, column=1, padx=5, pady=5, sticky="e")
-
-#Bold white text in your notification at the top (I think it's max up to 256 characters otherwise it won't spawn the notification)
-TitleEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Title <=256 char")
-TitleEntry.grid(row=3, column=1, padx=5, pady=5, sticky="e")
-
-#I think the most useful one, giving you more context later what you had in mind while creating a notification
-ContentEntry = ct.CTkEntry(master=MainFrame, placeholder_text="Content <=256 char")
-ContentEntry.grid(row=4, column=1, padx=5, pady=5, sticky="e")
-
-#If you don't want to write your date every single time you create a notification, 
-#there's a button next to the Entrybox to do that for you
-CurrentDateButton = ct.CTkButton(
-    master=MainFrame, 
-    text="Current Date", 
-    command=lambda: Time.SetCurrentDate(DateEntry), 
-    width=config["BUTTONSWIDTH"],
-    fg_color=config["BUTTONSCOLOR"]
-)
-CurrentDateButton.grid(row=1, column=2, padx=5, pady=5, sticky="w")
-
-#Same thing as CurrentDateButton but it's for hour
-CurrentHourButton = ct.CTkButton(
-    master=MainFrame, 
-    text="Current Hour", 
-    command=lambda: Time.SetCurrentHour(HourEntry), 
-    width=config["BUTTONSWIDTH"],
-    fg_color=config["BUTTONSCOLOR"]
-)
-CurrentHourButton.grid(row=2, column=2, padx=5, pady=5, sticky="w")
-
-#Basically pasting what you have in your clipboard
-PasteTitle = ct.CTkButton(
-    master=MainFrame, 
-    text="Paste title", 
-    command=lambda: Paste.PasteTitle(TitleEntry),
-    width=config["BUTTONSWIDTH"],
-    fg_color=config["BUTTONSCOLOR"]
-) 
-PasteTitle.grid(row=3, column=2, padx=5, pady=5, sticky="w")
-
-#Same as above
-PasteContent = ct.CTkButton(
-    master=MainFrame, 
-    text="Paste content", 
-    command=lambda: Paste.PasteContent(ContentEntry), 
-    width=config["BUTTONSWIDTH"],
-    fg_color=config["BUTTONSCOLOR"]
-) 
-PasteContent.grid(row=4, column=2, padx=5, pady=5, sticky="w")
-
-SettingsButton = ct.CTkButton(
-    master=MainFrame, 
-    text="⚙️", 
-    command=lambda: 
-    Settings.loadWindow(Window, MainFrame),
-    width=config["BUTTONSWIDTH"],
-    fg_color=config["BUTTONSCOLOR"]
-)
-SettingsButton.grid(row=0, column=3, columnspan=2, pady=5, padx=5, sticky="")
-
-#!LEFT FRAME
-
-with open(os.path.join(NOTIFICATIONS_DIR, "Notifications.json"), "r") as f:
-    data = json.load(f)
-
-SidebarFrame = ct.CTkScrollableFrame(master=Window, width=config["LEFTFRAMESIZE"])
-SidebarFrame.grid(row=0, column=0, rowspan=6, sticky="nsw")
-
-SidebarFrame.grid_rowconfigure(0, weight=0)
-SidebarFrame.grid_rowconfigure(1, weight=0)
-SidebarFrame.grid_columnconfigure(0, weight=1)
-
-Label = ct.CTkLabel(
-    master=SidebarFrame,
-    text=""
-)
-
-
-#print(f"Current unix timestamp: {Time.GetCurrentUnixTime()}")
-#print(f"Past unix timestamp: {Time.GetPastUnixTime(data['ACTIVE']['Notification22']['DATE'], data['ACTIVE']['Notification22']['HOUR'])}")
-def isValidDatetime(date_str, hour_str):
-    """Check if the date and hour strings are in the correct format."""
-    try:
-        datetime.datetime.strptime(f"{date_str} {hour_str}", "%d.%m.%y %H:%M")
-        return True
-    except ValueError:
-        return False
-    
-def checkIfActive():
-    for idx, noti_key in enumerate(data["ACTIVE"]):
-        notification = data["ACTIVE"][noti_key]
-
-        if isValidDatetime(notification["DATE"], notification["HOUR"]):
-
-            if Time.GetPastUnixTime(notification["DATE"], notification["HOUR"]) < Time.GetCurrentUnixTime():
-                btn = ct.CTkButton(
-                    master=SidebarFrame,
-                    text=notification["TITLE"],
-                    command=lambda noti=noti_key: print(noti),
-                    fg_color=config["INACTIVECOLOR"]
-                )
-                btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
-
-    for idx, noti_key in enumerate(data["INACTIVE"]):
-        notification = data["INACTIVE"][noti_key]
-
-        if isValidDatetime(notification["DATE"], notification["HOUR"]):
-
-            if Time.GetPastUnixTime(notification["DATE"], notification["HOUR"]) > Time.GetCurrentUnixTime():
-                btn = ct.CTkButton(
-                    master=SidebarFrame,
-                    text=notification["TITLE"],
-                    command=lambda noti=noti_key: print(noti),
-                    fg_color=config["ACTIVECOLOR"]
-                )
-                btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
-
-
-checkIfActive()
-
-ActiveList = ct.CTkLabel(
-    master=SidebarFrame,
-    text="List",
-    width=config["NOTIWIDTH"]
-)
-ActiveList.grid(row=0, column=0, pady=5, padx=5, sticky="ew")
-
-#I don't like this part for some reason
-#Main notification function I guess?
-def check_time(entry_date, entry_hour, entry_title, entry_content):
-    while True:
-        current_date, current_hour = Time.GetCurrentTime()
-        # If current date and hour is equal to the hour etc.
-        if current_date == entry_date and current_hour == entry_hour and entry_title != "" and entry_content != "":
-            Noti = Notification( # Self explanatory
-                app_id="Notification program",
-                title=entry_title,
-                msg=entry_content,
-                duration="short"
-            )
-
-            with open(os.path.join(NOTIFICATIONS_DIR, "Number.txt"), "r+") as f:
-                Number = int(f.read().strip())
-                Number += 1
-                f.seek(0) 
-                f.write(str(Number))
-                f.truncate()
-
-            NotificationJSON = {
-                "DATE": entry_date,
-                "HOUR": entry_hour,
-                "TITLE": entry_title,
-                "CONTENT": entry_content,
-                "UnixTime": Time.GetPastUnixTime(entry_date, entry_hour)
-            }
-
-            jsonPath = os.path.join(NOTIFICATIONS_DIR, "Notifications.json")
-            with open(jsonPath, "r") as f:
-                data = json.load(f)
-
-            NewNotificationName = f"Notification{Number}" #Is this even a good way to write my json? Who knows
-            data["ACTIVE"][NewNotificationName] = NotificationJSON
-
-            with open(jsonPath, "w") as f:
-                json.dump(data, f, indent=4)
-
-            Noti.set_audio(audio.Default, loop=False)
-            Noti.show()
-            break
+        if self.config["CUSTOMTITLES"] == "YES":
+            self.Window.title(self.RandomTitle.randomTitle(self.TitlesFilePath))
         else:
-            pass
-        time.sleep(5)
+            self.Window.title("Notifications")
 
-def get_entry():
-    entry_date = DateEntry.get()
-    entry_hour = HourEntry.get()
-    entry_title = TitleEntry.get()
-    entry_content = ContentEntry.get()
+        self.Window.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
+        self.Window.grid_rowconfigure(0, weight=1)
+        self.Window.grid_columnconfigure(0, weight=1)
+        self.Window.grid_columnconfigure(1, weight=7)
 
-    threading.Thread(
-        target=check_time, 
-        args=(entry_date, entry_hour, entry_title, entry_content), 
-        daemon=True
-    ).start() 
+        # Main frame setup
+        self.MainFrame = ct.CTkFrame(master=self.Window)
+        self.MainFrame.grid(row=0, column=1, sticky="nsew")
+        self.MainFrame.grid_rowconfigure((0, 1, 2, 3, 4), weight=0)
+        self.MainFrame.grid_columnconfigure((0, 1), weight=1)
 
-Button = ct.CTkButton(
-    master=MainFrame, 
-    text="Confirm", 
-    command=get_entry, 
-    width=config["BUTTONSWIDTH"],
-    fg_color=config["BUTTONSCOLOR"]
-)
-Button.grid(row=5, column=1, columnspan=2, pady=5, sticky="")
+        # Label that displays the current time
+        self.Label = ct.CTkLabel(master=self.MainFrame, text=Time.GetCurrentTime())
+        self.Label.grid(row=0, column=1, columnspan=2, pady=(10, 5), sticky="n")
+        self.UpdateTimeEveryMinute(self.Label)
 
+        # Entry fields for date, hour, title, and content
+        self.DateEntry = ct.CTkEntry(master=self.MainFrame, placeholder_text="Date")
+        self.DateEntry.grid(row=1, column=1, padx=5, pady=5, sticky="e")
 
-Window.mainloop()
+        self.HourEntry = ct.CTkEntry(master=self.MainFrame, placeholder_text="Hour")
+        self.HourEntry.grid(row=2, column=1, padx=5, pady=5, sticky="e")
+
+        self.TitleEntry = ct.CTkEntry(master=self.MainFrame, placeholder_text="Title <=256 char")
+        self.TitleEntry.grid(row=3, column=1, padx=5, pady=5, sticky="e")
+
+        self.ContentEntry = ct.CTkEntry(master=self.MainFrame, placeholder_text="Content <=256 char")
+        self.ContentEntry.grid(row=4, column=1, padx=5, pady=5, sticky="e")
+
+        # Buttons for setting current date and hour, and pasting title and content
+        self.CurrentDateButton = ct.CTkButton(
+            master=self.MainFrame,
+            text="Current Date",
+            command=lambda: Time.SetCurrentDate(self.DateEntry),
+            width=self.config["BUTTONSWIDTH"],
+            fg_color=self.config["BUTTONSCOLOR"]
+        )
+        self.CurrentDateButton.grid(row=1, column=2, padx=5, pady=5, sticky="w")
+
+        self.CurrentHourButton = ct.CTkButton(
+            master=self.MainFrame,
+            text="Current Hour",
+            command=lambda: Time.SetCurrentHour(self.HourEntry),
+            width=self.config["BUTTONSWIDTH"],
+            fg_color=self.config["BUTTONSCOLOR"]
+        )
+        self.CurrentHourButton.grid(row=2, column=2, padx=5, pady=5, sticky="w")
+
+        self.PasteTitle = ct.CTkButton(
+            master=self.MainFrame,
+            text="Paste title",
+            command=lambda: Paste.PasteTitle(self.TitleEntry),
+            width=self.config["BUTTONSWIDTH"],
+            fg_color=self.config["BUTTONSCOLOR"]
+        )
+        self.PasteTitle.grid(row=3, column=2, padx=5, pady=5, sticky="w")
+
+        self.PasteContent = ct.CTkButton(
+            master=self.MainFrame,
+            text="Paste content",
+            command=lambda: Paste.PasteContent(self.ContentEntry),
+            width=self.config["BUTTONSWIDTH"],
+            fg_color=self.config["BUTTONSCOLOR"]
+        )
+        self.PasteContent.grid(row=4, column=2, padx=5, pady=5, sticky="w")
+
+        self.SettingsButton = ct.CTkButton(
+            master=self.MainFrame,
+            text="⚙️",
+            command=lambda: Settings.loadWindow(self.Window, self.MainFrame),
+            width=self.config["BUTTONSWIDTH"],
+            fg_color=self.config["BUTTONSCOLOR"]
+        )
+        self.SettingsButton.grid(row=0, column=3, columnspan=2, pady=5, padx=5, sticky="")
+
+        # Load notifications data
+        with open(os.path.join(self.NOTIFICATIONS_DIR, "Notifications.json"), "r") as f:
+            self.data = json.load(f)
+
+        # Sidebar frame setup
+        self.SidebarFrame = ct.CTkScrollableFrame(master=self.Window, width=self.config["LEFTFRAMESIZE"])
+        self.SidebarFrame.grid(row=0, column=0, rowspan=6, sticky="nsw")
+
+        self.SidebarFrame.grid_rowconfigure(0, weight=0)
+        self.SidebarFrame.grid_rowconfigure(1, weight=0)
+        self.SidebarFrame.grid_columnconfigure(0, weight=1)
+
+        self.Label = ct.CTkLabel(master=self.SidebarFrame, text="List")
+        self.Label.grid(row=0, column=0, pady=5)
+
+        # Confirm button to add a new notification
+        self.Button = ct.CTkButton(
+            master=self.MainFrame,
+            text="Confirm",
+            command=self.get_entry,
+            width=self.config["BUTTONSWIDTH"],
+            fg_color=self.config["BUTTONSCOLOR"]
+        )
+        self.Button.grid(row=5, column=1, columnspan=2, pady=5, sticky="")
+
+        # Check for active notifications
+        self.checkIfActive()
+        self.Window.mainloop()
+
+    def reloadSettings(self):
+        importlib.reload(utils.Settings)
+
+    def UpdateTimeEveryMinute(self, Label):
+        # Update the time label every minute
+        Time.UpdateTime(Label)
+        Label.after(60000, self.UpdateTimeEveryMinute, Label)
+
+    def isValidDatetime(self, date_str, hour_str):
+        # Check if the date and hour strings are in the correct format
+        try:
+            datetime.datetime.strptime(f"{date_str} {hour_str}", "%d.%m.%y %H:%M")
+            return True
+        except ValueError:
+            return False
+
+    def checkIfActive(self):
+        # Check and display active and inactive notifications
+        for widget in self.SidebarFrame.winfo_children():
+            widget.destroy()
+        Label = ct.CTkLabel(master=self.SidebarFrame, text="List")
+        Label.grid(row=0, column=0, pady=5)
+
+        for idx, noti_key in enumerate(self.data["ACTIVE"]):
+            notification = self.data["ACTIVE"][noti_key]
+            if self.isValidDatetime(notification["DATE"], notification["HOUR"]):
+                past_unix_time = Time.GetPastUnixTime(notification["DATE"], notification["HOUR"])
+                current_unix_time = Time.GetCurrentUnixTime()
+                fg_color = self.config["ACTIVECOLOR"] if past_unix_time > current_unix_time else self.config["INACTIVECOLOR"]
+                btn = ct.CTkButton(
+                    master=self.SidebarFrame,
+                    text=notification["TITLE"],
+                    command=lambda noti=noti_key: print(noti),
+                    fg_color=fg_color
+                )
+                btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+
+        for idx, noti_key in enumerate(self.data["INACTIVE"]):
+            notification = self.data["INACTIVE"][noti_key]
+            if self.isValidDatetime(notification["DATE"], notification["HOUR"]):
+                btn = ct.CTkButton(
+                    master=self.SidebarFrame,
+                    text=notification["TITLE"],
+                    command=lambda noti=noti_key: print(noti),
+                    fg_color=self.config["INACTIVECOLOR"]
+                )
+                btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+
+    def RefreshSidebar(self):
+        # Refresh the sidebar to display updated notifications
+        self.SidebarFrame.after(100, self.checkIfActive)
+
+    def check_time(self, entry_date, entry_hour, entry_title, entry_content):
+        # Check if the current time matches the notification time
+        while True:
+            current_date, current_hour = Time.GetCurrentTime()
+            if current_date == entry_date and current_hour == entry_hour and entry_title != "" and entry_content != "":
+                Noti = Notification(
+                    app_id="Notification program",
+                    title=entry_title,
+                    msg=entry_content,
+                    duration="short"
+                )
+
+                with open(os.path.join(self.NOTIFICATIONS_DIR, "Number.txt"), "r+") as f:
+                    Number = int(f.read().strip())
+                    Number += 1
+                    f.seek(0)
+                    f.write(str(Number))
+                    f.truncate()
+
+                NotificationJSON = {
+                    "DATE": entry_date,
+                    "HOUR": entry_hour,
+                    "TITLE": entry_title,
+                    "CONTENT": entry_content,
+                    "UnixTime": Time.GetPastUnixTime(entry_date, entry_hour)
+                }
+
+                jsonPath = os.path.join(self.NOTIFICATIONS_DIR, "Notifications.json")
+                with open(jsonPath, "r") as f:
+                    self.data = json.load(f)
+
+                NewNotificationName = f"Notification{Number}"
+                self.data["ACTIVE"][NewNotificationName] = NotificationJSON
+
+                with open(jsonPath, "w") as f:
+                    json.dump(self.data, f, indent=4)
+
+                Noti.set_audio(audio.Default, loop=False)
+                Noti.show()
+                self.RefreshSidebar()
+                break
+            else:
+                pass
+            time.sleep(5)
+
+    def get_entry(self):
+        # Get the entry data and start a thread to check the notification time
+        entry_date = self.DateEntry.get()
+        entry_hour = self.HourEntry.get()
+        entry_title = self.TitleEntry.get()
+        entry_content = self.ContentEntry.get()
+
+        threading.Thread(
+            target=self.check_time,
+            args=(entry_date, entry_hour, entry_title, entry_content),
+            daemon=True
+        ).start()
+        self.RefreshSidebar()
+
+if __name__ == "__main__":
+    app = NotificationApp()

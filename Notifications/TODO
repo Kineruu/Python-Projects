@@ -6,3 +6,4 @@
 - Fix my goofy code
 - Allow user to edit config.json through the application
 - Fix upcoming notifications not showing in the notifications list
+- Fix the future buttons not showing on the left frame nor having their colors
