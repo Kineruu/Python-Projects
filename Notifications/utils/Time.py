@@ -1,6 +1,7 @@
 import customtkinter as ct
 import datetime
 import json
+import time
 import os
 
 
@@ -56,6 +57,19 @@ class Time:
         now = datetime.datetime.now()
         return now.strftime(data["DATE"])
 
+
+    @staticmethod
+    def GetCurrentUnixTime():
+        """Returns current unix time"""
+        utime = int(time.time())
+        return utime
+    
+    @staticmethod
+    def GetPastUnixTime(date, hour):
+        """Returns past unix time"""
+        PastDateSTR = f"{date} {hour}"
+        PastDate = datetime.datetime.strptime(PastDateSTR, "%d.%m.%y %H:%M")
+        return int(PastDate.timestamp())
 
     @staticmethod
     def SetCurrentDate(DateEntry):

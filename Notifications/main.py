@@ -11,6 +11,7 @@ from winotify import Notification, audio
 import customtkinter as ct
 import importlib
 import threading
+import datetime
 import utils
 import time
 import json
@@ -157,14 +158,72 @@ Label = ct.CTkLabel(
     text=""
 )
 
-for idx, Noti in enumerate(data["ACTIVE"]):
-    btn = ct.CTkButton(
-        master=SidebarFrame,
-        text=data["ACTIVE"][Noti]["TITLE"],
-        command=lambda noti=Noti: print(noti),
-        fg_color=config["LEFTFRAMEBUTTONCOLOR"]
-    )
-    btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+#print(f"Current unix timestamp: {Time.GetCurrentUnixTime()}")
+#print(f"Past unix timestamp: {Time.GetPastUnixTime(data['ACTIVE']['Notification22']['DATE'], data['ACTIVE']['Notification22']['HOUR'])}")
+
+def isValidDatetime(date_str, hour_str):
+    """Check if the date and hour strings are in the correct format."""
+    try:
+        datetime.datetime.strptime(f"{date_str} {hour_str}", "%d.%m.%y %H:%M")
+        return True
+    except ValueError:
+        return False
+
+def checkIfActive(notification):
+    if Time.GetPastUnixTime(notification["DATE"], notification["HOUR"]) < Time.GetCurrentUnixTime():
+        
+        for idx, Noti in enumerate(data["ACTIVE"]):
+            btn = ct.CTkButton(
+                master=SidebarFrame,
+                text=data["ACTIVE"][Noti]["TITLE"],
+                command=lambda noti=Noti: print(noti),
+                fg_color=config["ACTIVECOLOR"]
+            )
+            btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+
+        setActive = True
+        return True
+    else:
+        for idx, Noti in enumerate(data["INACTIVE"]):
+            btn = ct.CTkButton(
+                master=SidebarFrame,
+                text=data["INACTIVE"][Noti]["TITLE"],
+                command=lambda noti=Noti: print(noti),
+                fg_color=config["INACTIVECOLOR"]
+            )
+            btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+
+        setActive = False
+        return False
+
+# Now I have to check if the notification is active or not
+# Time to implement unix time to the notifications!
+for idx, noti_key in enumerate(data["ACTIVE"]):
+    notification = data["ACTIVE"][noti_key]
+    if isValidDatetime(notification["DATE"], notification["HOUR"]):
+        if Time.GetPastUnixTime(notification["DATE"], notification["HOUR"]) < Time.GetCurrentUnixTime():
+            btn = ct.CTkButton(
+                master=SidebarFrame,
+                text=notification["TITLE"],
+                command=lambda noti=noti_key: print(noti),
+                fg_color=config["ACTIVECOLOR"]
+            )
+            btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+
+for idx, noti_key in enumerate(data["INACTIVE"]):
+    notification = data["INACTIVE"][noti_key]
+    if isValidDatetime(notification["DATE"], notification["HOUR"]):
+        btn = ct.CTkButton(
+            master=SidebarFrame,
+            text=notification["TITLE"],
+            command=lambda noti=noti_key: print(noti),
+            fg_color=config["INACTIVECOLOR"]
+        )
+        btn.grid(row=idx + 1, column=0, sticky="ew", pady=2)
+
+
+
+
 
 ActiveList = ct.CTkLabel(
     master=SidebarFrame,
@@ -172,15 +231,6 @@ ActiveList = ct.CTkLabel(
     width=config["NOTIWIDTH"]
 )
 ActiveList.grid(row=0, column=0, pady=5, padx=5, sticky="ew")
-
-InactiveList = ct.CTkLabel(
-    master=SidebarFrame,
-    text="INACTIVE",
-    width=config["NOTIWIDTH"]
-)
-InactiveList.grid(row=idx + 2, column=0, pady=5, padx=5, sticky="ew")
-
-
 
 #I don't like this part for some reason
 #Main notification function I guess?
@@ -207,7 +257,8 @@ def check_time(entry_date, entry_hour, entry_title, entry_content):
                 "DATE": entry_date,
                 "HOUR": entry_hour,
                 "TITLE": entry_title,
-                "CONTENT": entry_content
+                "CONTENT": entry_content,
+                "UnixTime": Time.GetPastUnixTime(entry_date, entry_hour)
             }
 
             jsonPath = os.path.join(NOTIFICATIONS_DIR, "Notifications.json")
