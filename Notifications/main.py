@@ -172,9 +172,11 @@ class NotificationApp:
 
         for idx, noti_key in enumerate(self.data["ACTIVE"]):
             notification = self.data["ACTIVE"][noti_key]
+
             if self.isValidDatetime(notification["DATE"], notification["HOUR"]):
                 past_unix_time = Time.GetPastUnixTime(notification["DATE"], notification["HOUR"])
                 current_unix_time = Time.GetCurrentUnixTime()
+                
                 fg_color = self.config["ACTIVECOLOR"] if past_unix_time > current_unix_time else self.config["INACTIVECOLOR"]
                 btn = ct.CTkButton(
                     master=self.SidebarFrame,

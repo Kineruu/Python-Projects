@@ -27,6 +27,38 @@ class Settings:
         MainFrame = ct.CTkFrame(master=SettingsWindow)
         MainFrame.pack(side="right", fill="both", expand=True)
         
+        # Themes and other stuff
+        AppearanceModeLabel = ct.CTkLabel(master=MainFrame, text="Themes:")
+        AppearanceModeLabel.pack()
+
+        def changeAppearanceMode(theme):
+            return theme
+
+        optmenuVar = ct.StringVar(value=config["THEME"])
+        optmenu = ct.CTkOptionMenu(
+            master=MainFrame,
+            values=["system", "light", "dark"],
+            command=changeAppearanceMode,
+            variable=optmenuVar
+        )
+        optmenu.pack()
+
+        # COLOR THEME
+        ThemeLabel = ct.CTkLabel(master=MainFrame, text="Themes:")
+        ThemeLabel.pack()
+
+        def changeTheme(theme):
+            return theme
+
+        optmenuVar = ct.StringVar(value=config["COLOR_THEME"])
+        optmenu = ct.CTkOptionMenu(
+            master=MainFrame,
+            values=["blue", "dark-blue", "green"],
+            command=changeTheme,
+            variable=optmenuVar
+        )
+        optmenu.pack()
+
         SettingsWindow.mainloop()
 
 
