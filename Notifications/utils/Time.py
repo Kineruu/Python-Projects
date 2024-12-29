@@ -19,7 +19,6 @@ class Time:
         now = datetime.datetime.now()
         return now.strftime(data["DATE"]), now.strftime((data["HOUR"]))
 
-
     @staticmethod
     def GetCurrentYear():
         """Returns only current year"""

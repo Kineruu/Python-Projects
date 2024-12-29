@@ -1,5 +1,5 @@
 QWidget {
-    background-color: #2e2e2e;
+    background-color: #212121;
     color: #ffffff;
 }
 
@@ -9,6 +9,7 @@ QPushButton {
     border: 1px solid #ffffff;
     padding: 5px;
     border-radius: 5px;
+    border-color: #0a3036;
 }
 
 QPushButton:hover {
@@ -17,4 +18,13 @@ QPushButton:hover {
 
 QLabel {
     color: #ffffff;
+}
+
+QLineEdit {
+    background-color: #343638;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+    border-color: #565b5e;
 }

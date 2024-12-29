@@ -201,6 +201,7 @@ class NotificationApp:
         # Refresh the sidebar to display updated notifications
         self.SidebarFrame.after(100, self.checkIfActive)
 
+    
     def check_time(self, entry_date, entry_hour, entry_title, entry_content):
         # Check if the current time matches the notification time
         while True:
