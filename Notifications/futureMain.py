@@ -16,25 +16,29 @@ import json
 import sys
 import os
 
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
-
-with open(os.path.join(BASE_PATH, "config.json"), "r") as f:
-    config = json.load(f)
-
-UTILS_DIR = os.path.join(BASE_PATH, config["UTILS_DIR"])
-NOTIFICATIONS_DIR = os.path.join(BASE_PATH, config["NOTIFICATIONS_DIR"])
-NUMBER_PATH = os.path.join(BASE_PATH, config["NUMBER_PATH"])
-
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-
         self.init_ui()
+
+        self.BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(self.BASE_PATH, "config.json"), "r") as f:
+            self.config = json.load(f)
+
+        self.UTILS_DIR = os.path.join(self.BASE_PATH, self.config["UTILS_DIR"])
+        self.NOTIFICATIONS_DIR = os.path.join(self.BASE_PATH, self.config["NOTIFICATIONS_DIR"])
+        self.NUMBER_PATH = os.path.join(self.BASE_PATH, self.config["NUMBER_PATH"])
+        self.TitlesFilePath = os.path.join(self.UTILS_DIR, "Titles.json")
+    
+    def customTitles(self):
+        if self.config["CUSTOMTITLES"] == "YES": # Why isn't that working
+            Titles.randomTitle(self.TitlesFilePath)
+        else:
+            return "Notifications"
 
     def init_ui(self):
         self.label = QtWidgets.QLabel(self)
-        self.label.setText(str(Time.GetCurrentTime()))
-        self.label.setFixedSize(125, 35)
+        self.label.setText(str(Time.GetCurrentTime()[0] + " | " + Time.GetCurrentTime()[1]))
         self.label.setAlignment(QtCore.Qt.AlignCenter)
 
         self.date_entry = QtWidgets.QLineEdit(self)
@@ -87,14 +91,14 @@ class MyWidget(QtWidgets.QWidget):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
-    with open(os.path.join(BASE_PATH, "style.css"), "r") as f:
+    widget = MyWidget()
+    with open(os.path.join(widget.BASE_PATH, "style.css"), "r") as f:
         app.setStyleSheet(f.read())
 
-    widget = MyWidget()
-    widget.resize(config["WIDTH"], config["HEIGHT"])
-    icon_path = os.path.join(BASE_PATH, "utils/Icon.ico")
-    widget.setWindowIcon(QtGui.QIcon(icon_path))
-    widget.setWindowTitle("Notifications")
+    #widget.resize(config["WIDTH"], config["HEIGHT"])
+    #icon_path = os.path.join(BASE_PATH, "utils/Icon.ico")
+    #widget.setWindowIcon(QtGui.QIcon(icon_path))
+    widget.setWindowTitle(widget.customTitles())
     widget.show()
 
     sys.exit(app.exec())
