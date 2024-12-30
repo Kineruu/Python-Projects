@@ -30,6 +30,8 @@ class MyWidget(QtWidgets.QWidget):
         self.NUMBER_PATH = os.path.join(self.BASE_PATH, self.config["NUMBER_PATH"])
         self.TitlesFilePath = os.path.join(self.UTILS_DIR, "Titles.json")
     
+        self.setFixedSize(self.sizeHint())
+
     def customTitles(self):
         if self.config["CUSTOMTITLES"] == "YES": # Why isn't that working
             Titles.randomTitle(self.TitlesFilePath)
@@ -84,21 +86,19 @@ class MyWidget(QtWidgets.QWidget):
         self.confirm_button = QtWidgets.QPushButton(self)
         self.confirm_button.setText("Confirm")
         self.confirm_button.clicked.connect(self.checkTime)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
 
         self.settings_button = QtWidgets.QPushButton(self)
         self.settings_button.setText("Settings")
-        self.settings_button.setFixedSize(125, 35)
 
         # Create layouts and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.label)
-        self.layout.addWidget(self.settings_button)
         self.layout.addLayout(self.create_hbox_layout(self.date_entry, self.date_button))
         self.layout.addLayout(self.create_hbox_layout(self.hour_entry, self.hour_button))
         self.layout.addLayout(self.create_hbox_layout(self.title_entry, self.title_button))
         self.layout.addLayout(self.create_hbox_layout(self.content_entry, self.content_button))
         self.layout.addWidget(self.confirm_button)
+        self.layout.addWidget(self.settings_button)
 
     def startTimerAtNextMinute(self):
         current_time = QtCore.QTime.currentTime()
