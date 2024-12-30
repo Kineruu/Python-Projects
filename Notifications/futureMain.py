@@ -10,7 +10,6 @@ import PySide6.QtCore, PySide6.QtGui, PySide6.QtWidgets
 from winotify import Notification, audio
 from clipboard import paste
 import threading
-import random
 import utils
 import time
 import json
@@ -90,13 +89,9 @@ class MyWidget(QtWidgets.QWidget):
         self.settings_button = QtWidgets.QPushButton(self)
         self.settings_button.setText("Settings")
         self.settings_button.setFixedSize(125, 35)
-        #self.settings_button.clicked.connect(self.settings)
-        #self.settings_button.setFixedSize(125, 35)
 
         # Create layouts and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
-        #self.layout.addStretch()
-
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.settings_button)
         self.layout.addLayout(self.create_hbox_layout(self.date_entry, self.date_button))
@@ -143,13 +138,11 @@ class MyWidget(QtWidgets.QWidget):
             duration="short"
         )
 
-        with open(os.path.join(self.NOTIFICATIONS_DIR, "Number.txt"), "r+") as f:
-            Number = int(f.read().strip())
-            Number += 1
-            f.seek(0)
-            f.write(str(Number))
-            f.truncate()
+        jsonPath = os.path.join(self.NOTIFICATIONS_DIR, "Notifications.json")
+        with open(jsonPath, "r") as f:
+            self.data = json.load(f)
 
+        Number = self.data["Number"]
         NotificationJSON = {
             "DATE": date,
             "HOUR": hour,
@@ -158,12 +151,9 @@ class MyWidget(QtWidgets.QWidget):
             "UnixTime": Time.GetPastUnixTime(date, hour)
         }
 
-        jsonPath = os.path.join(self.NOTIFICATIONS_DIR, "Notifications.json")
-        with open(jsonPath, "r") as f:
-            self.data = json.load(f)
-
         NewNotificationName = f"Notification{Number}"
         self.data["Notifications"][NewNotificationName] = NotificationJSON
+        self.data["Number"] = Number + 1
 
         with open(jsonPath, "w") as f:
             json.dump(self.data, f, indent=4)
