@@ -42,6 +42,10 @@ class MyWidget(QtWidgets.QWidget):
         self.label.setText(str(Time.GetCurrentTime()[0] + " | " + Time.GetCurrentTime()[1]))
         self.label.setAlignment(QtCore.Qt.AlignCenter)
 
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.updateTime)
+        self.startTimerAtNextMinute()
+
         self.date_entry = QtWidgets.QLineEdit(self)
         self.date_entry.setPlaceholderText("Date")
         self.date_entry.setFixedSize(125, 35)
@@ -101,8 +105,17 @@ class MyWidget(QtWidgets.QWidget):
         self.layout.addLayout(self.create_hbox_layout(self.content_entry, self.content_button))
         self.layout.addWidget(self.confirm_button)
 
-    def confirm(self):
-        print("Hello")
+    def startTimerAtNextMinute(self):
+        current_time = QtCore.QTime.currentTime()
+        seconds_until_next_minute = 60 - current_time.second()
+        self.timer.start(seconds_until_next_minute * 1000)
+
+    def updateTime(self):
+        self.label.setText(str(Time.GetCurrentTime()[0] + " | " + Time.GetCurrentTime()[1]))
+
+    def startUpdates(self):
+        self.updateTime()
+        self.timer.start(60000)
 
     def TodayDate(self):
         self.date_entry.setText(Time.GetCurrentTime()[0])
@@ -194,7 +207,5 @@ if __name__ == "__main__":
     widget.setWindowIcon(QtGui.QIcon(iconPath))
     widget.setWindowTitle(widget.customTitles())
     widget.show()
-
-    #widget.sendNotification()
 
     sys.exit(app.exec())
