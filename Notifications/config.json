@@ -3,17 +3,16 @@
     "NOTIFICATIONS_DIR": "NotificationsList",
     "NUMBER_PATH": "NotificationsList/Number.txt",
     "UTILS_DIR": "utils",
+    "CUSTOMTITLES": "YES",
 
     "THEME": "dark",
     "COLOR_THEME": "dark-blue",
 
+    "CUSTOMSIZE":"NO",
     "WIDTH": 650,
     "HEIGHT": 400,
 
     "TIME_CHECK": 5,
-
-    "TITLE_PLACEHOLDER": "No title",
-    "CONTENT_PLACEHOLDER": "No content",
 
     "TIMEFORMAT": 24,
     "YEAR": "%Y",
@@ -25,7 +24,6 @@
     "DATE": "%d.%m.%y",
     "HOUR": "%H:%M",
     
-    "CUSTOMTITLES": "YES",
     "BUTTONSWIDTH": 90,
     "NOTIWIDTH":100,
     "BUTTONSCOLOR": "#0e6675",

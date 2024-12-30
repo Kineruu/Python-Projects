@@ -4,6 +4,7 @@ import json
 import time
 import os
 
+# I think I can remove at least half of this code because it won't be used anymore soon
 
 BasePath = os.path.dirname(os.path.abspath(__file__))
 ConfigPath = os.path.join(BasePath, "..", "config.json")
@@ -68,21 +69,4 @@ class Time:
         PastDateSTR = f"{date} {hour}"
         PastDate = datetime.datetime.strptime(PastDateSTR, "%d.%m.%y %H:%M")
         return int(PastDate.timestamp())
-
-    @staticmethod
-    def SetCurrentDate(DateEntry):
-        """Paste current date in the entry box"""
-        DateEntry.delete(0, ct.END)
-        DateEntry.insert(0, Time.GetCurrentDate())
-
-    @staticmethod
-    def SetCurrentHour(HourEntry):
-        """Paste current hour in the entry box"""
-        HourEntry.delete(0, ct.END)
-        HourEntry.insert(0, Time.GetCurrentHour())
-
-    @staticmethod
-    def UpdateTime(TimeLabel):
-        """Updates the time every 1 minute"""
-        CurrentTime = Time.GetCurrentTime()
-        TimeLabel.configure(text=f"{CurrentTime[0]} - {CurrentTime[1]}")
+    

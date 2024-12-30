@@ -1,1 +1,1 @@
-__all__ = ["Time", "Paste", "utilsNotification", "Settings", "Titles"]
+__all__ = ["Time", "Error", "utilsNotification", "Settings", "Titles"]

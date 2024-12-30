@@ -1,16 +1,14 @@
 from utils.Notification import utilsNotifications
 from utils.Settings import Settings
 from utils.Titles import Titles
-from utils.Paste import Paste
+from utils.Error import Error
 from utils.Time import Time
 
-from PySide6 import QtCore, QtWidgets, QtGui
-import PySide6.QtCore, PySide6.QtGui, PySide6.QtWidgets
+from PySide6 import QtCore, QtWidgets
 
 from winotify import Notification, audio
 from clipboard import paste
 import threading
-import utils
 import time
 import json
 import sys
@@ -30,8 +28,6 @@ class MyWidget(QtWidgets.QWidget):
         self.NUMBER_PATH = os.path.join(self.BASE_PATH, self.config["NUMBER_PATH"])
         self.TitlesFilePath = os.path.join(self.UTILS_DIR, "Titles.json")
     
-        self.setFixedSize(self.sizeHint())
-
     def customTitles(self):
         if self.config["CUSTOMTITLES"] == "YES": # Why isn't that working
             Titles.randomTitle(self.TitlesFilePath)
@@ -89,6 +85,7 @@ class MyWidget(QtWidgets.QWidget):
 
         self.settings_button = QtWidgets.QPushButton(self)
         self.settings_button.setText("Settings")
+        self.settings_button.clicked.connect(self.openSettings)
 
         # Create layouts and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -117,6 +114,14 @@ class MyWidget(QtWidgets.QWidget):
     
     def CurrentHour(self):
         self.hour_entry.setText(Time.GetCurrentTime()[1])
+
+    def openSettings(self):
+        self.settings = Settings()
+        self.settings.show()
+
+    def errorHandler(self):
+        self.Error = Error()
+        self.Error.show()
 
     def PasteTitle(self):
         self.title_entry.setText(paste())
@@ -169,8 +174,7 @@ class MyWidget(QtWidgets.QWidget):
         content = self.content_entry.text()
 
         if date == "" or hour == "" or title == "" or content == "":
-            print("Please fill in all the fields")
-            return
+            return self.errorHandler()
 
         def timeChecker():
             while True:
@@ -193,8 +197,8 @@ if __name__ == "__main__":
         app.setStyleSheet(f.read())
 
     #widget.resize(widget.config["WIDTH"], widget.config["HEIGHT"])
-    iconPath = os.path.join(widget.BASE_PATH, "utils/Icon.ico")
-    widget.setWindowIcon(QtGui.QIcon(iconPath))
+    #iconPath = os.path.join(widget.BASE_PATH, "utils/Icon.ico")
+    #widget.setWindowIcon(QtGui.QIcon(iconPath))
     widget.setWindowTitle(widget.customTitles())
     widget.show()
 
