@@ -15,7 +15,6 @@ with open(ConfigPath, "r") as f:
 class Time:
     @staticmethod
     def GetCurrentTime():
-        """Returns current day and hour"""
         now = datetime.datetime.now()
         return now.strftime(data["DATE"]), now.strftime((data["HOUR"]))
 

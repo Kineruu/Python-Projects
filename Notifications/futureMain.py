@@ -80,7 +80,7 @@ class MyWidget(QtWidgets.QWidget):
 
         self.confirm_button = QtWidgets.QPushButton(self)
         self.confirm_button.setText("Confirm")
-        self.confirm_button.clicked.connect(self.sendNotification)
+        self.confirm_button.clicked.connect(self.checkTime)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
 
         self.settings_button = QtWidgets.QPushButton(self)
@@ -122,56 +122,42 @@ class MyWidget(QtWidgets.QWidget):
         layout.addWidget(widget2)
         return layout
 
-    def sendNotification(self):
-        while True:
-            date = self.date_entry.text()
-            hour = self.hour_entry.text()
-            title = self.title_entry.text()
-            content = self.content_entry.text()
-            if date == "" or hour == "" or title == "" or content == "":
-                print("Please fill in all the fields")
-                return
-            
-            # Rewrite that later so I can have the number in the json file
-            with open(os.path.join(self.NOTIFICATIONS_DIR, "Number.txt"), "r+") as f:
-                Number = int(f.read().strip())
-                Number += 1
-                f.seek(0)
-                f.write(str(Number))
-                f.truncate()
+    def sendNotification(self, date, hour, title, content):
+        Noti = Notification(
+            app_id="Notification program",
+            title=title,
+            msg=content,
+            duration="short"
+        )
 
-                NotificationJSON = {
-                    "DATE": date,
-                    "HOUR": hour,
-                    "TITLE": title,
-                    "CONTENT": content,
-                    "UnixTime": Time.GetPastUnixTime(date, hour)
-                }
+        with open(os.path.join(self.NOTIFICATIONS_DIR, "Number.txt"), "r+") as f:
+            Number = int(f.read().strip())
+            Number += 1
+            f.seek(0)
+            f.write(str(Number))
+            f.truncate()
 
-                Noti = Notification(
-                    app_id="Notification program",
-                    title=title,
-                    msg=content,
-                    duration="short"
-                )
+        NotificationJSON = {
+            "DATE": date,
+            "HOUR": hour,
+            "TITLE": title,
+            "CONTENT": content,
+            "UnixTime": Time.GetPastUnixTime(date, hour)
+        }
 
+        jsonPath = os.path.join(self.NOTIFICATIONS_DIR, "Notifications.json")
+        with open(jsonPath, "r") as f:
+            self.data = json.load(f)
 
-                jsonPath = os.path.join(self.NOTIFICATIONS_DIR, "Notifications.json")
-                with open(jsonPath, "r") as f:
-                    self.data = json.load(f)
+        NewNotificationName = f"Notification{Number}"
+        self.data["Notifications"][NewNotificationName] = NotificationJSON
 
-                NewNotificationName = f"Notification{Number}"
-                self.data["Notifications"][NewNotificationName] = NotificationJSON
+        with open(jsonPath, "w") as f:
+            json.dump(self.data, f, indent=4)
 
-                with open(jsonPath, "w") as f:
-                    json.dump(self.data, f, indent=4)
-
-                Noti.set_audio(audio.Default, loop=False)
-                Noti.show()
-                break
-        else:
-            pass
-        time.sleep(2) # Replace this with something else later
+        Noti.set_audio(audio.Default, loop=False)
+        Noti.show()
+        time.sleep(5)
 
     def checkTime(self):
         date = self.date_entry.text()
@@ -186,10 +172,10 @@ class MyWidget(QtWidgets.QWidget):
         def timeChecker():
             while True:
                 current_date, current_hour = Time.GetCurrentTime()
+
                 if current_date == date and current_hour == hour:
                     self.sendNotification(date, hour, title, content)
                     break
-                time.sleep(5)
 
         threading.Thread(
             target=timeChecker,
@@ -209,6 +195,6 @@ if __name__ == "__main__":
     widget.setWindowTitle(widget.customTitles())
     widget.show()
 
-    widget.sendNotification()
+    #widget.sendNotification()
 
     sys.exit(app.exec())
