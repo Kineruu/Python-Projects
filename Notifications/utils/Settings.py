@@ -21,6 +21,22 @@ class Settings(QtWidgets.QWidget):
         self.label.setText("Settings")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
 
+        self.customTitles = QtWidgets.QCheckBox("Custom titles?", self)
+        self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.customTitles.setCheckState(QtCore.Qt.Checked if self.config["CUSTOMTITLES"] == "YES" else QtCore.Qt.Unchecked)
+
+        def checkState():
+            if self.customTitles.isChecked():
+                self.config["CUSTOMTITLES"] = "YES"
+            else:
+                self.config["CUSTOMTITLES"] = "NO"
+            with open(self.ConfigPath, "w") as f:
+                json.dump(self.config, f, indent=4)
+        
+        self.customTitles.stateChanged.connect(checkState)
+
+        
+
         self.customSize = QtWidgets.QCheckBox("Custom size?", self)
         self.setCursor(QtCore.Qt.PointingHandCursor)
         self.customSize.setCheckState(QtCore.Qt.Checked if self.config["CUSTOMSIZE"] == "YES" else QtCore.Qt.Unchecked)

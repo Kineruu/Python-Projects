@@ -4,7 +4,7 @@ from utils.Titles import Titles
 from utils.Error import Error
 from utils.Time import Time
 
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets, QtGui
 
 #おはようございました
 #俺の猫がほんと似の可愛いですね。
@@ -38,7 +38,7 @@ class MyWidget(QtWidgets.QWidget):
 
     def customTitles(self):
         if self.config["CUSTOMTITLES"] == "YES": # Why isn't that working
-            Titles.randomTitle(self.TitlesFilePath)
+            return Titles.randomTitle(self.TitlesFilePath)
         else:
             return "Notifications"
 
@@ -205,8 +205,9 @@ if __name__ == "__main__":
         app.setStyleSheet(f.read())
 
     #widget.resize(widget.config["WIDTH"], widget.config["HEIGHT"])
-    #iconPath = os.path.join(widget.BASE_PATH, "utils/Icon.ico")
-    #widget.setWindowIcon(QtGui.QIcon(iconPath))
+    iconPath = os.path.join(widget.BASE_PATH, "utils/Icon.ico")
+    widget.setWindowIcon(QtGui.QIcon(iconPath))
+
     widget.setWindowTitle(widget.customTitles())
     widget.show()
 
