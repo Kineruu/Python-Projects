@@ -4,16 +4,12 @@
     "NUMBER_PATH": "NotificationsList/Number.txt",
     "UTILS_DIR": "utils",
     "CUSTOMTITLES": "YES",
-
     "THEME": "dark",
     "COLOR_THEME": "dark-blue",
-
-    "CUSTOMSIZE":"NO",
+    "CUSTOMSIZE": "NO",
     "WIDTH": 650,
     "HEIGHT": 400,
-
     "TIME_CHECK": 5,
-
     "TIMEFORMAT": 24,
     "YEAR": "%Y",
     "MONTH": "%m",
@@ -23,14 +19,13 @@
     "SECOND": "%S",
     "DATE": "%d.%m.%y",
     "HOUR": "%H:%M",
-    
     "BUTTONSWIDTH": 90,
-    "NOTIWIDTH":100,
+    "NOTIWIDTH": 100,
     "BUTTONSCOLOR": "#0e6675",
-    "LEFTFRAMESIZE":125,
-    "LEFTFRAMEBUTTONCOLOR":"#0e6675",
-    "SETTINGSLEFTFRAME":50,
-    "SETTINGSBUTTONCOLOR":"#0e6675",
-    "ACTIVECOLOR":"#108537",
-    "INACTIVECOLOR":"#660d20"
+    "LEFTFRAMESIZE": 125,
+    "LEFTFRAMEBUTTONCOLOR": "#0e6675",
+    "SETTINGSLEFTFRAME": 50,
+    "SETTINGSBUTTONCOLOR": "#0e6675",
+    "ACTIVECOLOR": "#108537",
+    "INACTIVECOLOR": "#660d20"
 }

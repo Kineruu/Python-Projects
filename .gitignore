@@ -3,6 +3,9 @@ __pycache__/
 NotificationsList/
 Notifications/Number.txt
 
+#PySide6 practice folder
+PySide6-Practice/
+
 #Utils
 utils/__pycache__/
 

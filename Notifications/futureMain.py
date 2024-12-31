@@ -6,6 +6,9 @@ from utils.Time import Time
 
 from PySide6 import QtCore, QtWidgets
 
+#おはようございました
+#俺の猫がほんと似の可愛いですね。
+
 from winotify import Notification, audio
 from clipboard import paste
 import threading
@@ -28,6 +31,11 @@ class MyWidget(QtWidgets.QWidget):
         self.NUMBER_PATH = os.path.join(self.BASE_PATH, self.config["NUMBER_PATH"])
         self.TitlesFilePath = os.path.join(self.UTILS_DIR, "Titles.json")
     
+        if self.config["CUSTOMSIZE"] == "YES":
+            self.setFixedSize(self.config["WIDTH"], self.config["HEIGHT"])
+        else:
+            self.setFixedSize(self.sizeHint())
+
     def customTitles(self):
         if self.config["CUSTOMTITLES"] == "YES": # Why isn't that working
             Titles.randomTitle(self.TitlesFilePath)
