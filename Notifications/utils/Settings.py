@@ -23,6 +23,7 @@ class Settings(QtWidgets.QWidget):
 
         self.customSize = QtWidgets.QCheckBox("Custom size?", self)
         self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.customSize.setCheckState(QtCore.Qt.Checked if self.config["CUSTOMSIZE"] == "YES" else QtCore.Qt.Unchecked)
 
         def checkState():
             if self.customSize.isChecked():
@@ -34,10 +35,33 @@ class Settings(QtWidgets.QWidget):
 
         self.customSize.stateChanged.connect(checkState)
 
+        self.heightBox = QtWidgets.QLineEdit(self)
+        self.heightBox.setPlaceholderText("Height")
+        self.heightBox.setFixedSize(125, 35)
+        self.heightBox.setText(str(self.config["HEIGHT"]))
+        self.heightBox.setEnabled(True if self.config["CUSTOMSIZE"] == "YES" else False)
+        
+        self.widthBox = QtWidgets.QLineEdit(self)
+        self.widthBox.setPlaceholderText("Width")
+        self.widthBox.setFixedSize(125, 35)
+        self.widthBox.setText(str(self.config["WIDTH"]))
+        self.widthBox.setEnabled(True if self.config["CUSTOMSIZE"] == "YES" else False)
+
+        def getSizes():
+            if self.customSize.isChecked():
+                self.config["HEIGHT"] = int(self.heightBox.text())
+                self.config["WIDTH"] = int(self.widthBox.text())
+                with open(self.ConfigPath, "w") as f:
+                    json.dump(self.config, f, indent=4)
+        
+        self.heightBox.textChanged.connect(getSizes)
+
         # Create layout and other stuff
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.customSize)
+        self.layout.addWidget(self.heightBox)
+        self.layout.addWidget(self.widthBox)
         self.setLayout(self.layout)
 
 
