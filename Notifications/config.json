@@ -3,7 +3,7 @@
     "NOTIFICATIONS_DIR": "NotificationsList",
     "NUMBER_PATH": "NotificationsList/Number.txt",
     "UTILS_DIR": "utils",
-    "CUSTOMTITLES": "YES",
+    "CUSTOMTITLES": "NO",
     "THEME": "dark",
     "COLOR_THEME": "dark-blue",
     "CUSTOMSIZE": "NO",

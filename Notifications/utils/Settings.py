@@ -35,7 +35,7 @@ class Settings(QtWidgets.QWidget):
         
         self.customTitles.stateChanged.connect(checkState)
 
-        
+
 
         self.customSize = QtWidgets.QCheckBox("Custom size?", self)
         self.setCursor(QtCore.Qt.PointingHandCursor)
@@ -75,6 +75,7 @@ class Settings(QtWidgets.QWidget):
         # Create layout and other stuff
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.label)
+        self.layout.addWidget(self.customTitles)
         self.layout.addWidget(self.customSize)
         self.layout.addWidget(self.heightBox)
         self.layout.addWidget(self.widthBox)
